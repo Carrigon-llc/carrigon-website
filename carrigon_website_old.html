@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrigon — Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      background: #fff;
+      color: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 88px;
+      background: #000;
+      border-bottom: none;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+    }
+
+    .nav-logo {
+      font-size: 1.98rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d4bf91;
+      text-decoration: none;
+      transition: font-size 0.4s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    nav.scrolled .nav-logo {
+      font-size: 2.31rem;
+    }
+
+    .logo-collapse {
+      display: inline-block;
+      max-width: 120px;
+      overflow: hidden;
+      white-space: nowrap;
+      vertical-align: bottom;
+      opacity: 1;
+      transition: max-width 0.45s ease, opacity 0.35s ease;
+    }
+
+    nav.scrolled .logo-collapse {
+      max-width: 0;
+      opacity: 0;
+    }
+
+    .logo-tick {
+      color: #fff;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      margin: 0 2px;
+    }
+
+    .logo-star {
+      color: #d5d5d7;
+      font-size: 0.85em;
+      margin-right: 0.02em;
+    }
+
+    .logo-c-stack {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0.07em;
+    }
+
+    .logo-bar {
+      display: block;
+      width: 100%;
+      height: 0.26em;
+      background: #d5d5d7;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .nav-logo > span:last-child {
+      display: inline-block;
+      margin-left: 0;
+      transition: margin-left 0.45s ease;
+    }
+
+    nav.scrolled .nav-logo > span:last-child {
+      margin-left: -0.18em;
+    }
+
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #d4bf91; }
+
+    .nav-cta {
+      padding: 8px 20px;
+      background: #d4bf91;
+      color: #000 !important;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover { background: #c4ae7e !important; color: #000 !important; }
+
+    /* HERO */
+    .hero-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-bg-video {
+      position: absolute;
+      top: -10%;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      object-fit: cover;
+      z-index: 0;
+      will-change: transform;
+      transform-origin: center center;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.05);
+      z-index: 1;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      min-height: 100vh;
+      background: transparent;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 300px 48px 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .hero-content {
+      flex: 1 1 0;
+      text-align: left;
+      max-width: 560px;
+    }
+
+    .tech-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .tech-badge {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #555;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 5px 10px;
+      background: rgba(255,255,255,0.6);
+    }
+
+    @keyframes highlightReveal {
+      0%   { background-size: 0% 100%; }
+      100% { background-size: 100% 100%; }
+    }
+
+    @keyframes highlightReverse {
+      0%   { background-size: 100% 100%; background-position: left center; }
+      100% { background-size: 0% 100%; background-position: left center; }
+    }
+
+    .underline-scroll {
+      border-radius: 4px;
+      padding: 0 6px;
+      background-image: linear-gradient(to right, #d4bf91, #f1e4c7);
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: 0% 100%;
+      transition: color 0.3s ease;
+    }
+
+    .underline-scroll.active {
+      animation: highlightReveal 2.5s ease forwards;
+      color: #1a1a1a !important;
+    }
+
+    .underline-scroll.reversing {
+      animation: highlightReverse 2.5s ease forwards;
+      color: #000000;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    .hero-headline {
+      font-size: clamp(2.8rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #1a1a1a;
+      margin-bottom: 14px;
+    }
+
+    .hero-subline {
+      font-size: 1.10rem;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #555;
+      max-width: 480px;
+      margin: 0 0 20px;
+    }
+
+    .notify-form {
+      display: flex;
+      max-width: 440px;
+    }
+
+    .notify-input {
+      flex: 1;
+      padding: 13px 18px;
+      background: #f5f5f5;
+      border: 1px solid #d8d8d8;
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+      color: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .notify-input::placeholder { color: #aaa; }
+    .notify-input:focus {
+      border-color: #bbb;
+      background: #fff;
+    }
+
+    .notify-btn {
+      padding: 13px 24px;
+      background: #1a1a1a;
+      border: 1px solid #1a1a1a;
+      border-radius: 0 6px 6px 0;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .notify-btn:hover { background: #d4bf91; border-color: #d4bf91; color: #000; }
+
+    .notify-success {
+      display: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #555;
+      margin-top: 16px;
+    }
+
+    .hero-media {
+      flex: 0 0 540px;
+      max-width: 540px;
+      position: relative;
+    }
+
+    .hero-media video {
+      width: 100%;
+      border-radius: 12px;
+      display: block;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    }
+
+    .hero-media-frost {
+      display: none;
+    }
+
+
+    .hero-media-frost.scrolled { opacity: 1; }
+
+    @keyframes techShimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* SIDE NAV */
+    .side-nav {
+      position: fixed !important;
+      left: 24px !important;
+      right: auto !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: none !important;
+    }
+
+    .side-nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .side-nav-node {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #d4bf91;
+      background: transparent;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    @keyframes nodePulse {
+      0%   { box-shadow: 0 0 0 0 rgba(212,191,145,0.6); }
+      70%  { box-shadow: 0 0 0 8px rgba(212,191,145,0); }
+      100% { box-shadow: 0 0 0 0 rgba(212,191,145,0); }
+    }
+
+    .side-nav-item.active .side-nav-node {
+      background: #d4bf91;
+      transform: scale(1.2);
+      animation: nodePulse 1.8s ease-out infinite;
+    }
+
+    .side-nav-label {
+      position: absolute;
+      left: 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #d4bf91;
+      opacity: 0;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    .side-nav-item:hover .side-nav-label {
+      opacity: 1;
+      padding: 4px 8px;
+    }
+
+    .side-nav-item:hover .side-nav-node {
+      background: #2f372f;
+      border-color: #2f372f;
+    }
+
+    .side-nav-line {
+      width: 2px;
+      height: 56px;
+      background: rgba(212,191,145,0.5);
+      border-radius: 1px;
+    }
+
+    @media (max-width: 768px) { .side-nav { display: none; } }
+
+    /* TECH STACK BAR */
+    .tech-stack-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      background: #000;
+      border-top: 1px solid rgba(212,191,145,0.2);
+      padding: 18px 0;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    .tech-stack-bar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(212,191,145,0.35) 50%, transparent 70%);
+      background-size: 200% 100%;
+      animation: techShimmer 20s linear infinite;
+      pointer-events: none;
+    }
+
+    .tech-stack-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tech-stack-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: #d4bf91;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+      cursor: default;
+    }
+
+    .tech-stack-item:hover { opacity: 1; }
+
+    .tech-stack-item svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .tech-stack-item span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #d4bf91;
+    }
+
+    .tech-stack-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(212,191,145,0.2);
+    }
+
+    @media (max-width: 768px) {
+      .tech-stack-inner { justify-content: center; gap: 16px 20px; }
+      .tech-stack-divider { display: none; }
+      .tech-stack-bar { position: relative; bottom: auto; }
+      .hero-wrapper { min-height: auto; }
+    }
+
+    .sdvosb-badge {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      width: 110px;
+      max-width: 32%;
+      height: auto;
+      z-index: 5;
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      transition: transform 0.3s ease;
+    }
+
+    .sdvosb-badge:hover {
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    .sdvosb-below {
+      margin-top: 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #2f372f;
+      text-align: center;
+      width: 100%;
+      line-height: 1.2;
+    }
+
+    .sdvosb-label {
+      margin-top: 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #2f372f;
+      text-align: center;
+    }
+
+    .hero-media-label {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      padding: 0;
+      background: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .label-full {
+      display: block;
+      font-size: 2.75rem;
+      max-height: 200px;
+      overflow: hidden;
+      opacity: 1;
+      transition: max-height 0.45s ease, opacity 0.35s ease;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .label-short {
+      display: inline-block;
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      text-indent: 0;
+      color: #d4bf91;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 14px 28px;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.45s ease, opacity 0.35s ease;
+    }
+
+    .label-short::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
+      background-size: 200% 100%;
+      animation: shimmer 6s infinite;
+      pointer-events: none;
+    }
+
+    .hero-media-label.scrolled .label-full {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    .hero-media-label.scrolled .label-short {
+      max-height: 8rem;
+      opacity: 1;
+      text-align: center;
+    }
+
+    /* SERVICES SECTION */
+    .services {
+      background-color: #221f20;
+      background-image: none;
+      padding: 80px 48px;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 3rem;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #000000;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      padding: 4px 12px;
+      margin-bottom: 1.1rem;
+    }
+
+    .section-title {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.15;
+      color: #000000;
+      margin-bottom: 0.9rem;
+    }
+
+    .section-title span { color: #000000; }
+
+    .section-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .cta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) { .cta-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .cta-grid { grid-template-columns: 1fr; } }
+
+    .cta-card {
+      background: rgba(47,55,47,0.55);
+      border: 1px solid rgba(212,191,145,0.18);
+      border-radius: 10px;
+      padding: 1.4rem 1.35rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d4bf91, transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .cta-card:hover {
+      border-color: #d4bf91;
+      background: #d4bf91;
+      transform: translateY(-2px);
+    }
+
+    .cta-card:hover::after { opacity: 1; }
+    .cta-card:hover .card-title { color: #000000; }
+    .cta-card:hover .card-desc { color: #221f20; }
+    .cta-card:hover .card-naics { color: rgba(47,55,47,0.5); }
+    .cta-card:hover .card-icon { border-color: rgba(47,55,47,0.25); background: rgba(47,55,47,0.1); }
+    .cta-card:hover .card-icon svg { stroke: #2f372f; }
+    .cta-card:hover .card-cta { color: #2f372f; }
+    .cta-card:hover .card-cta svg { stroke: #2f372f; }
+
+    .card-icon {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(212,191,145,0.28);
+      background: rgba(212,191,145,0.12);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 20px; height: 20px;
+      stroke: #d4bf91;
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card-naics {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(241,228,199,0.38);
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .card-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #f1e4c7;
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: rgba(241,228,199,0.65);
+      line-height: 1.6;
+      flex: 1;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .card-cta {
+      display: inline-flex;
+      align-items: center;
+      align-self: flex-start;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #d4bf91;
+      margin-top: 4px;
+      font-family: 'Barlow', sans-serif;
+      padding: 5px 10px;
+      border-radius: 4px;
+      background: linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0.9)) no-repeat left center;
+      background-size: 3px 65%;
+      transition: gap 0.15s, color 0.25s, background-size 0.38s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .cta-card:hover .card-cta { gap: 8px; }
+
+    .cta-card .card-cta:hover {
+      background-size: 100% 100%;
+      color: #221f20;
+    }
+    .cta-card .card-cta:hover svg { stroke: #221f20; }
+
+    .card-cta svg {
+      width: 13px; height: 13px;
+      stroke: #d4bf91;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      background: #fff !important;
+      padding: 80px 48px 160px;
+      text-align: center;
+    }
+
+    .cta-contact-btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 14px 36px;
+      background: #2f372f;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+
+    .cta-contact-btn:hover { background: #d4bf91; color: #000; }
+
+    .cta-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .about-inner {
+      max-width: 1100px;
+    }
+
+    .about-grid {
+      display: flex;
+      align-items: center;
+      gap: 72px;
+      text-align: left;
+    }
+
+    .about-text {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .about-text p + p {
+      margin-top: 16px;
+    }
+
+    .about-badge {
+      flex: 0 0 320px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .about-badge img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      filter: drop-shadow(0 16px 36px rgba(0,0,0,0.18));
+    }
+
+    @media (max-width: 900px) {
+      .about-grid {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+      }
+      .about-badge { flex: 0 0 auto; max-width: 240px; }
+    }
+
+    .cta-section .section-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 16px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .cta-section .section-heading {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #000;
+      margin: 0 auto 20px;
+      max-width: 100%;
+      line-height: 1.15;
+    }
+
+    .cta-section p {
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: #000;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #000;
+      border-top: none;
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d4bf91;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.8rem;
+      color: #888;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: #d4bf91; }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    /* CONTACT MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 520px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+      animation: modalIn 0.25s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      background: #221f20;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d4bf91;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover { color: #fff; }
+
+    .modal-body {
+      padding: 28px;
+    }
+
+    .modal-field {
+      margin-bottom: 16px;
+    }
+
+    .modal-field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .modal-field input,
+    .modal-field textarea {
+      width: 100%;
+      padding: 11px 14px;
+      background: #f5f5f5;
+      border: 1px solid #d8d8d8;
+      border-radius: 6px;
+      color: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      resize: none;
+    }
+
+    .modal-field input:focus,
+    .modal-field textarea:focus {
+      border-color: #bbb;
+      background: #fff;
+    }
+
+    .modal-submit {
+      width: 100%;
+      padding: 13px;
+      background: #2f372f;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .modal-submit:hover { background: #d4bf91; color: #000; }
+
+    .modal-fallback {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .modal-fallback a {
+      color: #d4bf91;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .modal-fallback a:hover { color: #b89a5a; }
+
+    /* RESPONSIVE */
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 101;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* MOBILE MENU */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 88px;
+      left: 0; right: 0;
+      background: #000;
+      z-index: 98;
+      padding: 12px 0 20px;
+      border-top: 1px solid #222;
+      transform: translateY(-110%);
+      transition: transform 0.35s ease;
+    }
+
+    .mobile-menu.open { transform: translateY(0); }
+
+    .mobile-menu ul { list-style: none; }
+
+    .mobile-menu ul li a {
+      display: block;
+      padding: 14px 24px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: color 0.2s, padding-left 0.2s;
+    }
+
+    .mobile-menu ul li a:hover { color: #d4bf91; padding-left: 30px; }
+
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        align-items: center;
+        padding: 140px 24px 40px;
+        gap: 32px;
+      }
+      .hero-content {
+        text-align: center;
+        align-items: center;
+      }
+      .cta-contact-btn { display: block; width: fit-content; margin: 0 auto; }
+      .hero-media {
+        flex: none;
+        max-width: 480px;
+        width: 90%;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      .nav-links { display: none !important; }
+      .hamburger { display: flex; }
+      .mobile-menu { display: block; }
+      .nav-logo { font-size: 1.2rem; }
+      nav.scrolled .nav-logo { font-size: 1.4rem; }
+      .hero-wrapper { min-height: auto; }
+      .hero { padding: 110px 20px 40px; gap: 50px; min-height: auto; }
+      .hero-content { text-align: center; align-items: center; flex: none; }
+      .hero-headline { font-size: clamp(2rem, 8vw, 3rem); }
+      .hero-subline { margin: 0 auto 20px; }
+      .cta-contact-btn { display: block; width: fit-content; margin: 0 auto; }
+      .hero-subline { font-size: 0.95rem; }
+      .services, .cta-section { padding: 60px 20px; }
+      .cta-section { padding: 80px 20px; }
+      footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; gap: 20px; }
+      .footer-links { flex-wrap: wrap; gap: 16px; }
+      .notify-form { flex-direction: column; max-width: 100%; }
+      .notify-input { border-right: 1px solid #d8d8d8; border-bottom: none; border-radius: 6px 6px 0 0; }
+      .notify-btn { border-radius: 0 0 6px 6px; }
+      .modal { margin: 0 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-headline { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+      .label-full { font-size: 1.8rem; }
+      .label-short { font-size: 2.8rem; letter-spacing: 0.25em; }
+      .cta-grid { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="passwordGate" style="
+  position: fixed; inset: 0; z-index: 99999;
+  background: #000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+">
+  <div style="text-align:center; max-width:380px; width:90%; padding:40px; background:#111; border:1px solid rgba(212,191,145,0.25); border-radius:12px;">
+    <p style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#d4bf91; margin-bottom:8px;">Restricted Access</p>
+    <h2 style="color:#fff; font-size:1.5rem; font-weight:800; margin-bottom:6px;">★ CARRIGON</h2>
+    <p style="color:#888; font-size:0.85rem; margin-bottom:28px;">Enter the password to continue.</p>
+    <input id="gateInput" type="password" placeholder="Password" style="
+      width:100%; padding:12px 16px; background:#1a1a1a;
+      border:1px solid rgba(212,191,145,0.3); border-radius:6px;
+      color:#fff; font-size:0.9rem; font-family:'Inter',sans-serif;
+      outline:none; margin-bottom:12px; box-sizing:border-box;
+    " onkeydown="if(event.key==='Enter') checkPassword()" />
+    <p id="gateError" style="color:#e05c5c; font-size:0.8rem; margin-bottom:12px; display:none;">Incorrect password. Try again.</p>
+    <button onclick="checkPassword()" style="
+      width:100%; padding:12px; background:#d4bf91;
+      border:none; border-radius:6px; color:#000;
+      font-family:'Inter',sans-serif; font-size:0.875rem;
+      font-weight:700; cursor:pointer; letter-spacing:0.05em;
+      text-transform:uppercase; transition:background 0.2s;
+    " onmouseover="this.style.background='#c4ae7e'" onmouseout="this.style.background='#d4bf91'">Enter</button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    if (sessionStorage.getItem('carrigon_auth') === 'true') {
+      document.getElementById('passwordGate').style.display = 'none';
+    }
+  })();
+
+  function checkPassword() {
+    const input = document.getElementById('gateInput').value;
+    if (input === 'Carrigon2026') {
+      sessionStorage.setItem('carrigon_auth', 'true');
+      document.getElementById('passwordGate').style.display = 'none';
+    } else {
+      document.getElementById('gateError').style.display = 'block';
+      document.getElementById('gateInput').style.borderColor = 'rgba(224,92,92,0.6)';
+      setTimeout(() => {
+        document.getElementById('gateInput').style.borderColor = 'rgba(212,191,145,0.3)';
+      }, 1500);
+    }
+  }
+</script>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#"><span class="logo-star">★</span><span class="logo-c-stack"><span class="logo-bar"></span><span style="color:#d4bf91">C</span><span class="logo-bar"></span></span><span style="color:#d4bf91"><span class="logo-collapse">ARRI</span></span><span style="color:#f1e4c7">G<span class="logo-collapse">ON</span></span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#coming-soon">About</a></li>
+      <li><a href="#" onclick="openModal(); return false;">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#services" onclick="closeMenu()">Services</a></li>
+    <li><a href="#coming-soon" onclick="closeMenu()">About</a></li>
+    <li><a href="#" onclick="openModal(); closeMenu(); return false;">Contact</a></li>
+  </ul>
+</div>
+
+<!-- Hero -->
+<div class="hero-wrapper">
+  <video class="hero-bg-video" autoplay muted loop playsinline>
+    <source src="assets/dots.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <h1 class="hero-headline"><span style="color:#2f372f">Veteran-Owned.</span><br><span style="color:#000000">Mission-Driven</span><br><span style="color:#000000"><span class="underline-scroll" id="itConsulting">IT Consulting.</span></span></h1>
+    <p class="hero-subline">Carrigon delivers reliable technology solutions with the precision and discipline federal agencies demand.</p>
+    <button class="cta-contact-btn" onclick="openModal()">Contact Us</button>
+  </div>
+
+  <div class="hero-media">
+<video autoplay muted loop playsinline>
+      <source src="assets/capital_flag.mp4" type="video/mp4">
+    </video>
+    <div class="hero-media-frost" id="mediaFrost"></div>
+    <span class="hero-media-label" id="mediaLabel" style="z-index:5;">
+      <span class="label-short"><span style="color:#d5d5d7; margin-right:0.3em;">★</span>SDVOSB</span>
+    </span>
+    <img class="sdvosb-badge" src="assets/sdvosb.png" alt="Service-Disabled Veteran-Owned Small Business certified badge">
+  </div>
+</section>
+
+<!-- Tech Stack Bar -->
+<div class="tech-stack-bar">
+  <div class="tech-stack-inner">
+    <div class="tech-stack-item"><svg viewBox="0 0 40 24" fill="none"><text x="0" y="18" font-family="monospace" font-weight="800" font-size="13" fill="currentColor" letter-spacing="1">AWS</text></svg><span>AWS</span></div>
+    <div class="tech-stack-divider"></div>
+    <div class="tech-stack-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12,2 22,20 2,20"/><line x1="12" y1="8" x2="12" y2="14"/></svg><span>Azure</span></div>
+    <div class="tech-stack-divider"></div>
+    <div class="tech-stack-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3.5 6.5L22 10l-5 5 1.5 7L12 19l-6.5 3L7 15 2 10l6.5-1.5L12 2z"/></svg><span>Databricks</span></div>
+    <div class="tech-stack-divider"></div>
+    <div class="tech-stack-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg><span>Palantir</span></div>
+    <div class="tech-stack-divider"></div>
+    <div class="tech-stack-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="4,17 10,11 4,5"/><line x1="12" y1="19" x2="20" y2="19"/></svg><span>Claude Code</span></div>
+    <div class="tech-stack-divider"></div>
+    <div class="tech-stack-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L4 6v6c0 5 3.5 9.3 8 10.9C16.5 21.3 20 17 20 12V6l-8-4z"/><line x1="12" y1="10" x2="12" y2="14"/><circle cx="12" cy="16" r="0.5" fill="currentColor"/></svg><span>Cybersecurity</span></div>
+    <div class="tech-stack-divider"></div>
+    <div class="tech-stack-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2a7 7 0 0 1 7 7c0 3-1.5 5-3.5 6.5M12 2a7 7 0 0 0-7 7c0 3 1.5 5 3.5 6.5M8.5 21.5C9.5 20 11 19 12 19s2.5 1 3.5 2.5"/><path d="M5 9H2M22 9h-3M12 22v-3"/></svg><span>AI / ML</span></div>
+    <div class="tech-stack-divider"></div>
+    <div class="tech-stack-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg><span>Data Eng.</span></div>
+    <div class="tech-stack-divider"></div>
+    <div class="tech-stack-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg><span>Analytics</span></div>
+  </div>
+</div>
+</div>
+
+<!-- Services -->
+<section class="services" id="services">
+  <div class="section-header">
+    
+    <h2 class="section-title"><span style="color:#d4bf91">Our</span> <span style="color:#F1E4C7">Capabilities</span></h2>
+ 
+  </div>
+
+  <div class="cta-grid">
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <span class="card-naics">541512 · 541511 · 541519</span>
+      <p class="card-title">IT Modernization &amp; Systems Design</p>
+      <p class="card-desc">Custom-engineered federal IT systems — from legacy migration to cloud-native architecture built for mission-critical environments.</p>
+      <span class="card-cta">Learn More
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <span class="card-naics">541512 · 541690</span>
+      <p class="card-title">Cybersecurity &amp; Compliance</p>
+      <p class="card-desc">Zero-trust frameworks, CMMC readiness, and FedRAMP support — protecting agency assets at every layer of your infrastructure.</p>
+      <span class="card-cta">Learn More
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+      </div>
+      <span class="card-naics">518210 · 511210</span>
+      <p class="card-title">Cloud &amp; Data Infrastructure</p>
+      <p class="card-desc">Scalable GovCloud deployments, data hosting, and software platforms engineered for federal security standards and performance demands.</p>
+      <span class="card-cta">Learn More
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <span class="card-naics">541611 · 541618 · 541614</span>
+      <p class="card-title">Program &amp; Operations Management</p>
+      <p class="card-desc">Strategic oversight and execution for complex government programs — from IT program management to logistics process optimization.</p>
+      <span class="card-cta">Learn More
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      </div>
+      <span class="card-naics">541690 · 541519 · 518210</span>
+      <p class="card-title">Data Analytics &amp; AI Services</p>
+      <p class="card-desc">Advanced analytics, AI/ML pipelines, and knowledge graph solutions that turn agency data into mission-ready intelligence and decisions.</p>
+      <span class="card-cta">Learn More
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <span class="card-naics">611430 · 611710</span>
+      <p class="card-title">Workforce Development &amp; Training</p>
+      <p class="card-desc">Targeted professional development and technical training programs that build lasting federal workforce capacity and digital readiness.</p>
+      <span class="card-cta">Learn More
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </span>
+    </a>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="coming-soon">
+  <div class="cta-inner about-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-heading"><span style="color:#2f372f">About Us</span></h2>
+        <p>Carrigon LLC is a Service-Disabled Veteran-Owned Small Business delivering management consulting, digital transformation, and data analytics to federal agencies. Founded by a West Point graduate and Army veteran with 10 years of military leadership and operational planning experience, Carrigon brings proven expertise in organizational change management, agile adoption, and mission-aligned digital solutions.</p>
+        <p>Core capabilities span IT and management consulting, digital transformation strategy, data science and quantitative risk modeling, cloud engineering and migration, DevSecOps and CI/CD pipeline design, application modernization, workforce training, and program management support. Our team pairs federal consulting experience at Booz Allen Hamilton — supporting DoD and civilian agency modernization — with quantitative analytics expertise from Freddie Mac's risk modeling organization.</p>
+      </div>
+      <div class="about-badge">
+        <img src="assets/sdvosb.png" alt="Service-Disabled Veteran-Owned Small Business certified badge">
+      </div>
+    </div>
+    <div style="margin-top:36px; display:flex; justify-content:center;">
+      <div class="notify-form" id="notifyForm">
+        <input class="notify-input" type="email" id="emailInput" placeholder="Your email address" autocomplete="off" />
+        <button class="notify-btn" onclick="handleNotify()">Notify Me</button>
+      </div>
+      <p class="notify-success" id="notifySuccess">You're on the list. We'll be in touch.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Modal -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Get in Touch</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="contactForm" onsubmit="submitContact(event)">
+        <div class="modal-field">
+          <label>Name</label>
+          <input type="text" id="contactName" placeholder="Your full name" required />
+        </div>
+        <div class="modal-field">
+          <label>Email</label>
+          <input type="email" id="contactEmail" placeholder="your@email.com" required />
+        </div>
+        <div class="modal-field">
+          <label>Message</label>
+          <textarea id="contactMessage" rows="4" placeholder="How can we help you?" required></textarea>
+        </div>
+        <button type="submit" class="modal-submit">Send Message</button>
+      </form>
+      <p class="modal-fallback">Or email us directly at <a href="mailto:info@carrigon.com">info@carrigon.com</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <a class="footer-logo" href="#"><span class="logo-star">★</span><span class="logo-c-stack"><span class="logo-bar"></span><span style="color:#d4bf91">C</span><span class="logo-bar"></span></span><span style="color:#d4bf91">ARRI</span><span style="color:#f1e4c7">GON</span></a>
+  <ul class="footer-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#coming-soon">About</a></li>
+    <li><a href="#" onclick="openModal(); return false;">Contact</a></li>
+    <li><a href="#" onclick="openPrivacyModal(); return false;">Privacy Policy</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 Carrigon, LLC. All rights reserved.</span>
+</footer>
+
+<!-- Privacy Policy Modal -->
+<div class="modal-overlay" id="privacyModal">
+  <div class="modal" style="max-width:680px; max-height:85vh; display:flex; flex-direction:column;">
+    <div class="modal-header">
+      <h3>Privacy Policy</h3>
+      <button class="modal-close" onclick="closePrivacyModal()">✕</button>
+    </div>
+    <div class="modal-body" style="overflow-y:auto; flex:1;">
+      <p style="font-size:0.8rem; color:#888; margin-bottom:20px;">Effective Date: June 1, 2026 &nbsp;|&nbsp; Last Updated: June 1, 2026</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">1. Introduction</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">Carrigon, LLC ("Carrigon," "we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website at carrigon.com (the "Site"). Please read this policy carefully. If you disagree with its terms, please discontinue use of the Site.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">2. Information We Collect</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;"><strong>Information you provide directly:</strong> We may collect your name, email address, and any other information you voluntarily submit through our contact form or notification sign-up.</p>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;"><strong>Automatically collected information:</strong> When you visit the Site, we may automatically collect certain technical data including your IP address, browser type, operating system, referring URLs, pages visited, and the date and time of your visit. This data is collected via standard web server logs and, if applicable, analytics tools.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">3. How We Use Your Information</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;">We use the information we collect to:</p>
+      <ul style="font-size:0.875rem; line-height:1.9; color:#444; margin-bottom:16px; padding-left:20px;">
+        <li>Respond to your inquiries and provide requested information</li>
+        <li>Send you updates or notifications you have opted into</li>
+        <li>Operate, maintain, and improve our Site</li>
+        <li>Comply with legal obligations and protect our legal rights</li>
+        <li>Detect and prevent fraud or unauthorized access</li>
+      </ul>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">We do not sell, rent, or trade your personal information to third parties for marketing purposes.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">4. Disclosure of Your Information</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;">We may share your information in limited circumstances:</p>
+      <ul style="font-size:0.875rem; line-height:1.9; color:#444; margin-bottom:16px; padding-left:20px;">
+        <li><strong>Service Providers:</strong> Trusted third-party vendors who assist us in operating the Site (e.g., email delivery, hosting) under confidentiality obligations.</li>
+        <li><strong>Legal Requirements:</strong> When required by law, regulation, court order, or governmental authority.</li>
+        <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.</li>
+        <li><strong>Protection of Rights:</strong> When we believe disclosure is necessary to protect the rights, property, or safety of Carrigon, our clients, or the public.</li>
+      </ul>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">5. Cookies and Tracking Technologies</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">Our Site may use cookies and similar tracking technologies to enhance your experience. You may configure your browser to refuse cookies; however, some features of the Site may not function properly as a result. We do not currently respond to "Do Not Track" signals.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">6. Data Retention</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">We retain personal information only as long as necessary to fulfill the purposes described in this policy, comply with legal obligations, resolve disputes, and enforce our agreements. When information is no longer needed, we securely delete or anonymize it.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">7. Data Security</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">We implement reasonable administrative, technical, and physical safeguards to protect your personal information from unauthorized access, use, or disclosure. However, no internet transmission or electronic storage method is 100% secure, and we cannot guarantee absolute security.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">8. Third-Party Links</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">The Site may contain links to third-party websites. We are not responsible for the privacy practices or content of those sites. We encourage you to review the privacy policies of any third-party sites you visit.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">9. Children's Privacy</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">Our Site is not directed to individuals under the age of 13. We do not knowingly collect personal information from children. If we become aware that we have inadvertently collected such information, we will promptly delete it.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">10. Your Rights and Choices</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;">Depending on your jurisdiction, you may have the right to:</p>
+      <ul style="font-size:0.875rem; line-height:1.9; color:#444; margin-bottom:16px; padding-left:20px;">
+        <li>Access, correct, or delete the personal information we hold about you</li>
+        <li>Opt out of certain data uses or marketing communications</li>
+        <li>Lodge a complaint with a supervisory authority</li>
+      </ul>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">To exercise any of these rights, please contact us at <a href="mailto:info@carrigon.com" style="color:#2f372f;">info@carrigon.com</a>.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">11. Changes to This Policy</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">We may update this Privacy Policy from time to time. Changes will be posted on this page with a revised effective date. Your continued use of the Site following any changes constitutes your acceptance of the updated policy.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">12. Contact Us</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;">If you have questions or concerns about this Privacy Policy, please contact us:</p>
+      <p style="font-size:0.875rem; line-height:1.9; color:#444;">
+        <strong>Carrigon, LLC</strong><br>
+        Email: <a href="mailto:info@carrigon.com" style="color:#2f372f;">info@carrigon.com</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+  // Highlight on scroll
+  const itConsulting = document.getElementById('itConsulting');
+  let highlightActive = false;
+  window.addEventListener('scroll', () => {
+    if (!itConsulting) return;
+    const shouldBeActive = window.scrollY > 60;
+    if (shouldBeActive && !highlightActive) {
+      highlightActive = true;
+      itConsulting.classList.remove('reversing');
+      itConsulting.classList.add('active');
+    } else if (!shouldBeActive && highlightActive) {
+      highlightActive = false;
+      itConsulting.classList.remove('active');
+      itConsulting.classList.add('reversing');
+      setTimeout(() => itConsulting.classList.remove('reversing'), 2500);
+    }
+  }, { passive: true });
+
+  function handleNotify() {
+    const input = document.getElementById('emailInput');
+    const email = input.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      input.style.borderColor = 'rgba(255,100,100,0.6)';
+      setTimeout(() => input.style.borderColor = '', 1000);
+      return;
+    }
+    document.getElementById('notifyForm').style.display = 'none';
+    const success = document.getElementById('notifySuccess');
+    success.style.display = 'block';
+  }
+
+  document.getElementById('emailInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleNotify();
+  });
+
+  // Hamburger menu
+  function toggleMenu() {
+    const btn = document.getElementById('hamburger');
+    const menu = document.getElementById('mobileMenu');
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // Contact modal
+  function openModal() {
+    document.getElementById('contactModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('contactModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openPrivacyModal() {
+    document.getElementById('privacyModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePrivacyModal() {
+    document.getElementById('privacyModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close on overlay click
+  document.getElementById('contactModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  function submitContact(e) {
+    e.preventDefault();
+    const name    = document.getElementById('contactName').value.trim();
+    const email   = document.getElementById('contactEmail').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+    const subject = encodeURIComponent('Contact from ' + name + ' — Carrigon');
+    const body    = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + message);
+    window.location.href = 'mailto:info@carrigon.com?subject=' + subject + '&body=' + body;
+  }
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY > 60;
+    document.querySelector('nav').classList.toggle('scrolled', scrolled);
+    document.getElementById('mediaLabel').classList.toggle('scrolled', scrolled);
+    document.getElementById('mediaFrost').classList.toggle('scrolled', scrolled);
+
+    // Zoom-out parallax on hero background video
+    const bgVideo = document.querySelector('.hero-bg-video');
+    if (bgVideo) {
+      const scale = Math.max(0.55, 1 - window.scrollY * 0.0004);
+      bgVideo.style.transform = `scale(${scale})`;
+    }
+  });
+
+  const video = document.querySelector('.hero-video');
+  if (video) {
+    video.addEventListener('error', () => { video.style.display = 'none'; });
+  }
+</script>
+
+<!-- Side Nav -->
+<nav class="side-nav" id="sideNav">
+  <div class="side-nav-item" data-section="hero">
+    <div class="side-nav-node"></div>
+    <span class="side-nav-label">Home</span>
+  </div>
+  <div class="side-nav-line"></div>
+  <div class="side-nav-item" data-section="services">
+    <div class="side-nav-node"></div>
+    <span class="side-nav-label">Services</span>
+  </div>
+  <div class="side-nav-line"></div>
+  <div class="side-nav-item" data-section="coming-soon">
+    <div class="side-nav-node"></div>
+    <span class="side-nav-label">About</span>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sections = [
+      { id: 'hero',        el: document.getElementById('hero') },
+      { id: 'services',    el: document.getElementById('services') },
+      { id: 'coming-soon', el: document.getElementById('coming-soon') }
+    ];
+    const items = document.querySelectorAll('.side-nav-item');
+    const NAV_HEIGHT = 88;
+
+    function setActive(id) {
+      items.forEach(item => item.classList.toggle('active', item.dataset.section === id));
+    }
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const id = item.dataset.section;
+        const target = document.getElementById(id);
+        if (!target) return;
+        const top = target.getBoundingClientRect().top + window.scrollY - NAV_HEIGHT;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      // Also activate last section if near bottom of page
+      const nearBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 100;
+      if (nearBottom) {
+        setActive('coming-soon');
+        return;
+      }
+      let current = sections[0].id;
+      sections.forEach(s => {
+        if (!s.el) return;
+        if (s.el.getBoundingClientRect().top <= NAV_HEIGHT + 80) current = s.id;
+      });
+      setActive(current);
+    }, { passive: true });
+
+    setActive('hero');
+  });
+</script>
+
+</body>
+</html>

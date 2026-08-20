@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrigon — Mission-Driven IT Consulting</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      background: #fff;
+      color: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 88px;
+      background: #000;
+      border-bottom: none;
+    }
+
+    .nav-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+    }
+
+    .nav-logo {
+      font-size: 1.98rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d4bf91;
+      text-decoration: none;
+      transition: font-size 0.4s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    nav.scrolled .nav-logo {
+      font-size: 2.31rem;
+    }
+
+    .logo-collapse {
+      display: inline-block;
+      max-width: 120px;
+      overflow: hidden;
+      white-space: nowrap;
+      vertical-align: bottom;
+      opacity: 1;
+      transition: max-width 0.45s ease, opacity 0.35s ease;
+    }
+
+    nav.scrolled .logo-collapse {
+      max-width: 0;
+      opacity: 0;
+    }
+
+    .logo-tick {
+      color: #fff;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      margin: 0 2px;
+    }
+
+    .logo-star {
+      color: #d5d5d7;
+      font-size: 0.85em;
+      margin-right: 0.02em;
+    }
+
+    .logo-c-stack {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0.07em;
+    }
+
+    .logo-bar {
+      display: block;
+      width: 100%;
+      height: 0.26em;
+      background: #d5d5d7;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .nav-logo > span:last-child {
+      display: inline-block;
+      margin-left: 0;
+      transition: margin-left 0.45s ease;
+    }
+
+    nav.scrolled .nav-logo > span:last-child {
+      margin-left: -0.18em;
+    }
+
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #d4bf91; }
+
+    .nav-cta {
+      display: inline-block;
+      padding: 8px 20px;
+      background: #fff;
+      color: #000 !important;
+      border: none;
+      border-radius: 0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: #d4bf91;
+      z-index: -1;
+      transform: translateX(-100%);
+      transition: transform 0.35s ease-in-out;
+    }
+
+    .nav-cta:hover {
+      color: #000 !important;
+      transform: translateY(-2px);
+      animation: goldBorderPulse 1.6s ease-out infinite;
+    }
+
+    .nav-cta:hover::before { transform: translateX(0); }
+
+    /* HERO */
+    .hero-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      filter: contrast(1.08) saturate(1.15);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 100%);
+      z-index: 1;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      min-height: 100vh;
+      background: transparent;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 300px 48px 100px;
+      max-width: 1320px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .hero-content {
+      flex: 1 1 0;
+      text-align: left;
+      max-width: 760px;
+    }
+
+    .tech-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .tech-badge {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #555;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 5px 10px;
+      background: rgba(255,255,255,0.6);
+    }
+
+    @keyframes highlightReveal {
+      0%   { background-size: 0% 100%; }
+      100% { background-size: 100% 100%; }
+    }
+
+    @keyframes highlightReverse {
+      0%   { background-size: 100% 100%; background-position: left center; }
+      100% { background-size: 0% 100%; background-position: left center; }
+    }
+
+    .underline-scroll {
+      border-radius: 4px;
+      padding: 0 6px;
+      background-image: linear-gradient(to right, #d4bf91, #f1e4c7);
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: 0% 100%;
+      transition: color 0.3s ease;
+    }
+
+    .underline-scroll.active {
+      animation: highlightReveal 2.5s ease forwards;
+      color: #1a1a1a !important;
+    }
+
+    .underline-scroll.reversing {
+      animation: highlightReverse 2.5s ease forwards;
+      color: #000000;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    .hero-headline {
+      font-size: clamp(3.36rem, 6vw, 4.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #1a1a1a;
+      margin-bottom: 14px;
+    }
+
+    .hero-subline {
+      font-size: clamp(0.95rem, 3vw, 1.1rem);
+      font-weight: 400;
+      line-height: 1.6;
+      color: #333;
+      max-width: 480px;
+      margin: 0 0 36px;
+    }
+
+    .hero-media {
+      flex: 0 0 400px;
+      max-width: 400px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-badge-standalone {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      filter: drop-shadow(0 20px 45px rgba(0,0,0,0.3));
+    }
+
+    .hero-media-frost {
+      display: none;
+    }
+
+
+    .hero-media-frost.scrolled { opacity: 1; }
+
+    /* SIDE NAV */
+    .side-nav {
+      position: fixed !important;
+      left: 24px !important;
+      right: auto !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: none !important;
+    }
+
+    .side-nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .side-nav-node {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #d4bf91;
+      background: transparent;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    @keyframes nodePulse {
+      0%   { box-shadow: 0 0 0 0 rgba(212,191,145,0.6); }
+      70%  { box-shadow: 0 0 0 8px rgba(212,191,145,0); }
+      100% { box-shadow: 0 0 0 0 rgba(212,191,145,0); }
+    }
+
+    .side-nav-item.active .side-nav-node {
+      background: #d4bf91;
+      transform: scale(1.2);
+      animation: nodePulse 1.8s ease-out infinite;
+    }
+
+    .side-nav-label {
+      position: absolute;
+      left: 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #d4bf91;
+      opacity: 0;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    .side-nav-item:hover .side-nav-label {
+      opacity: 1;
+      padding: 4px 8px;
+    }
+
+    .side-nav-item:hover .side-nav-node {
+      background: #2f372f;
+      border-color: #2f372f;
+    }
+
+    .side-nav-line {
+      width: 2px;
+      height: 56px;
+      background: rgba(212,191,145,0.5);
+      border-radius: 1px;
+    }
+
+    @media (max-width: 768px) { .side-nav { display: none; } }
+
+    @media (max-width: 768px) {
+      .hero-wrapper { min-height: auto; }
+    }
+
+    .sdvosb-badge {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      width: 110px;
+      max-width: 32%;
+      height: auto;
+      z-index: 5;
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      transition: transform 0.3s ease;
+    }
+
+    .sdvosb-badge:hover {
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    .sdvosb-below {
+      margin-top: 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #2f372f;
+      text-align: center;
+      width: 100%;
+      line-height: 1.2;
+    }
+
+    .sdvosb-label {
+      margin-top: 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #2f372f;
+      text-align: center;
+    }
+
+    .hero-media-label {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      padding: 0;
+      background: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .label-full {
+      display: block;
+      font-size: 2.75rem;
+      max-height: 200px;
+      overflow: hidden;
+      opacity: 1;
+      transition: max-height 0.45s ease, opacity 0.35s ease;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .label-short {
+      display: inline-block;
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      text-indent: 0;
+      color: #d4bf91;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 14px 28px;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.45s ease, opacity 0.35s ease;
+    }
+
+    .label-short::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
+      background-size: 200% 100%;
+      animation: shimmer 6s infinite;
+      pointer-events: none;
+    }
+
+    .hero-media-label.scrolled .label-full {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    .hero-media-label.scrolled .label-short {
+      max-height: 8rem;
+      opacity: 1;
+      text-align: center;
+    }
+
+    /* SERVICES SECTION */
+    .services {
+      background-color: #221f20;
+      background-image: linear-gradient(180deg, #000000 0%, #221f20 100%);
+      padding: 80px 48px;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 3rem;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #000000;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      padding: 4px 12px;
+      margin-bottom: 1.1rem;
+    }
+
+    .section-title {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.15;
+      color: #000000;
+      margin-bottom: 0.9rem;
+    }
+
+    .section-title span { color: #000000; }
+
+    .section-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .cta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) { .cta-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .cta-grid { grid-template-columns: 1fr; } }
+
+    .cta-card {
+      background: rgba(47,55,47,0.55);
+      border: 1px solid rgba(212,191,145,0.18);
+      border-radius: 10px;
+      padding: 1.4rem 1.35rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d4bf91, transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .cta-card:hover {
+      border-color: #d4bf91;
+      background: #d4bf91;
+      transform: translateY(-2px);
+      animation: goldBorderPulse 1.6s ease-out infinite;
+    }
+
+    .cta-card:hover::after { opacity: 1; }
+    .cta-card:hover .card-title { color: #000000; }
+    .cta-card:hover .card-desc { color: #221f20; }
+    .cta-card:hover .card-naics { color: rgba(47,55,47,0.5); }
+    .cta-card:hover .card-icon { border-color: rgba(47,55,47,0.25); background: rgba(47,55,47,0.1); }
+    .cta-card:hover .card-icon svg { stroke: #2f372f; }
+
+    .card-icon {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(212,191,145,0.28);
+      background: rgba(212,191,145,0.12);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon svg {
+      width: 20px; height: 20px;
+      stroke: #d4bf91;
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .card-naics {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(241,228,199,0.38);
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .card-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #f1e4c7;
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: rgba(241,228,199,0.65);
+      line-height: 1.6;
+      flex: 1;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      background: #fff !important;
+      padding: 80px 48px;
+      text-align: center;
+    }
+
+    #contact-cta {
+      min-height: 55vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 160px;
+      text-align: center;
+      background-image: linear-gradient(180deg, #2f372f 0%, #000000 100%);
+    }
+
+    .contact-cta-panel {
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 48px 56px;
+      max-width: 640px;
+    }
+
+    .partner-logo-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 36px 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      text-decoration: none;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .partner-logo-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .partner-logo-card img {
+      max-height: 100px;
+      width: auto;
+      max-width: 100%;
+      display: block;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .hero-cert-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      background: #fff;
+      border: none;
+      border-radius: 0;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-cert-badge::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: #0A3161;
+      z-index: -1;
+      transform: translateX(-100%);
+      transition: transform 0.35s ease-in-out;
+    }
+
+    .hero-cert-badge:hover {
+      transform: translateY(-2px);
+      animation: goldBorderPulse 1.6s ease-out infinite;
+    }
+
+    .hero-cert-badge:hover::before { transform: translateX(0); }
+
+    .hero-cert-badge:hover .hero-cert-badge-star {
+      color: #d4bf91;
+    }
+
+    .hero-cert-badge:hover .hero-cert-badge-text {
+      color: #fff;
+    }
+
+    .hero-cert-badge-star {
+      color: #B31942;
+      font-size: 1.1rem;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: color 0.2s ease;
+    }
+
+    .hero-cert-badge-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #0A3161;
+      line-height: 1.3;
+      transition: color 0.2s ease;
+    }
+
+    .cta-services-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 28px;
+      background: #2f372f;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+      text-decoration: none;
+    }
+
+    .cta-services-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: #d4bf91;
+      z-index: -1;
+      transform: translateX(-100%);
+      transition: transform 0.35s ease-in-out;
+    }
+
+    .cta-services-btn:hover {
+      color: #000;
+      transform: translateY(-2px);
+      animation: goldBorderPulse 1.6s ease-out infinite;
+    }
+
+    .cta-services-btn:hover::before { transform: translateX(0); }
+
+    .cta-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .about-inner {
+      max-width: 1100px;
+    }
+
+    .section-divider {
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid #d4bf91;
+    }
+
+    .about-grid {
+      display: flex;
+      align-items: center;
+      gap: 72px;
+      text-align: left;
+    }
+
+    .about-text {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .about-text p + p {
+      margin-top: 16px;
+    }
+
+    .about-badge {
+      flex: 0 0 320px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .about-badge img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+    }
+
+    @media (max-width: 900px) {
+      .about-grid {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+      }
+      .about-badge { flex: 0 0 auto; max-width: 240px; }
+    }
+
+    .cta-section .section-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 16px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .cta-section .section-heading {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #000;
+      margin: 0 auto 20px;
+      max-width: 100%;
+      line-height: 1.15;
+    }
+
+    .cta-section p {
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: #000;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #080808;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 48px 48px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .footer-copy { justify-self: center; }
+    .footer-columns { justify-self: end; }
+
+    .footer-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d4bf91;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .footer-columns {
+      display: flex;
+      gap: 64px;
+      flex-wrap: wrap;
+    }
+
+    .footer-col-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #d4bf91;
+      margin-bottom: 14px;
+    }
+
+    .footer-col-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .footer-col-list a {
+      font-size: 0.8rem;
+      color: #888;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col-list a:hover { color: #d4bf91; }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    /* CONTACT MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 520px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+      animation: modalIn 0.25s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes goldBorderPulse {
+      0%   { box-shadow: 0 8px 24px rgba(0,0,0,0.2), 0 0 0 0 rgba(212,191,145,0.7); }
+      70%  { box-shadow: 0 8px 24px rgba(0,0,0,0.2), 0 0 0 8px rgba(212,191,145,0); }
+      100% { box-shadow: 0 8px 24px rgba(0,0,0,0.2), 0 0 0 0 rgba(212,191,145,0); }
+    }
+
+    .modal-header {
+      background: #221f20;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d4bf91;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover { color: #fff; }
+
+    .modal-body {
+      padding: 28px;
+    }
+
+    .naics-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 32px;
+      background: #fff;
+      color: #0A3161;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    }
+
+    .naics-toggle-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: #d4bf91;
+      z-index: -1;
+      transform: translateX(-100%);
+      transition: transform 0.35s ease-in-out;
+    }
+
+    .naics-toggle-btn:hover {
+      color: #000;
+      transform: translateY(-2px);
+      animation: goldBorderPulse 1.6s ease-out infinite;
+    }
+
+    .naics-toggle-btn:hover::before { transform: translateX(0); }
+
+    .naics-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .naics-table th, .naics-table td {
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 0.85rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .naics-table th {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888;
+      background: #f5f5f5;
+      position: sticky;
+      top: 0;
+    }
+
+    .naics-table td:first-child {
+      font-weight: 700;
+      color: #2f372f;
+      white-space: nowrap;
+    }
+
+    .naics-table tbody tr:hover { background: rgba(212,191,145,0.08); }
+
+    .modal-field {
+      margin-bottom: 16px;
+    }
+
+    .modal-field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .modal-field input,
+    .modal-field textarea {
+      width: 100%;
+      padding: 11px 14px;
+      background: #f5f5f5;
+      border: 1px solid #d8d8d8;
+      border-radius: 6px;
+      color: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      resize: none;
+    }
+
+    .modal-field input:focus,
+    .modal-field textarea:focus {
+      border-color: #bbb;
+      background: #fff;
+    }
+
+    .modal-submit {
+      width: 100%;
+      padding: 13px;
+      background: #2f372f;
+      border: none;
+      border-radius: 0;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: #d4bf91;
+      z-index: -1;
+      transform: translateX(-100%);
+      transition: transform 0.35s ease-in-out;
+    }
+
+    .modal-submit:hover {
+      color: #000;
+      transform: translateY(-2px);
+      animation: goldBorderPulse 1.6s ease-out infinite;
+    }
+
+    .modal-submit:hover::before { transform: translateX(0); }
+
+    .modal-fallback {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .modal-success-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      animation: modalIn 0.3s ease;
+    }
+
+    .modal-success-overlay.show { display: flex; }
+
+    .modal-success-check {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #2f372f;
+      color: #d4bf91;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .modal-success-thanks {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+
+    .modal-success-sub {
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    .modal-fallback a {
+      color: #d4bf91;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .modal-fallback a:hover { color: #b89a5a; }
+
+    /* RESPONSIVE */
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 101;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* MOBILE MENU */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 88px;
+      left: 0; right: 0;
+      background: #000;
+      z-index: 98;
+      padding: 12px 0 20px;
+      border-top: 1px solid #222;
+      transform: translateY(-110%);
+      transition: transform 0.35s ease;
+    }
+
+    .mobile-menu.open { transform: translateY(0); }
+
+    .mobile-menu ul { list-style: none; }
+
+    .mobile-menu ul li a {
+      display: block;
+      padding: 14px 24px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: color 0.2s, padding-left 0.2s;
+    }
+
+    .mobile-menu ul li a:hover { color: #d4bf91; padding-left: 30px; }
+
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        align-items: center;
+        padding: 140px 24px 40px;
+        gap: 32px;
+      }
+      .hero-content {
+        text-align: center;
+        align-items: center;
+      }
+      .hero-cta-row { justify-content: center; flex-wrap: wrap; margin: 16px auto 0; }
+      .hero-media {
+        flex: none;
+        max-width: 480px;
+        width: 90%;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 20px; }
+      .nav-links { display: none !important; }
+      .hamburger { display: flex; }
+      .mobile-menu { display: block; }
+      .nav-logo { font-size: 1.2rem; }
+      nav.scrolled .nav-logo { font-size: 1.4rem; }
+      .hero-wrapper { min-height: auto; }
+      .hero { padding: 110px 20px 40px; gap: 50px; min-height: auto; }
+      .hero-content { text-align: center; align-items: center; flex: none; }
+      .hero-headline { font-size: clamp(2.4rem, 9.6vw, 3.6rem); }
+      .hero-subline { margin: 0 auto 36px; }
+      .hero-cta-row { justify-content: center; flex-wrap: wrap; margin: 16px auto 0; }
+      .services, .cta-section { padding: 60px 20px; }
+      .cta-section { padding: 80px 20px; }
+      #contact-cta { padding-bottom: 100px; }
+      footer { padding: 32px 20px 20px; gap: 24px; }
+      .footer-top { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+      .footer-copy { justify-self: auto; }
+      .footer-columns { justify-self: auto; gap: 40px; }
+      .modal { margin: 0 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-headline { font-size: clamp(2.16rem, 8.4vw, 2.88rem); }
+      .label-full { font-size: 1.8rem; }
+      .label-short { font-size: 2.8rem; letter-spacing: 0.25em; }
+      .cta-grid { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="passwordGate" style="
+  position: fixed; inset: 0; z-index: 99999;
+  background: #000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+">
+  <div style="text-align:center; max-width:380px; width:90%; padding:40px; background:#111; border:1px solid rgba(212,191,145,0.25); border-radius:12px;">
+    <p style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#d4bf91; margin-bottom:8px;">Restricted Access</p>
+    <h2 style="color:#fff; font-size:1.5rem; font-weight:800; margin-bottom:6px;">★ CARRIGON</h2>
+    <p style="color:#888; font-size:0.85rem; margin-bottom:28px;">Enter the password to continue.</p>
+    <input id="gateInput" type="password" placeholder="Password" style="
+      width:100%; padding:12px 16px; background:#1a1a1a;
+      border:1px solid rgba(212,191,145,0.3); border-radius:6px;
+      color:#fff; font-size:0.9rem; font-family:'Inter',sans-serif;
+      outline:none; margin-bottom:12px; box-sizing:border-box;
+    " onkeydown="if(event.key==='Enter') checkPassword()" />
+    <p id="gateError" style="color:#e05c5c; font-size:0.8rem; margin-bottom:12px; display:none;">Incorrect password. Try again.</p>
+    <button onclick="checkPassword()" style="
+      width:100%; padding:12px; background:#d4bf91;
+      border:none; border-radius:6px; color:#000;
+      font-family:'Inter',sans-serif; font-size:0.875rem;
+      font-weight:700; cursor:pointer; letter-spacing:0.05em;
+      text-transform:uppercase; transition:background 0.2s;
+    " onmouseover="this.style.background='#c4ae7e'" onmouseout="this.style.background='#d4bf91'">Enter</button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    if (sessionStorage.getItem('carrigon_auth') === 'true') {
+      document.getElementById('passwordGate').style.display = 'none';
+    }
+  })();
+
+  function checkPassword() {
+    const input = document.getElementById('gateInput').value;
+    if (input === 'Carrigon2026') {
+      sessionStorage.setItem('carrigon_auth', 'true');
+      document.getElementById('passwordGate').style.display = 'none';
+    } else {
+      document.getElementById('gateError').style.display = 'block';
+      document.getElementById('gateInput').style.borderColor = 'rgba(224,92,92,0.6)';
+      setTimeout(() => {
+        document.getElementById('gateInput').style.borderColor = 'rgba(212,191,145,0.3)';
+      }, 1500);
+    }
+  }
+</script>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#"><span class="logo-star">★</span><span class="logo-c-stack"><span class="logo-bar"></span><span style="color:#d4bf91">C</span><span class="logo-bar"></span></span><span style="color:#d4bf91"><span class="logo-collapse">ARRI</span></span><span style="color:#f1e4c7">G<span class="logo-collapse">ON</span></span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#coming-soon">About</a></li>
+      <li><a href="#" class="nav-cta" onclick="openModal(); return false;">Contact Us</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#services" onclick="closeMenu()">Services</a></li>
+    <li><a href="#coming-soon" onclick="closeMenu()">About</a></li>
+    <li><a href="#" onclick="openModal(); closeMenu(); return false;">Contact</a></li>
+  </ul>
+</div>
+
+<!-- Hero -->
+<div class="hero-wrapper">
+  <video class="hero-bg-video" autoplay muted loop playsinline>
+    <source src="assets/capital_flag.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <h1 class="hero-headline"><span style="color:#2f372f">Veteran-Owned.</span><br><span style="color:#2f372f">Mission-Driven</span><br><span style="color:#2f372f"><span class="underline-scroll" id="itConsulting">IT Consulting.</span></span></h1>
+    <p class="hero-subline">Carrigon delivers reliable technology solutions with<br>the precision and discipline federal agencies demand.</p>
+    <div class="hero-cta-row">
+      <a class="cta-services-btn" href="#services">Explore Services</a>
+      <a class="hero-cert-badge" href="#coming-soon">
+        <span class="hero-cert-badge-star">★</span>
+        <span class="hero-cert-badge-text">SDVOSB Certified</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-media"></div>
+</section>
+
+</div>
+
+<!-- Services -->
+<section class="services" id="services">
+  <div class="section-header">
+    <h2 class="section-title"><span style="color:#d4bf91">Our</span> <span style="color:#F1E4C7">Capabilities</span></h2>
+    <p class="section-sub">Federal-grade solutions across IT, cybersecurity, data, and program management.</p>
+  </div>
+
+  <div class="cta-grid">
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <span class="card-naics">541512 · 541511 · 541513 · 541519</span>
+      <p class="card-title">IT Services &amp; Development</p>
+      <p class="card-desc">Custom-engineered federal IT systems — from legacy migration to cloud-native architecture built for mission-critical environments.</p>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <span class="card-naics">541512 · 541690 · 541990</span>
+      <p class="card-title">Cybersecurity &amp; Compliance</p>
+      <p class="card-desc">Zero-trust frameworks, CMMC readiness, and FedRAMP support — protecting agency assets at every layer of your infrastructure.</p>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+      </div>
+      <span class="card-naics">518210 · 511210 · 517810 · 541513 </span>
+      <p class="card-title">Cloud &amp; Data Infrastructure</p>
+      <p class="card-desc">Scalable GovCloud deployments, data hosting, and software platforms engineered for federal security standards and performance demands.</p>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <span class="card-naics">541611 · 541618 · 541614</span>
+      <p class="card-title">Program &amp; Operations Management</p>
+      <p class="card-desc">Strategic oversight and execution for complex government programs — from IT program management to logistics process optimization.</p>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      </div>
+      <span class="card-naics">541690 · 541519 · 518210 · 541715</span>
+      <p class="card-title">Data Analytics &amp; AI Services</p>
+      <p class="card-desc">Advanced analytics, AI/ML pipelines, and knowledge graph solutions that turn agency data into mission-ready intelligence and decisions.</p>
+    </a>
+
+    <a href="#coming-soon" class="cta-card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <span class="card-naics">561320 · 561330 · 541612</span>
+      <p class="card-title">IT Staffing &amp; Talent</p>
+      <p class="card-desc">Rapid staff augmentation and talent acquisition — sourcing cleared, mission-ready IT professionals to fill critical federal workforce gaps.</p>
+    </a>
+
+  </div>
+
+  <div style="text-align:center; margin-top:40px;">
+    <button class="naics-toggle-btn" onclick="openNaicsModal()">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      View All NAICS Codes
+    </button>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="coming-soon">
+  <div class="cta-inner about-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-heading"><span style="color:#2f372f">About Us</span></h2>
+        <p>Carrigon LLC is a Service-Disabled Veteran-Owned Small Business delivering management consulting, digital transformation, and data analytics to federal agencies. Founded by a West Point graduate and Army veteran with 10 years of military leadership and operational planning experience, Carrigon brings proven expertise in organizational change management, agile adoption, and mission-aligned digital solutions.</p>
+        <p>Core capabilities span IT and management consulting, digital transformation strategy, data science and quantitative risk modeling, cloud engineering and migration, DevSecOps and CI/CD pipeline design, application modernization, IT staffing, workforce training, and program management support. Our team pairs federal consulting experience — supporting DoD and civilian agency modernization — with quantitative analytics expertise from a top GSE's risk modeling organization.</p>
+      </div>
+      <div class="about-badge">
+        <img src="assets/sdvosb.png" alt="Service-Disabled Veteran-Owned Small Business certified badge">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- Partners -->
+<section class="cta-section" id="partners">
+  <div class="cta-inner about-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-heading"><span style="color:#2f372f">Partners</span></h2>
+        <p>Carrigon collaborates with trusted industry partners to deliver integrated technology and workforce solutions for federal agencies.</p>
+      </div>
+      <div class="about-badge">
+        <a class="partner-logo-card" href="https://sstech.us/" target="_blank" rel="noopener noreferrer">
+          <img src="assets/sstech_logo.png" alt="SystemSoft Technologies logo">
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact CTA -->
+<section class="services" id="contact-cta">
+  <div class="contact-cta-panel">
+    <div class="section-header">
+      <h2 class="section-title"><span style="color:#d4bf91">Let's Build</span> <span style="color:#F1E4C7">Something Together</span></h2>
+      <p class="section-sub">Ready to modernize your mission? Reach out to discuss how Carrigon can support your agency's IT, data, and program management needs.</p>
+    </div>
+    <a class="cta-services-btn" href="#" onclick="openModal(); return false;">Get In Touch</a>
+  </div>
+</section>
+
+<!-- Contact Modal -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Get in Touch</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" style="position:relative;">
+      <form id="contactForm" onsubmit="submitContact(event)">
+        <div class="modal-field">
+          <label>Name</label>
+          <input type="text" name="from_name" id="contactName" placeholder="Your full name" required />
+        </div>
+        <div class="modal-field">
+          <label>Email</label>
+          <input type="email" name="from_email" id="contactEmail" placeholder="your@email.com" required />
+        </div>
+        <div class="modal-field">
+          <label>Message</label>
+          <textarea name="message" id="contactMessage" rows="4" placeholder="How can we help you?" required></textarea>
+        </div>
+        <div class="g-recaptcha" data-sitekey="6LcU-I8tAAAAAHZoXnngS-kNlNJCN08zVRNbX-2G" style="margin-bottom:16px;"></div>
+        <button type="submit" class="modal-submit" id="contactSubmitBtn">Send Message</button>
+        <p id="contactStatus" style="display:none; font-size:0.8rem; margin-top:10px; text-align:center;"></p>
+      </form>
+      <p class="modal-fallback">Or email us directly at <a href="mailto:info@carrigon.com">info@carrigon.com</a></p>
+
+      <div class="modal-success-overlay" id="contactSuccessOverlay">
+        <div class="modal-success-check">✓</div>
+        <p class="modal-success-thanks" id="contactSuccessThanks">Thank you.</p>
+        <p class="modal-success-sub">Message sent — we'll be in touch soon.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <a class="footer-logo" href="#"><span class="logo-star">★</span><span class="logo-c-stack"><span class="logo-bar"></span><span style="color:#d4bf91">C</span><span class="logo-bar"></span></span><span style="color:#d4bf91">ARRI</span><span style="color:#f1e4c7">GON</span></a>
+    <span class="footer-copy">© 2026 Carrigon, LLC. All rights reserved.</span>
+    <div class="footer-columns">
+      <div class="footer-col">
+        <h4 class="footer-col-title">Contact</h4>
+        <ul class="footer-col-list">
+          <li>CEO: <a href="mailto:m.carrion@carrigon.com">m.carrion@carrigon.com</a></li>
+          <li>CTO: <a href="mailto:g.gonzales@carrigon.com">g.gonzales@carrigon.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Menu</h4>
+        <ul class="footer-col-list">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#coming-soon">About</a></li>
+          <li><a href="#" onclick="openModal(); return false;">Contact</a></li>
+          <li><a href="#" onclick="openCareersModal(); return false;">Careers</a></li>
+          <li><a href="#" onclick="openPrivacyModal(); return false;">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Careers Modal -->
+<div class="modal-overlay" id="careersModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Careers</h3>
+      <button class="modal-close" onclick="closeCareersModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.9rem; line-height:1.7; color:#444; margin-bottom:16px;">Carrigon is always looking to connect with talented IT professionals who share our commitment to precision, discipline, and mission-driven work.</p>
+      <p style="font-size:0.9rem; line-height:1.7; color:#444; margin-bottom:16px;">We're particularly interested in candidates with proven federal or DoD government contract experience across IT consulting, cybersecurity, cloud engineering, data analytics, and program management.</p>
+      <p style="font-size:0.9rem; line-height:1.7; color:#444;">We don't have open roles posted at this time, but we welcome you to introduce yourself. Reach out at <a href="mailto:info@carrigon.com" style="color:#2f372f;">info@carrigon.com</a> and tell us about your background — we'll keep you in mind as opportunities arise.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal-overlay" id="privacyModal">
+  <div class="modal" style="max-width:680px; max-height:85vh; display:flex; flex-direction:column;">
+    <div class="modal-header">
+      <h3>Privacy Policy</h3>
+      <button class="modal-close" onclick="closePrivacyModal()">✕</button>
+    </div>
+    <div class="modal-body" style="overflow-y:auto; flex:1;">
+      <p style="font-size:0.8rem; color:#888; margin-bottom:20px;">Effective Date: June 1, 2026 &nbsp;|&nbsp; Last Updated: June 1, 2026</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">1. Introduction</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">Carrigon, LLC ("Carrigon," "we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website at carrigon.com (the "Site"). Please read this policy carefully. If you disagree with its terms, please discontinue use of the Site.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">2. Information We Collect</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;"><strong>Information you provide directly:</strong> We may collect your name, email address, and any other information you voluntarily submit through our contact form or notification sign-up.</p>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;"><strong>Automatically collected information:</strong> When you visit the Site, we may automatically collect certain technical data including your IP address, browser type, operating system, referring URLs, pages visited, and the date and time of your visit. This data is collected via standard web server logs and, if applicable, analytics tools.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">3. How We Use Your Information</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;">We use the information we collect to:</p>
+      <ul style="font-size:0.875rem; line-height:1.9; color:#444; margin-bottom:16px; padding-left:20px;">
+        <li>Respond to your inquiries and provide requested information</li>
+        <li>Send you updates or notifications you have opted into</li>
+        <li>Operate, maintain, and improve our Site</li>
+        <li>Comply with legal obligations and protect our legal rights</li>
+        <li>Detect and prevent fraud or unauthorized access</li>
+      </ul>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">We do not sell, rent, or trade your personal information to third parties for marketing purposes.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">4. Disclosure of Your Information</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;">We may share your information in limited circumstances:</p>
+      <ul style="font-size:0.875rem; line-height:1.9; color:#444; margin-bottom:16px; padding-left:20px;">
+        <li><strong>Service Providers:</strong> Trusted third-party vendors who assist us in operating the Site (e.g., email delivery, hosting) under confidentiality obligations.</li>
+        <li><strong>Legal Requirements:</strong> When required by law, regulation, court order, or governmental authority.</li>
+        <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.</li>
+        <li><strong>Protection of Rights:</strong> When we believe disclosure is necessary to protect the rights, property, or safety of Carrigon, our clients, or the public.</li>
+      </ul>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">5. Cookies and Tracking Technologies</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">Our Site may use cookies and similar tracking technologies to enhance your experience. You may configure your browser to refuse cookies; however, some features of the Site may not function properly as a result. We do not currently respond to "Do Not Track" signals.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">6. Data Retention</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">We retain personal information only as long as necessary to fulfill the purposes described in this policy, comply with legal obligations, resolve disputes, and enforce our agreements. When information is no longer needed, we securely delete or anonymize it.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">7. Data Security</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">We implement reasonable administrative, technical, and physical safeguards to protect your personal information from unauthorized access, use, or disclosure. However, no internet transmission or electronic storage method is 100% secure, and we cannot guarantee absolute security.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">8. Third-Party Links</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">The Site may contain links to third-party websites. We are not responsible for the privacy practices or content of those sites. We encourage you to review the privacy policies of any third-party sites you visit.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">9. Children's Privacy</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">Our Site is not directed to individuals under the age of 13. We do not knowingly collect personal information from children. If we become aware that we have inadvertently collected such information, we will promptly delete it.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">10. Your Rights and Choices</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;">Depending on your jurisdiction, you may have the right to:</p>
+      <ul style="font-size:0.875rem; line-height:1.9; color:#444; margin-bottom:16px; padding-left:20px;">
+        <li>Access, correct, or delete the personal information we hold about you</li>
+        <li>Opt out of certain data uses or marketing communications</li>
+        <li>Lodge a complaint with a supervisory authority</li>
+      </ul>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">To exercise any of these rights, please contact us at <a href="mailto:info@carrigon.com" style="color:#2f372f;">info@carrigon.com</a>.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">11. Changes to This Policy</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:16px;">We may update this Privacy Policy from time to time. Changes will be posted on this page with a revised effective date. Your continued use of the Site following any changes constitutes your acceptance of the updated policy.</p>
+
+      <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1a1a1a;">12. Contact Us</h4>
+      <p style="font-size:0.875rem; line-height:1.7; color:#444; margin-bottom:8px;">If you have questions or concerns about this Privacy Policy, please contact us:</p>
+      <p style="font-size:0.875rem; line-height:1.9; color:#444;">
+        <strong>Carrigon, LLC</strong><br>
+        Email: <a href="mailto:info@carrigon.com" style="color:#2f372f;">info@carrigon.com</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- NAICS Codes Modal -->
+<div class="modal-overlay" id="naicsModal">
+  <div class="modal" style="max-width:640px; max-height:85vh; display:flex; flex-direction:column;">
+    <div class="modal-header">
+      <h3>All NAICS Codes</h3>
+      <button class="modal-close" onclick="closeNaicsModal()">✕</button>
+    </div>
+    <div class="modal-body" style="overflow-y:auto; flex:1; padding:0;">
+      <table class="naics-table">
+        <thead>
+          <tr><th>Code</th><th>Industry Title</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>511210</td><td>Software Publishers</td></tr>
+          <tr><td>517810</td><td>All Other Telecommunications</td></tr>
+          <tr><td>518210</td><td>Computing Infrastructure &amp; Data Hosting</td></tr>
+          <tr><td>541511</td><td>Custom Computer Programming Services</td></tr>
+          <tr><td>541512</td><td>Computer Systems Design Services</td></tr>
+          <tr><td>541513</td><td>Computer Facilities Management Services</td></tr>
+          <tr><td>541519</td><td>Other Computer Related Services</td></tr>
+          <tr><td>541611</td><td>Administrative Management Consulting</td></tr>
+          <tr><td>541612</td><td>Human Resources Consulting Services</td></tr>
+          <tr><td>541613</td><td>Marketing Consulting Services</td></tr>
+          <tr><td>541614</td><td>Process, Physical Distribution and Logistics Consulting Services</td></tr>
+          <tr><td>541618</td><td>Other Management Consulting Services</td></tr>
+          <tr><td>541690</td><td>Other Scientific &amp; Technical Consulting</td></tr>
+          <tr><td>541715</td><td>Research and Development in the Physical, Engineering, and Life Sciences</td></tr>
+          <tr><td>541810</td><td>Advertising Agencies</td></tr>
+          <tr><td>541910</td><td>Marketing Research &amp; Public Opinion Polling</td></tr>
+          <tr><td>541990</td><td>All Other Professional, Scientific, and Technical Services</td></tr>
+          <tr><td>561320</td><td>Temporary Help Services</td></tr>
+          <tr><td>561330</td><td>Professional Employer Organizations</td></tr>
+          <tr><td>611430</td><td>Professional and Management Development Training</td></tr>
+          <tr><td>611710</td><td>Educational Support Services</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // EmailJS config — replace with your own values from your EmailJS account
+  // (Account → General for the Public Key, Email Services for the Service ID,
+  // Email Templates for the Template ID). See emailjs.com.
+  const EMAILJS_PUBLIC_KEY = 'bDEspV39kcxnA-oK1';
+  const EMAILJS_SERVICE_ID = 'service_y3p5cpt';
+  const EMAILJS_TEMPLATE_ID = 'template_la43co4';
+
+  if (window.emailjs) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+
+  // Highlight on scroll
+  const itConsulting = document.getElementById('itConsulting');
+  let highlightActive = false;
+  window.addEventListener('scroll', () => {
+    if (!itConsulting) return;
+    const shouldBeActive = window.scrollY > 60;
+    if (shouldBeActive && !highlightActive) {
+      highlightActive = true;
+      itConsulting.classList.remove('reversing');
+      itConsulting.classList.add('active');
+    } else if (!shouldBeActive && highlightActive) {
+      highlightActive = false;
+      itConsulting.classList.remove('active');
+      itConsulting.classList.add('reversing');
+      setTimeout(() => itConsulting.classList.remove('reversing'), 2500);
+    }
+  }, { passive: true });
+
+  // Hamburger menu
+  function toggleMenu() {
+    const btn = document.getElementById('hamburger');
+    const menu = document.getElementById('mobileMenu');
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // Contact modal
+  function openModal() {
+    document.getElementById('contactModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('contactSuccessOverlay').classList.remove('show');
+    document.getElementById('contactStatus').style.display = 'none';
+  }
+
+  function closeModal() {
+    document.getElementById('contactModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openCareersModal() {
+    document.getElementById('careersModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCareersModal() {
+    document.getElementById('careersModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openPrivacyModal() {
+    document.getElementById('privacyModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePrivacyModal() {
+    document.getElementById('privacyModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function openNaicsModal() {
+    document.getElementById('naicsModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeNaicsModal() {
+    document.getElementById('naicsModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('naicsModal').addEventListener('click', function(e) {
+    if (e.target === this) closeNaicsModal();
+  });
+
+  // Close on overlay click
+  document.getElementById('contactModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  function submitContact(e) {
+    e.preventDefault();
+    const form    = document.getElementById('contactForm');
+    const name    = document.getElementById('contactName').value.trim();
+    const email   = document.getElementById('contactEmail').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+    const btn     = document.getElementById('contactSubmitBtn');
+    const status  = document.getElementById('contactStatus');
+
+    function showStatus(text, color) {
+      status.textContent = text;
+      status.style.color = color;
+      status.style.display = 'block';
+    }
+
+    function fallbackToMailto() {
+      const subject = encodeURIComponent('Contact from ' + name + ' — Carrigon');
+      const body    = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + message);
+      window.location.href = 'mailto:info@carrigon.com?subject=' + subject + '&body=' + body;
+    }
+
+    if (!window.emailjs || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+      fallbackToMailto();
+      return;
+    }
+
+    if (window.grecaptcha && grecaptcha.getResponse().length === 0) {
+      showStatus('Please complete the reCAPTCHA before sending.', '#e05c5c');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    showStatus('Sending your message…', '#888');
+
+    emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form).then(function() {
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+      status.style.display = 'none';
+      document.getElementById('contactSuccessThanks').textContent = 'Thank you ' + name + '.';
+      document.getElementById('contactSuccessOverlay').classList.add('show');
+      form.reset();
+      if (window.grecaptcha && document.querySelector('.g-recaptcha')) grecaptcha.reset();
+    }).catch(function(err) {
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+      showStatus('Something went wrong — opening your email client instead.', '#e05c5c');
+      if (window.grecaptcha && document.querySelector('.g-recaptcha')) grecaptcha.reset();
+      fallbackToMailto();
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY > 60;
+    document.querySelector('nav').classList.toggle('scrolled', scrolled);
+  });
+
+  const video = document.querySelector('.hero-video');
+  if (video) {
+    video.addEventListener('error', () => { video.style.display = 'none'; });
+  }
+</script>
+
+<!-- Side Nav -->
+<nav class="side-nav" id="sideNav">
+  <div class="side-nav-item" data-section="hero">
+    <div class="side-nav-node"></div>
+    <span class="side-nav-label">Home</span>
+  </div>
+  <div class="side-nav-line"></div>
+  <div class="side-nav-item" data-section="services">
+    <div class="side-nav-node"></div>
+    <span class="side-nav-label">Services</span>
+  </div>
+  <div class="side-nav-line"></div>
+  <div class="side-nav-item" data-section="coming-soon">
+    <div class="side-nav-node"></div>
+    <span class="side-nav-label">About</span>
+  </div>
+  <div class="side-nav-line"></div>
+  <div class="side-nav-item" data-section="contact-cta">
+    <div class="side-nav-node"></div>
+    <span class="side-nav-label">Contact</span>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sections = [
+      { id: 'hero',        el: document.getElementById('hero') },
+      { id: 'services',    el: document.getElementById('services') },
+      { id: 'coming-soon', el: document.getElementById('coming-soon') },
+      { id: 'contact-cta', el: document.getElementById('contact-cta') }
+    ];
+    const items = document.querySelectorAll('.side-nav-item');
+    const NAV_HEIGHT = 88;
+
+    function setActive(id) {
+      items.forEach(item => item.classList.toggle('active', item.dataset.section === id));
+    }
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const id = item.dataset.section;
+        const target = document.getElementById(id);
+        if (!target) return;
+        const top = target.getBoundingClientRect().top + window.scrollY - NAV_HEIGHT;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      // Also activate last section if near bottom of page
+      const nearBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 100;
+      if (nearBottom) {
+        setActive('contact-cta');
+        return;
+      }
+      let current = sections[0].id;
+      sections.forEach(s => {
+        if (!s.el) return;
+        if (s.el.getBoundingClientRect().top <= NAV_HEIGHT + 80) current = s.id;
+      });
+      setActive(current);
+    }, { passive: true });
+
+    setActive('hero');
+  });
+</script>
+
+</body>
+</html>
