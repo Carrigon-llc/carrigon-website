@@ -138,8 +138,8 @@
     .nav-cta {
       display: inline-block;
       padding: 8px 20px;
-      background: #fff;
-      color: #000 !important;
+      background: #2f372f;
+      color: #fff !important;
       border: none;
       border-radius: 0;
       font-size: 0.75rem;
@@ -164,7 +164,7 @@
     }
 
     .nav-cta:hover {
-      color: #000 !important;
+      color: #2f372f !important;
       transform: translateY(-2px);
       animation: goldBorderPulse 1.6s ease-out infinite;
     }
@@ -899,14 +899,11 @@
     }
 
     .footer-top {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
       gap: 40px;
     }
-
-    .footer-copy { justify-self: center; }
-    .footer-columns { justify-self: end; }
 
     .footer-logo {
       font-size: 1.3rem;
@@ -953,9 +950,16 @@
 
     .footer-col-list a:hover { color: #d4bf91; }
 
-    .footer-copy {
-      font-size: 0.8rem;
-      color: #555;
+    .footer-bottom {
+      background: #2f372f;
+      padding: 16px 24px;
+      text-align: center;
+    }
+
+    .footer-bottom-copy {
+      font-size: 0.75rem;
+      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.65);
     }
 
     /* CONTACT MODAL */
@@ -1260,18 +1264,20 @@
       display: none;
       position: fixed;
       top: 88px;
-      left: 0; right: 0;
+      left: 0; right: 0; bottom: 0;
       background: #000;
       z-index: 98;
       padding: 12px 0 20px;
       border-top: 1px solid #222;
       transform: translateY(-110%);
       transition: transform 0.35s ease;
+      flex-direction: column;
+      justify-content: flex-start;
     }
 
     .mobile-menu.open { transform: translateY(0); }
 
-    .mobile-menu ul { list-style: none; }
+    .mobile-menu ul { list-style: none; text-align: center; }
 
     .mobile-menu ul li a {
       display: block;
@@ -1281,10 +1287,18 @@
       font-size: 0.95rem;
       font-weight: 500;
       letter-spacing: 0.04em;
+      text-align: center;
       transition: color 0.2s, padding-left 0.2s;
     }
 
-    .mobile-menu ul li a:hover { color: #d4bf91; padding-left: 30px; }
+    .mobile-menu ul li a:hover { color: #d4bf91; }
+
+    .mobile-menu .nav-cta {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 10px;
+    }
 
     @media (max-width: 900px) {
       .hero {
@@ -1298,6 +1312,16 @@
         align-items: center;
       }
       .hero-cta-row { justify-content: center; flex-wrap: wrap; margin: 16px auto 0; }
+      .hero-cta-row .cta-services-btn,
+      .hero-cta-row .hero-cert-badge {
+        box-sizing: border-box;
+        width: 184px;
+        justify-content: center;
+      }
+      .hero-cta-row .hero-cert-badge {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
       .hero-media {
         flex: none;
         max-width: 480px;
@@ -1310,7 +1334,7 @@
       .nav-inner { padding: 0 20px; }
       .nav-links { display: none !important; }
       .hamburger { display: flex; }
-      .mobile-menu { display: block; }
+      .mobile-menu { display: flex; }
       .nav-logo { font-size: 1.2rem; }
       nav.scrolled .nav-logo { font-size: 1.4rem; }
       .hero-wrapper { min-height: auto; }
@@ -1323,9 +1347,8 @@
       .cta-section { padding: 80px 20px; }
       #contact-cta { padding-bottom: 100px; }
       footer { padding: 32px 20px 20px; gap: 24px; }
-      .footer-top { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
-      .footer-copy { justify-self: auto; }
-      .footer-columns { justify-self: auto; gap: 40px; }
+      .footer-top { flex-direction: column; align-items: flex-start; gap: 40px; }
+      .footer-columns { gap: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; }
       .modal { margin: 0 16px; }
     }
 
@@ -1410,7 +1433,7 @@
   <ul>
     <li><a href="#services" onclick="closeMenu()">Services</a></li>
     <li><a href="#coming-soon" onclick="closeMenu()">About</a></li>
-    <li><a href="#" onclick="openModal(); closeMenu(); return false;">Contact</a></li>
+    <li><a href="#" class="nav-cta" onclick="openModal(); closeMenu(); return false;">Contact Us</a></li>
   </ul>
 </div>
 
@@ -1447,7 +1470,7 @@
 
   <div class="cta-grid">
 
-    <a href="#coming-soon" class="cta-card">
+    <a class="cta-card">
       <div class="card-icon">
         <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
       </div>
@@ -1456,7 +1479,7 @@
       <p class="card-desc">Custom-engineered federal IT systems — from legacy migration to cloud-native architecture built for mission-critical environments.</p>
     </a>
 
-    <a href="#coming-soon" class="cta-card">
+    <a class="cta-card">
       <div class="card-icon">
         <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
       </div>
@@ -1465,7 +1488,7 @@
       <p class="card-desc">Zero-trust frameworks, CMMC readiness, and FedRAMP support — protecting agency assets at every layer of your infrastructure.</p>
     </a>
 
-    <a href="#coming-soon" class="cta-card">
+    <a class="cta-card">
       <div class="card-icon">
         <svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
       </div>
@@ -1474,7 +1497,7 @@
       <p class="card-desc">Scalable GovCloud deployments, data hosting, and software platforms engineered for federal security standards and performance demands.</p>
     </a>
 
-    <a href="#coming-soon" class="cta-card">
+    <a class="cta-card">
       <div class="card-icon">
         <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       </div>
@@ -1483,7 +1506,7 @@
       <p class="card-desc">Strategic oversight and execution for complex government programs — from IT program management to logistics process optimization.</p>
     </a>
 
-    <a href="#coming-soon" class="cta-card">
+    <a class="cta-card">
       <div class="card-icon">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
       </div>
@@ -1492,7 +1515,7 @@
       <p class="card-desc">Advanced analytics, AI/ML pipelines, and knowledge graph solutions that turn agency data into mission-ready intelligence and decisions.</p>
     </a>
 
-    <a href="#coming-soon" class="cta-card">
+    <a class="cta-card">
       <div class="card-icon">
         <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
@@ -1597,7 +1620,6 @@
 <footer>
   <div class="footer-top">
     <a class="footer-logo" href="#"><span class="logo-star">★</span><span class="logo-c-stack"><span class="logo-bar"></span><span style="color:#d4bf91">C</span><span class="logo-bar"></span></span><span style="color:#d4bf91">ARRI</span><span style="color:#f1e4c7">GON</span></a>
-    <span class="footer-copy">© 2026 Carrigon, LLC. All rights reserved.</span>
     <div class="footer-columns">
       <div class="footer-col">
         <h4 class="footer-col-title">Contact</h4>
@@ -1619,6 +1641,10 @@
     </div>
   </div>
 </footer>
+
+<div class="footer-bottom">
+  <span class="footer-bottom-copy">© 2026 Carrigon, LLC. All rights reserved.</span>
+</div>
 
 <!-- Careers Modal -->
 <div class="modal-overlay" id="careersModal">
