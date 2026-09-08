@@ -1362,57 +1362,6 @@
 </head>
 <body>
 
-<!-- Password Gate -->
-<div id="passwordGate" style="
-  position: fixed; inset: 0; z-index: 99999;
-  background: #000;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  font-family: 'Inter', sans-serif;
-">
-  <div style="text-align:center; max-width:380px; width:90%; padding:40px; background:#111; border:1px solid rgba(212,191,145,0.25); border-radius:12px;">
-    <p style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#d4bf91; margin-bottom:8px;">Restricted Access</p>
-    <h2 style="color:#fff; font-size:1.5rem; font-weight:800; margin-bottom:6px;">★ CARRIGON</h2>
-    <p style="color:#888; font-size:0.85rem; margin-bottom:28px;">Enter the password to continue.</p>
-    <input id="gateInput" type="password" placeholder="Password" style="
-      width:100%; padding:12px 16px; background:#1a1a1a;
-      border:1px solid rgba(212,191,145,0.3); border-radius:6px;
-      color:#fff; font-size:0.9rem; font-family:'Inter',sans-serif;
-      outline:none; margin-bottom:12px; box-sizing:border-box;
-    " onkeydown="if(event.key==='Enter') checkPassword()" />
-    <p id="gateError" style="color:#e05c5c; font-size:0.8rem; margin-bottom:12px; display:none;">Incorrect password. Try again.</p>
-    <button onclick="checkPassword()" style="
-      width:100%; padding:12px; background:#d4bf91;
-      border:none; border-radius:6px; color:#000;
-      font-family:'Inter',sans-serif; font-size:0.875rem;
-      font-weight:700; cursor:pointer; letter-spacing:0.05em;
-      text-transform:uppercase; transition:background 0.2s;
-    " onmouseover="this.style.background='#c4ae7e'" onmouseout="this.style.background='#d4bf91'">Enter</button>
-  </div>
-</div>
-
-<script>
-  (function() {
-    if (sessionStorage.getItem('carrigon_auth') === 'true') {
-      document.getElementById('passwordGate').style.display = 'none';
-    }
-  })();
-
-  function checkPassword() {
-    const input = document.getElementById('gateInput').value;
-    if (input === 'Carrigon2026') {
-      sessionStorage.setItem('carrigon_auth', 'true');
-      document.getElementById('passwordGate').style.display = 'none';
-    } else {
-      document.getElementById('gateError').style.display = 'block';
-      document.getElementById('gateInput').style.borderColor = 'rgba(224,92,92,0.6)';
-      setTimeout(() => {
-        document.getElementById('gateInput').style.borderColor = 'rgba(212,191,145,0.3)';
-      }, 1500);
-    }
-  }
-</script>
-
 <!-- Navigation -->
 <nav>
   <div class="nav-inner">
