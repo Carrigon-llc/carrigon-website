@@ -1,0 +1,7 @@
+# Secrets (SAM.gov / Claude API keys) - never commit; this repo is public.
+.env
+*.env
+.env.*
+supabase/.env
+supabase/.temp/
+supabase/.branches/

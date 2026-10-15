@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Carrigon Admin</title>
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <style>
+    :root {
+      --bg: #f5f4f0;
+      --surface: #ffffff;
+      --ink: #1a1a1a;
+      --ink-2: #555;
+      --ink-3: #888;
+      --line: #e3e0d8;
+      --gold: #d4bf91;
+      --gold-dark: #a8925f;
+      --green: #2f372f;
+      --nav: #000;
+      --good: #2e7d4f;
+      --good-bg: #e6f2ea;
+      --bad: #b3261e;
+      --bad-bg: #fbe9e7;
+      --warn: #8a5a00;
+      --warn-bg: #fdf1d8;
+      --info: #2f4f7a;
+      --info-bg: #e8eef7;
+      --muted-bg: #efeee9;
+      --radius: 8px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111311;
+        --surface: #1a1d1a;
+        --ink: #f0eee8;
+        --ink-2: #b9b6ad;
+        --ink-3: #8a877f;
+        --line: #2e322e;
+        --gold-dark: #d4bf91;
+        --good: #7fd19b;
+        --good-bg: #1d3325;
+        --bad: #f2a29b;
+        --bad-bg: #3a1f1c;
+        --warn: #f0c46b;
+        --warn-bg: #3a2f14;
+        --info: #9cbbe6;
+        --info-bg: #1c2738;
+        --muted-bg: #242824;
+      }
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    a { color: var(--gold-dark); }
+    [hidden] { display: none !important; }
+
+    /* LOGIN */
+    .login {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: #000;
+      padding: 16px;
+    }
+    .login-card {
+      width: 100%; max-width: 380px;
+      padding: 40px 32px;
+      background: #111;
+      border: 1px solid rgba(212,191,145,0.25);
+      border-radius: 12px;
+      color: #fff;
+    }
+    .eyebrow {
+      font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold); font-weight: 600;
+    }
+    .login-card h1 { font-size: 1.5rem; font-weight: 800; margin: 8px 0 4px; }
+    .login-card p.sub { color: #888; font-size: 0.85rem; margin-bottom: 24px; }
+    .login-card label { display: block; font-size: 0.75rem; color: #aaa; margin: 12px 0 6px; }
+    .login-card input {
+      width: 100%; padding: 12px 14px;
+      background: #1a1a1a; border: 1px solid rgba(212,191,145,0.3); border-radius: 6px;
+      color: #fff; outline: none;
+    }
+    .login-card input:focus { border-color: var(--gold); }
+    .login-card .btn-primary { width: 100%; margin-top: 20px; padding: 12px; }
+    .login-msg { font-size: 0.8rem; margin-top: 14px; min-height: 1.2em; }
+    .login-msg.error { color: #f2a29b; }
+    .login-msg.ok { color: #7fd19b; }
+    .link-btn {
+      background: none; border: none; color: var(--gold); cursor: pointer;
+      font-size: 0.8rem; margin-top: 14px; padding: 0; text-decoration: underline;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 9px 16px; border-radius: 6px; border: 1px solid var(--line);
+      background: var(--surface); cursor: pointer; font-size: 0.85rem; font-weight: 600;
+      text-decoration: none; color: var(--ink); white-space: nowrap;
+    }
+    .btn:hover { border-color: var(--gold-dark); }
+    .btn:disabled { opacity: 0.5; cursor: default; }
+    .btn-primary { background: var(--gold); border-color: var(--gold); color: #000; }
+    .btn-primary:hover { background: #c4ae7e; border-color: #c4ae7e; }
+    .btn-dark { background: var(--green); border-color: var(--green); color: #fff; }
+    .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+    .btn-danger { color: var(--bad); }
+
+    /* SHELL */
+    header.top {
+      position: sticky; top: 0; z-index: 20;
+      background: var(--nav); color: #fff;
+    }
+    .top-inner {
+      max-width: 1320px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; gap: 24px; height: 64px;
+    }
+    .brand { color: var(--gold); font-weight: 800; letter-spacing: 0.08em; text-decoration: none; font-size: 1.15rem; }
+    .brand small { color: #888; font-weight: 500; letter-spacing: 0.1em; font-size: 0.68rem; margin-left: 8px; text-transform: uppercase; }
+    nav.tabs { display: flex; gap: 4px; flex: 1; }
+    nav.tabs button {
+      background: none; border: none; color: #ccc; cursor: pointer;
+      padding: 8px 14px; border-radius: 6px; font-size: 0.875rem; font-weight: 500;
+      white-space: nowrap;
+    }
+    nav.tabs button:hover { color: var(--gold); }
+    nav.tabs button[aria-selected="true"] { color: #000; background: var(--gold); }
+    .who { color: #999; font-size: 0.78rem; display: flex; gap: 12px; align-items: center; }
+    .who .btn { background: transparent; color: #ddd; border-color: #333; }
+
+    main { max-width: 1320px; margin: 0 auto; padding: 28px 24px 64px; }
+    .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .page-head h2 { font-size: 1.5rem; font-weight: 800; }
+    .page-head p { color: var(--ink-2); font-size: 0.85rem; margin-top: 4px; }
+
+    .banner {
+      padding: 12px 16px; border-radius: var(--radius); font-size: 0.85rem; margin-bottom: 20px;
+      background: var(--warn-bg); color: var(--warn); border: 1px solid transparent;
+    }
+    .banner.error { background: var(--bad-bg); color: var(--bad); }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 20px;
+    }
+    .card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 14px; }
+
+    /* KPI TILES */
+    .kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+    .kpi .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); font-weight: 600; }
+    .kpi .value { font-size: 1.7rem; font-weight: 800; margin-top: 6px; font-variant-numeric: tabular-nums; }
+    .kpi .hint { font-size: 0.75rem; color: var(--ink-2); margin-top: 4px; }
+    .kpi .value.neg { color: var(--bad); }
+
+    .grid-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 16px; margin-bottom: 16px; }
+
+    /* PIPELINE BARS */
+    .bars { display: flex; flex-direction: column; gap: 10px; }
+    .bar-row { display: grid; grid-template-columns: 96px 1fr 40px; align-items: center; gap: 10px; font-size: 0.82rem; }
+    .bar-row .name { color: var(--ink-2); }
+    .bar-track { height: 14px; background: var(--muted-bg); border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--gold-dark); border-radius: 0 4px 4px 0; min-width: 2px; }
+    .bar-row .n { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    /* TABLES */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-3); font-weight: 600; white-space: nowrap; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--muted-bg); }
+    td .sub { color: var(--ink-3); font-size: 0.75rem; margin-top: 2px; }
+    .neg { color: var(--bad); }
+    .empty { color: var(--ink-3); font-size: 0.85rem; padding: 24px 12px; text-align: center; }
+
+    .pill {
+      display: inline-block; padding: 2px 9px; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+      background: var(--muted-bg); color: var(--ink-2);
+    }
+    .pill.won { background: var(--good-bg); color: var(--good); }
+    .pill.lost { background: var(--bad-bg); color: var(--bad); }
+    .pill.submitted { background: var(--info-bg); color: var(--info); }
+    .pill.pursuing { background: var(--warn-bg); color: var(--warn); }
+
+    /* TOOLBAR */
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+    .toolbar input, .toolbar select, .field input, .field select, .field textarea {
+      padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface);
+      min-width: 0;
+    }
+    .toolbar input[type="search"] { flex: 1; min-width: 180px; }
+
+    /* SEARCH */
+    .search-layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 20px; align-items: start; }
+    .filters { position: sticky; top: 84px; max-height: calc(100vh - 100px); overflow: auto; }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .field > label:not(.drop), .field > .flabel { font-size: 0.72rem; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.06em; }
+    .checks { display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem; }
+    .checks label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; line-height: 1.3; }
+    .checks input { margin-top: 2px; accent-color: var(--green); }
+    .checks code { font-weight: 700; font-family: inherit; font-variant-numeric: tabular-nums; }
+    .checks .desc { color: var(--ink-2); }
+    .naics-actions { display: flex; gap: 8px; font-size: 0.75rem; }
+    .naics-actions button { background: none; border: none; color: var(--gold-dark); cursor: pointer; text-decoration: underline; padding: 0; }
+
+    .results-meta { font-size: 0.82rem; color: var(--ink-2); margin-bottom: 12px; }
+    .opp { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 10px; }
+    .opp-head { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
+    .opp h4 { font-size: 0.98rem; font-weight: 700; line-height: 1.35; }
+    .opp .agency { color: var(--ink-2); font-size: 0.8rem; margin-top: 4px; }
+    .opp-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.78rem; color: var(--ink-2); margin-top: 10px; }
+    .opp-meta b { color: var(--ink); font-weight: 600; }
+    .opp-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .opp-desc { margin-top: 12px; padding: 12px; background: var(--muted-bg); border-radius: 6px; font-size: 0.82rem; line-height: 1.5; max-height: 320px; overflow: auto; }
+    .due-soon { color: var(--bad); font-weight: 700; }
+
+    /* MODAL */
+    dialog {
+      border: none; border-radius: 12px; padding: 0; width: min(760px, calc(100vw - 32px));
+      background: var(--surface); color: var(--ink); margin: auto;
+    }
+    dialog::backdrop { background: rgba(0,0,0,0.55); }
+    .modal-head { padding: 18px 22px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+    .modal-head h3 { font-size: 1.05rem; }
+    .modal-body { padding: 18px 22px; max-height: 70vh; overflow: auto; }
+    .modal-foot { padding: 14px 22px; border-top: 1px solid var(--line); display: flex; gap: 10px; justify-content: flex-end; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .form-section { grid-column: 1 / -1; font-size: 0.75rem; font-weight: 700; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 0.1em; margin: 6px 0 10px; padding-top: 6px; border-top: 1px solid var(--line); }
+    .form-section:first-child { border-top: none; padding-top: 0; }
+    .field textarea { min-height: 80px; resize: vertical; }
+    .x { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--ink-3); line-height: 1; }
+
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--green); color: #fff; padding: 10px 18px; border-radius: 6px;
+      font-size: 0.85rem; z-index: 100; box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    }
+
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ANALYZE */
+    .drop {
+      border: 2px dashed var(--line); border-radius: var(--radius); padding: 22px 16px;
+      text-align: center; color: var(--ink-2); font-size: 0.85rem; cursor: pointer; overflow-wrap: anywhere;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .drop:hover, .drop.over { border-color: var(--gold-dark); background: var(--muted-bg); }
+    .drop b { color: var(--ink); }
+    .profile-box { min-height: 220px; font-size: 0.8rem; line-height: 1.45; }
+    .progress { height: 6px; background: var(--muted-bg); border-radius: 3px; overflow: hidden; margin-top: 10px; }
+    .progress > div { height: 100%; background: var(--gold-dark); width: 0; transition: width 0.3s; }
+    .tally { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .tally button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 12px; font-size: 0.78rem; cursor: pointer; }
+    .tally button[aria-pressed="true"] { border-color: var(--ink); font-weight: 700; }
+    .rank { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 14px; }
+    .score {
+      width: 56px; height: 56px; border-radius: 8px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; font-weight: 800; font-size: 1.25rem;
+      font-variant-numeric: tabular-nums; background: var(--muted-bg); color: var(--ink);
+    }
+    .score small { font-size: 0.6rem; font-weight: 600; color: var(--ink-3); letter-spacing: 0.06em; }
+    .score.pursue { background: var(--good-bg); color: var(--good); }
+    .score.pass { background: var(--bad-bg); color: var(--bad); }
+    .score.consider { background: var(--warn-bg); color: var(--warn); }
+    .pill.pursue { background: var(--good-bg); color: var(--good); }
+    .pill.consider { background: var(--warn-bg); color: var(--warn); }
+    .pill.pass { background: var(--bad-bg); color: var(--bad); }
+    .pill.inelig { background: var(--bad-bg); color: var(--bad); }
+    .why { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; font-size: 0.8rem; }
+    .why h5 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin-bottom: 4px; }
+    .why ul { padding-left: 16px; color: var(--ink-2); line-height: 1.45; }
+    .next { margin-top: 10px; font-size: 0.8rem; padding: 8px 10px; border-left: 3px solid var(--gold-dark); background: var(--muted-bg); border-radius: 0 4px 4px 0; }
+    .caps { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+
+    @media (max-width: 1100px) {
+      .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 860px) {
+      .search-layout { grid-template-columns: minmax(0, 1fr); }
+      .filters { position: static; max-height: none; }
+      .top-inner { height: auto; padding: 12px 16px; flex-wrap: wrap; gap: 10px; }
+      nav.tabs { order: 3; flex-basis: 100%; overflow-x: auto; }
+      .who span { display: none; }
+      main { padding: 20px 16px 48px; }
+    }
+    @media (max-width: 560px) {
+      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .form-grid { grid-template-columns: 1fr; }
+      .opp-head { flex-direction: column; }
+      .why { grid-template-columns: 1fr; }
+      .rank { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<section class="login" id="loginView" hidden>
+  <form class="login-card" id="loginForm">
+    <p class="eyebrow">Restricted Access</p>
+    <h1>★ CARRIGON Admin</h1>
+    <p class="sub">Sign in with your admin account.</p>
+    <label for="loginEmail">Email</label>
+    <input id="loginEmail" type="email" autocomplete="username" required />
+    <label for="loginPassword">Password</label>
+    <input id="loginPassword" type="password" autocomplete="current-password" required />
+    <button class="btn btn-primary" type="submit" id="loginBtn">Sign in</button>
+    <p class="login-msg" id="loginMsg" role="status"></p>
+    <button class="link-btn" type="button" id="forgotBtn">Forgot password?</button>
+  </form>
+</section>
+
+<!-- RESET PASSWORD (arrives from emailed link) -->
+<section class="login" id="resetView" hidden>
+  <form class="login-card" id="resetForm">
+    <p class="eyebrow">Restricted Access</p>
+    <h1>Set a new password</h1>
+    <p class="sub">Choose a password of at least 10 characters.</p>
+    <label for="newPassword">New password</label>
+    <input id="newPassword" type="password" autocomplete="new-password" minlength="10" required />
+    <button class="btn btn-primary" type="submit">Save password</button>
+    <p class="login-msg" id="resetMsg" role="status"></p>
+  </form>
+</section>
+
+<!-- APP -->
+<div id="appView" hidden>
+  <header class="top">
+    <div class="top-inner">
+      <a class="brand" href="../">★ CARRIGON<small>Admin</small></a>
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="dashboard" aria-selected="true">Dashboard</button>
+        <button role="tab" data-tab="contracts" aria-selected="false">Contracts</button>
+        <button role="tab" data-tab="search" aria-selected="false">Opportunity Search</button>
+        <button role="tab" data-tab="analyze" aria-selected="false">Analyze</button>
+      </nav>
+      <div class="who"><span id="whoEmail"></span><button class="btn btn-sm" id="signOutBtn">Sign out</button></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="banner" id="demoBanner" hidden>
+      Demo mode: <code>admin/config.js</code> doesn't have your Supabase project yet, so this preview uses sample data and nothing is saved.
+    </div>
+
+    <!-- DASHBOARD -->
+    <section data-panel="dashboard">
+      <div class="page-head">
+        <div>
+          <h2>Dashboard</h2>
+          <p>Bids, wins and profit &amp; loss across all tracked contracts.</p>
+        </div>
+        <button class="btn btn-dark" data-action="new-contract">+ Add contract</button>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Pipeline by status</h3>
+          <div class="bars" id="pipelineBars"></div>
+        </div>
+        <div class="card">
+          <h3>Upcoming bid deadlines</h3>
+          <div class="table-wrap"><table id="deadlinesTable"></table></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Profit &amp; loss by won contract</h3>
+        <div class="table-wrap"><table id="pnlTable"></table></div>
+      </div>
+    </section>
+
+    <!-- CONTRACTS -->
+    <section data-panel="contracts" hidden>
+      <div class="page-head">
+        <div>
+          <h2>Contracts</h2>
+          <p>Everything we're pursuing, have bid on, won or lost.</p>
+        </div>
+        <button class="btn btn-dark" data-action="new-contract">+ Add contract</button>
+      </div>
+      <div class="toolbar">
+        <input type="search" id="contractFilter" placeholder="Filter by title, agency, solicitation #…" />
+        <select id="contractStatusFilter">
+          <option value="">All statuses</option>
+        </select>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap"><table id="contractsTable"></table></div>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section data-panel="search" hidden>
+      <div class="page-head">
+        <div>
+          <h2>Opportunity Search</h2>
+          <p>Live contract opportunities from SAM.gov, limited to our NAICS codes.</p>
+        </div>
+      </div>
+      <div class="search-layout">
+        <form class="card filters" id="searchForm">
+          <div class="field">
+            <label for="sKeyword">Keyword in title</label>
+            <input id="sKeyword" type="search" placeholder="e.g. cybersecurity" />
+          </div>
+          <div class="field">
+            <label for="sPosted">Posted within</label>
+            <select id="sPosted">
+              <option value="7">Last 7 days</option>
+              <option value="14">Last 14 days</option>
+              <option value="30" selected>Last 30 days</option>
+              <option value="60">Last 60 days</option>
+              <option value="90">Last 90 days</option>
+              <option value="180">Last 6 months</option>
+              <option value="364">Last 12 months</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sSetAside">Set-aside</label>
+            <select id="sSetAside">
+              <option value="">Any</option>
+              <option value="SDVOSBC">Service-Disabled Veteran-Owned (SDVOSB)</option>
+              <option value="SDVOSBS">SDVOSB Sole Source</option>
+              <option value="VSA">Veteran-Owned (VOSB)</option>
+              <option value="VSS">VOSB Sole Source</option>
+              <option value="SBA">Total Small Business</option>
+              <option value="SBP">Partial Small Business</option>
+              <option value="8A">8(a)</option>
+              <option value="8AN">8(a) Sole Source</option>
+              <option value="HZC">HUBZone</option>
+              <option value="WOSB">Women-Owned (WOSB)</option>
+              <option value="EDWOSB">Economically Disadvantaged WOSB</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sState">Place of performance (state)</label>
+            <input id="sState" maxlength="2" placeholder="e.g. VA" style="text-transform:uppercase" />
+          </div>
+          <div class="field">
+            <span class="flabel">Notice type</span>
+            <div class="checks" id="sTypes"></div>
+          </div>
+          <div class="field">
+            <div class="checks">
+              <label><input type="checkbox" id="sActive" checked /> <span>Only open (deadline today or later)</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <span class="flabel">NAICS codes</span>
+            <div class="naics-actions"><button type="button" id="naicsAll">Select all</button><button type="button" id="naicsNone">Clear</button></div>
+            <div class="checks naics-list" id="sNaics"></div>
+          </div>
+          <button class="btn btn-primary" type="submit" id="searchBtn" style="width:100%">Search SAM.gov</button>
+        </form>
+
+        <div>
+          <div class="toolbar" id="resultsToolbar" hidden>
+            <input type="search" id="resultsFilter" placeholder="Filter these results…" />
+            <select id="resultsSort">
+              <option value="posted">Newest posted</option>
+              <option value="deadline">Deadline soonest</option>
+            </select>
+          </div>
+          <div class="results-meta" id="resultsMeta">Choose filters and search. Each NAICS code is one SAM.gov request, and results are cached for an hour.</div>
+          <div id="results"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANALYZE -->
+    <section data-panel="analyze" hidden>
+      <div class="page-head">
+        <div>
+          <h2>Opportunity Analysis</h2>
+          <p>Upload a Contract Opportunities CSV exported from SAM.gov. Claude scores each opportunity against Carrigon's profile and ranks them best to worst.</p>
+        </div>
+      </div>
+      <div class="search-layout">
+        <div class="card filters">
+          <div class="field">
+            <span class="flabel">1. SAM.gov export</span>
+            <label class="drop" id="csvDrop" for="csvInput">
+              <b>Choose a CSV</b> or drop it here
+              <div class="sub" id="csvName" style="margin-top:6px"></div>
+            </label>
+            <input type="file" id="csvInput" accept=".csv,text/csv" hidden />
+          </div>
+          <div class="field">
+            <div class="checks">
+              <label><input type="checkbox" id="aSkipClosed" checked /> <span>Skip inactive and past-deadline notices</span></label>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="analyzeBtn" style="width:100%" disabled>Analyze opportunities</button>
+          <div class="progress" id="analyzeProgress" hidden><div></div></div>
+          <p class="results-meta" id="analyzeStatus" style="margin-top:10px"></p>
+
+          <div class="field" style="margin-top:8px">
+            <label for="profileText">2. Carrigon profile (what we're scored against)</label>
+            <textarea id="profileText" class="profile-box"></textarea>
+            <div style="display:flex; gap:8px">
+              <button class="btn btn-sm" id="saveProfileBtn" type="button">Save profile</button>
+              <button class="btn btn-sm" id="resetProfileBtn" type="button">Reset to default</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="runSelect">Previous analyses</label>
+            <select id="runSelect"><option value="">—</option></select>
+          </div>
+        </div>
+
+        <div>
+          <div class="tally" id="analysisTally" hidden></div>
+          <div class="toolbar" id="analysisToolbar" hidden>
+            <input type="search" id="analysisFilter" placeholder="Filter ranked results…" />
+            <button class="btn btn-sm" id="exportAnalysisBtn" type="button">Export CSV</button>
+          </div>
+          <div class="results-meta" id="analysisMeta">No analysis yet.</div>
+          <div id="analysisResults"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- CONTRACT EDITOR -->
+<dialog id="contractDialog">
+  <form id="contractForm" method="dialog">
+    <div class="modal-head">
+      <h3 id="contractDialogTitle">Add contract</h3>
+      <button type="button" class="x" data-close aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-section">Opportunity</div>
+        <div class="field full"><label for="f_title">Title *</label><input id="f_title" name="title" required /></div>
+        <div class="field full"><label for="f_agency">Agency</label><input id="f_agency" name="agency" /></div>
+        <div class="field"><label for="f_solicitation_number">Solicitation #</label><input id="f_solicitation_number" name="solicitation_number" /></div>
+        <div class="field"><label for="f_naics_code">NAICS</label><input id="f_naics_code" name="naics_code" maxlength="6" /></div>
+        <div class="field"><label for="f_set_aside">Set-aside</label><input id="f_set_aside" name="set_aside" /></div>
+        <div class="field"><label for="f_response_deadline">Response deadline</label><input id="f_response_deadline" name="response_deadline" type="date" /></div>
+        <div class="field full"><label for="f_sam_url">SAM.gov link</label><input id="f_sam_url" name="sam_url" type="url" /></div>
+
+        <div class="form-section">Bid</div>
+        <div class="field"><label for="f_status">Status</label><select id="f_status" name="status"></select></div>
+        <div class="field"><label for="f_bid_submitted_on">Bid submitted</label><input id="f_bid_submitted_on" name="bid_submitted_on" type="date" /></div>
+        <div class="field"><label for="f_bid_amount">Bid amount ($)</label><input id="f_bid_amount" name="bid_amount" type="number" step="0.01" min="0" /></div>
+        <div class="field"><label for="f_contact_name">Contracting officer</label><input id="f_contact_name" name="contact_name" /></div>
+        <div class="field full"><label for="f_contact_email">CO email</label><input id="f_contact_email" name="contact_email" type="email" /></div>
+
+        <div class="form-section">Award &amp; financials</div>
+        <div class="field"><label for="f_contract_number">Contract #</label><input id="f_contract_number" name="contract_number" /></div>
+        <div class="field"><label for="f_award_date">Award date</label><input id="f_award_date" name="award_date" type="date" /></div>
+        <div class="field"><label for="f_award_amount">Award value ($)</label><input id="f_award_amount" name="award_amount" type="number" step="0.01" min="0" /></div>
+        <div class="field"></div>
+        <div class="field"><label for="f_period_start">Period start</label><input id="f_period_start" name="period_start" type="date" /></div>
+        <div class="field"><label for="f_period_end">Period end</label><input id="f_period_end" name="period_end" type="date" /></div>
+        <div class="field"><label for="f_revenue">Revenue to date ($)</label><input id="f_revenue" name="revenue" type="number" step="0.01" min="0" /></div>
+        <div class="field"><label for="f_costs">Costs to date ($)</label><input id="f_costs" name="costs" type="number" step="0.01" min="0" /></div>
+
+        <div class="form-section">Notes</div>
+        <div class="field full"><textarea id="f_notes" name="notes" aria-label="Notes"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-danger" id="deleteContractBtn" hidden>Delete</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn" data-close>Cancel</button>
+      <button type="submit" class="btn btn-primary" id="saveContractBtn">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---------- Reference data ----------
+  const NAICS = [
+    ['541511', 'Custom Computer Programming Services'],
+    ['541512', 'Computer Systems Design Services'],
+    ['541513', 'Computer Facilities Management Services'],
+    ['541519', 'Other Computer Related Services'],
+    ['541611', 'Administrative & General Management Consulting'],
+    ['541612', 'Human Resources Consulting'],
+    ['541613', 'Marketing Consulting'],
+    ['541614', 'Process, Physical Distribution & Logistics Consulting'],
+    ['541618', 'Other Management Consulting'],
+    ['541690', 'Other Scientific & Technical Consulting'],
+    ['541715', 'R&D in Physical, Engineering & Life Sciences'],
+    ['541810', 'Advertising Agencies'],
+    ['541910', 'Marketing Research & Public Opinion Polling'],
+    ['541990', 'All Other Professional, Scientific & Technical Services'],
+    ['518210', 'Computing Infrastructure, Data Processing & Web Hosting'],
+    ['513210', 'Software Publishers'],
+    ['517810', 'All Other Telecommunications'],
+    ['561320', 'Temporary Help Services'],
+    ['561330', 'Professional Employer Organizations'],
+    ['561621', 'Security Systems Services'],
+    ['611430', 'Professional & Management Development Training'],
+    ['611710', 'Educational Support Services'],
+  ];
+  const NAICS_NAME = Object.fromEntries(NAICS);
+
+  const NOTICE_TYPES = [
+    ['o', 'Solicitation', true],
+    ['k', 'Combined Synopsis/Solicitation', true],
+    ['p', 'Presolicitation', true],
+    ['r', 'Sources Sought', true],
+    ['s', 'Special Notice', false],
+  ];
+
+  const STATUSES = [
+    ['pursuing', 'Pursuing'],
+    ['submitted', 'Bid submitted'],
+    ['won', 'Won'],
+    ['lost', 'Lost'],
+    ['no_bid', 'No bid'],
+    ['cancelled', 'Cancelled'],
+  ];
+  const STATUS_LABEL = Object.fromEntries(STATUSES);
+  const BID_STATUSES = new Set(['submitted', 'won', 'lost']);
+
+  // ---------- Helpers ----------
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const num = (v) => (v === null || v === undefined || v === '' ? 0 : Number(v));
+  const money = (v, compact) => {
+    const n = num(v);
+    if (compact && Math.abs(n) >= 1e6) return (n < 0 ? '−$' : '$') + (Math.abs(n) / 1e6).toFixed(Math.abs(n) >= 1e7 ? 1 : 2) + 'M';
+    if (compact && Math.abs(n) >= 1e4) return (n < 0 ? '−$' : '$') + Math.round(Math.abs(n) / 1e3) + 'K';
+    return (n < 0 ? '−$' : '$') + Math.abs(n).toLocaleString('en-US', { maximumFractionDigits: 0 });
+  };
+  const fmtDate = (v) => {
+    if (!v) return '—';
+    const d = new Date(String(v).length === 10 ? v + 'T12:00:00' : v);
+    return isNaN(d) ? esc(v) : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+  const daysUntil = (v) => {
+    if (!v) return null;
+    const d = new Date(String(v).length === 10 ? v + 'T23:59:59' : v);
+    return Math.ceil((d - Date.now()) / 86400000);
+  };
+  const pill = (status) => `<span class="pill ${esc(status)}">${esc(STATUS_LABEL[status] || status)}</span>`;
+
+  function toast(msg) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => { t.hidden = true; }, 2600);
+  }
+
+  // ---------- Data layer (Supabase, or demo data when unconfigured) ----------
+  const cfg = window.CARRIGON_ADMIN_CONFIG || {};
+  const configured = cfg.supabaseUrl && !cfg.supabaseUrl.includes('YOUR-PROJECT') && cfg.supabaseAnonKey && !cfg.supabaseAnonKey.includes('YOUR-');
+  const isLocal = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+  const DEMO = !configured && isLocal;
+
+  function makeSupabaseApi() {
+    const sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
+      auth: { persistSession: true, storageKey: 'carrigon-admin-auth' },
+    });
+    const unwrap = ({ data, error }) => { if (error) throw error; return data; };
+    return {
+      async session() { return (await sb.auth.getSession()).data.session; },
+      onAuth(cb) { sb.auth.onAuthStateChange((event, session) => cb(event, session)); },
+      async signIn(email, password) { unwrap(await sb.auth.signInWithPassword({ email, password })); },
+      async signOut() { await sb.auth.signOut(); },
+      async resetPassword(email) {
+        unwrap(await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }));
+      },
+      async updatePassword(password) { unwrap(await sb.auth.updateUser({ password })); },
+      async isAdmin() { return !!unwrap(await sb.rpc('is_admin')); },
+      async listContracts() { return unwrap(await sb.from('contracts').select('*').order('created_at', { ascending: false })); },
+      async saveContract(row) {
+        if (row.id) {
+          const { id, ...rest } = row;
+          return unwrap(await sb.from('contracts').update(rest).eq('id', id).select().single());
+        }
+        return unwrap(await sb.from('contracts').insert(row).select().single());
+      },
+      async deleteContract(id) { unwrap(await sb.from('contracts').delete().eq('id', id)); },
+      async samSearch(params) {
+        const { data, error } = await sb.functions.invoke('sam-search', { body: { action: 'search', ...params } });
+        if (error) {
+          let msg = error.message;
+          try { msg = (await error.context.json()).error || msg; } catch (_) { /* keep default */ }
+          throw new Error(msg);
+        }
+        return data;
+      },
+      async samDescription(noticeId) {
+        const { data, error } = await sb.functions.invoke('sam-search', { body: { action: 'description', noticeId } });
+        if (error) throw error;
+        return data.description;
+      },
+      async getSetting(key) {
+        const row = unwrap(await sb.from('admin_settings').select('value').eq('key', key).maybeSingle());
+        return row ? row.value : null;
+      },
+      async saveSetting(key, value) { unwrap(await sb.from('admin_settings').upsert({ key, value, updated_at: new Date().toISOString() })); },
+      async listRuns() {
+        return unwrap(await sb.from('analysis_runs').select('id, file_name, opportunity_count, created_by, created_at').order('created_at', { ascending: false }).limit(25));
+      },
+      async getRun(id) { return unwrap(await sb.from('analysis_runs').select('*').eq('id', id).single()); },
+      async saveRun(run) { return unwrap(await sb.from('analysis_runs').insert(run).select('id').single()); },
+      async analyzeBatch(profile, opportunities) {
+        const { data, error } = await sb.functions.invoke('analyze-opportunities', { body: { profile, opportunities } });
+        if (error) {
+          let msg = error.message;
+          try { msg = (await error.context.json()).error || msg; } catch (_) { /* keep default */ }
+          throw new Error(msg);
+        }
+        return data.results || [];
+      },
+    };
+  }
+
+  function makeDemoApi() {
+    const today = new Date();
+    const iso = (offsetDays) => new Date(today.getTime() + offsetDays * 86400000).toISOString().slice(0, 10);
+    const settings = {};
+    const runs = [];
+    let rows = [
+      { id: 'd1', title: 'Enterprise Help Desk & Tier II Support', agency: 'Department of Veterans Affairs', solicitation_number: '36C10B26Q0141', naics_code: '541512', set_aside: 'SDVOSB', status: 'won', bid_submitted_on: iso(-160), bid_amount: 1240000, award_amount: 1185000, award_date: iso(-120), period_start: iso(-110), period_end: iso(255), revenue: 412000, costs: 338500, contract_number: '36C10B26C0057' },
+      { id: 'd2', title: 'Cloud Migration Advisory Services', agency: 'Department of the Interior', solicitation_number: '140D0426Q0033', naics_code: '541611', set_aside: 'Total Small Business', status: 'won', bid_submitted_on: iso(-210), bid_amount: 486000, award_amount: 472500, award_date: iso(-180), period_start: iso(-170), period_end: iso(195), revenue: 236000, costs: 251300, contract_number: '140D0426C0019' },
+      { id: 'd3', title: 'Cybersecurity Assessment & ATO Support', agency: 'Department of Homeland Security', solicitation_number: '70RTAC26R00000012', naics_code: '541519', set_aside: 'SDVOSB', status: 'submitted', bid_submitted_on: iso(-12), bid_amount: 2150000 },
+      { id: 'd4', title: 'Data Analytics Platform Modernization', agency: 'Department of Agriculture', solicitation_number: '12314426Q0098', naics_code: '541511', status: 'lost', bid_submitted_on: iso(-75), bid_amount: 890000 },
+      { id: 'd5', title: 'Workforce Training Program Design', agency: 'Department of Labor', solicitation_number: '1605DC-26-Q-00021', naics_code: '611430', status: 'pursuing', response_deadline: iso(9) },
+      { id: 'd6', title: 'Strategic Communications Support', agency: 'Department of Energy', solicitation_number: '89303026RNA000044', naics_code: '541810', status: 'pursuing', response_deadline: iso(21) },
+      { id: 'd7', title: 'IT Program Management Office Support', agency: 'Department of the Army', solicitation_number: 'W91QUZ26R0007', naics_code: '541611', status: 'lost', bid_submitted_on: iso(-95), bid_amount: 3300000 },
+    ];
+    const types = ['Solicitation', 'Combined Synopsis/Solicitation', 'Sources Sought', 'Presolicitation'];
+    const agencies = ['DEPT OF DEFENSE.DEPT OF THE ARMY.AMC', 'VETERANS AFFAIRS, DEPARTMENT OF.TECHNOLOGY ACQUISITION CENTER', 'HOMELAND SECURITY, DEPARTMENT OF.CISA', 'GENERAL SERVICES ADMINISTRATION.FAS', 'HEALTH AND HUMAN SERVICES, DEPARTMENT OF.CMS'];
+    const titles = ['Zero Trust Architecture Implementation', 'Agile Software Development Services', 'Records Management Consulting', 'Network Operations Center Support', 'Training Curriculum Development', 'Market Research Support Services', 'Help Desk Services – Region 4', 'Data Center Hosting Services'];
+    return {
+      async session() { return sessionStorage.getItem('demo-admin') ? { user: { email: 'demo@carrigon.com' } } : null; },
+      onAuth() {},
+      async signIn() { sessionStorage.setItem('demo-admin', '1'); },
+      async signOut() { sessionStorage.removeItem('demo-admin'); },
+      async resetPassword() {},
+      async updatePassword() {},
+      async isAdmin() { return true; },
+      async listContracts() { return rows.slice(); },
+      async saveContract(row) {
+        if (row.id) { rows = rows.map((r) => (r.id === row.id ? { ...r, ...row } : r)); return row; }
+        const r = { ...row, id: 'd' + Date.now() };
+        rows.unshift(r);
+        return r;
+      },
+      async deleteContract(id) { rows = rows.filter((r) => r.id !== id); },
+      async samSearch(p) {
+        await new Promise((r) => setTimeout(r, 500));
+        const codes = p.naics.length ? p.naics : NAICS.map((n) => n[0]);
+        const opportunities = titles
+          .filter((t) => !p.keyword || t.toLowerCase().includes(p.keyword.toLowerCase()))
+          .map((t, i) => ({
+            noticeId: 'demo' + i.toString().padStart(28, '0'),
+            title: t,
+            solicitationNumber: 'DEMO-26-R-' + (100 + i),
+            agency: agencies[i % agencies.length],
+            type: types[i % types.length],
+            postedDate: iso(-i * 2),
+            responseDeadline: iso(4 + i * 5) + 'T17:00:00-04:00',
+            naicsCode: codes[i % codes.length],
+            setAside: i % 3 === 0 ? 'Service-Disabled Veteran-Owned Small Business (SDVOSB) Set-Aside (FAR 19.14)' : i % 3 === 1 ? 'Total Small Business Set-Aside (FAR 19.5)' : null,
+            state: ['VA', 'MD', 'DC', 'TX'][i % 4],
+            city: ['Arlington', 'Baltimore', 'Washington', 'San Antonio'][i % 4],
+            pocName: 'Contracting Officer',
+            pocEmail: 'co@example.gov',
+            hasDescription: true,
+            samUrl: 'https://sam.gov/opp/demo/view',
+          }));
+        return { opportunities, meta: { naicsSearched: codes.length, samRequests: 0, fromCache: 0, truncated: [], errors: [] } };
+      },
+      async samDescription() { return '<p>Sample description. With Supabase connected, this shows the full notice text from SAM.gov.</p>'; },
+      async getSetting(key) { return settings[key] ?? null; },
+      async saveSetting(key, value) { settings[key] = value; },
+      async listRuns() { return runs.map(({ results, ...r }) => r); },
+      async getRun(id) { return runs.find((r) => r.id === id); },
+      async saveRun(run) { const r = { ...run, id: 'run' + Date.now(), created_at: new Date().toISOString(), created_by: 'demo@carrigon.com' }; runs.unshift(r); return r; },
+      async analyzeBatch(profile, opportunities) {
+        await new Promise((r) => setTimeout(r, 400));
+        return opportunities.map(demoScore);
+      },
+    };
+  }
+
+  // Keyword heuristic used only in demo mode, so the Analyze tab can be previewed
+  // without the Claude-backed Edge Function. Real runs use analyze-opportunities.
+  function demoScore(o) {
+    const text = (o.title + ' ' + o.description + ' ' + o.psc).toLowerCase();
+    const caps = [
+      ['IT Services & Development', /software|application|development|devsecops|modernization|servicenow|engineering/],
+      ['Cybersecurity & Compliance', /cyber|zero trust|security operations|nist|fisma|ato|mssp|soc\b/],
+      ['Cloud & Data Infrastructure', /cloud|hosting|data platform|infrastructure|network/],
+      ['Program & Operations Management', /program management|project management|pmo|operations support/],
+      ['Data Analytics & AI', /analytics|data management|\bai\b|machine learning|llm/],
+      ['IT Staffing & Talent', /staff|personnel|labor/],
+      ['Help desk / IT support', /help desk|service desk|tier 1|tier ii|it support/],
+    ].filter(([, re]) => re.test(text)).map(([n]) => n);
+    const risks = [];
+    let score = 35 + caps.length * 9;
+    const sa = (o.setAside || '').toLowerCase();
+    let eligibility = sa ? 'Likely eligible' : 'Unclear';
+    if (/women-owned|wosb|8\(a\)|hubzone/.test(sa)) { eligibility = 'Not eligible'; score -= 35; risks.push('Set-aside Carrigon does not hold'); }
+    if (/service-disabled|sdvosb|total small business|partial small/.test(sa)) { eligibility = 'Eligible'; score += 10; }
+    if (/sole source to|intends to award a sole source|notice of intent to sole source/.test(text)) { score -= 30; risks.push('Sole source to another vendor'); }
+    if (/facility security clearance|\bfcl\b|nato/.test(text)) { score -= 20; risks.push('Requires facility clearance / NATO eligibility'); }
+    if (/radar|hardware|card readers|body-worn|ruggedized|high frequency|equipment/.test(text)) { score -= 15; risks.push('Product or hardware-heavy scope'); }
+    if (/no longer pursuing|cancel/.test(text)) { score -= 40; risks.push('Requirement withdrawn or cancelled'); }
+    if (typeof o.daysLeft === 'number' && o.daysLeft < 5) { score -= 10; risks.push(`Only ${o.daysLeft} days to respond`); }
+    if (/sources sought|special notice|presolicitation/i.test(o.type)) score += 4;
+    score = Math.max(0, Math.min(100, Math.round(score)));
+    return {
+      notice_id: o.noticeId,
+      fit_score: score,
+      recommendation: score >= 70 ? 'Pursue' : score >= 40 ? 'Consider' : 'Pass',
+      eligibility,
+      matched_capabilities: caps,
+      summary: '(Demo heuristic) ' + (o.description || o.title).slice(0, 180) + '…',
+      strengths: caps.length ? [`Matches ${caps.length} Carrigon capability area(s)`] : [],
+      risks,
+      next_step: o.deadline ? `Respond by ${o.deadline}` : 'Review the notice on SAM.gov',
+    };
+  }
+
+  // ---------- Boot ----------
+  if (!configured && !isLocal) {
+    document.body.innerHTML = '<section class="login"><div class="login-card"><p class="eyebrow">Setup required</p><h1>Admin not configured</h1><p class="sub">Add the Supabase URL and anon key to admin/config.js. See ADMIN_SETUP.md.</p></div></section>';
+    return;
+  }
+  const api = DEMO ? makeDemoApi() : makeSupabaseApi();
+  $('#demoBanner').hidden = !DEMO;
+
+  let contracts = [];
+  let searchResults = [];
+
+  function show(view) {
+    $('#loginView').hidden = view !== 'login';
+    $('#resetView').hidden = view !== 'reset';
+    $('#appView').hidden = view !== 'app';
+  }
+
+  async function enterApp(session) {
+    if (!(await api.isAdmin())) {
+      await api.signOut();
+      show('login');
+      setLoginMsg('This account is not authorized for the admin portal.', 'error');
+      return;
+    }
+    $('#whoEmail').textContent = session?.user?.email || '';
+    show('app');
+    await Promise.all([loadContracts(), loadAnalysisSettings()]);
+  }
+
+  function setLoginMsg(text, kind) {
+    const m = $('#loginMsg');
+    m.textContent = text;
+    m.className = 'login-msg ' + (kind || '');
+  }
+
+  $('#loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = $('#loginBtn');
+    btn.disabled = true;
+    setLoginMsg('');
+    try {
+      await api.signIn($('#loginEmail').value.trim(), $('#loginPassword').value);
+      $('#loginPassword').value = '';
+      await enterApp(await api.session());
+    } catch (err) {
+      setLoginMsg(err.message || 'Sign-in failed.', 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $('#forgotBtn').addEventListener('click', async () => {
+    const email = $('#loginEmail').value.trim();
+    if (!email) { setLoginMsg('Enter your email above first.', 'error'); return; }
+    try {
+      await api.resetPassword(email);
+      setLoginMsg('If that account exists, a reset link is on its way.', 'ok');
+    } catch (err) {
+      setLoginMsg(err.message, 'error');
+    }
+  });
+
+  $('#resetForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await api.updatePassword($('#newPassword').value);
+      $('#newPassword').value = '';
+      history.replaceState(null, '', location.pathname);
+      await enterApp(await api.session());
+      toast('Password updated');
+    } catch (err) {
+      $('#resetMsg').textContent = err.message;
+      $('#resetMsg').className = 'login-msg error';
+    }
+  });
+
+  $('#signOutBtn').addEventListener('click', async () => {
+    await api.signOut();
+    contracts = [];
+    show('login');
+  });
+
+  api.onAuth((event) => {
+    if (event === 'PASSWORD_RECOVERY') show('reset');
+  });
+
+  // ---------- Tabs ----------
+  function selectTab(name) {
+    $$('nav.tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+    $$('[data-panel]').forEach((p) => { p.hidden = p.dataset.panel !== name; });
+    try { localStorage.setItem('carrigon-admin-tab', name); } catch (_) { /* storage unavailable */ }
+  }
+  $$('nav.tabs button').forEach((b) => b.addEventListener('click', () => selectTab(b.dataset.tab)));
+  try { const t = localStorage.getItem('carrigon-admin-tab'); if (t) selectTab(t); } catch (_) { /* ignore */ }
+
+  // ---------- Contracts ----------
+  async function loadContracts() {
+    try {
+      contracts = await api.listContracts();
+    } catch (err) {
+      toast('Could not load contracts: ' + err.message);
+      contracts = [];
+    }
+    renderDashboard();
+    renderContracts();
+    renderResults();
+    if (analysis.length) renderAnalysis();
+  }
+
+  function renderDashboard() {
+    const bids = contracts.filter((c) => BID_STATUSES.has(c.status));
+    const won = contracts.filter((c) => c.status === 'won');
+    const lost = contracts.filter((c) => c.status === 'lost');
+    const decided = won.length + lost.length;
+    const revenue = contracts.reduce((s, c) => s + num(c.revenue), 0);
+    const costs = contracts.reduce((s, c) => s + num(c.costs), 0);
+    const profit = revenue - costs;
+    const awarded = won.reduce((s, c) => s + num(c.award_amount), 0);
+
+    const tiles = [
+      ['Bids submitted', bids.length, `${contracts.filter((c) => c.status === 'submitted').length} awaiting decision`],
+      ['Contracts won', won.length, `${money(awarded, true)} total award value`],
+      ['Win rate', decided ? Math.round((won.length / decided) * 100) + '%' : '—', `${won.length} of ${decided} decided`],
+      ['Revenue', money(revenue, true), 'to date, all contracts'],
+      ['Costs', money(costs, true), 'to date, all contracts'],
+      ['Net profit', money(profit, true), revenue ? `${((profit / revenue) * 100).toFixed(1)}% margin` : 'no revenue yet', profit < 0],
+    ];
+    $('#kpis').innerHTML = tiles.map(([label, value, hint, neg]) => `
+      <div class="kpi"><div class="label">${esc(label)}</div><div class="value${neg ? ' neg' : ''}">${esc(value)}</div><div class="hint">${esc(hint)}</div></div>`).join('');
+
+    const counts = STATUSES.map(([key, label]) => [label, contracts.filter((c) => c.status === key).length]);
+    const max = Math.max(1, ...counts.map((c) => c[1]));
+    $('#pipelineBars').innerHTML = counts.map(([label, n]) => `
+      <div class="bar-row" title="${esc(label)}: ${n}">
+        <span class="name">${esc(label)}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${(n / max) * 100}%"></div></div>
+        <span class="n">${n}</span>
+      </div>`).join('');
+
+    const upcoming = contracts
+      .filter((c) => c.status === 'pursuing' && c.response_deadline && daysUntil(c.response_deadline) >= 0)
+      .sort((a, b) => String(a.response_deadline).localeCompare(String(b.response_deadline)))
+      .slice(0, 6);
+    $('#deadlinesTable').innerHTML = upcoming.length
+      ? `<thead><tr><th>Opportunity</th><th>Due</th><th class="num">Days left</th></tr></thead><tbody>${upcoming.map((c) => {
+          const d = daysUntil(c.response_deadline);
+          return `<tr data-id="${esc(c.id)}" style="cursor:pointer"><td>${esc(c.title)}<div class="sub">${esc(c.agency || '')}</div></td><td>${fmtDate(c.response_deadline)}</td><td class="num ${d <= 7 ? 'due-soon' : ''}">${d}</td></tr>`;
+        }).join('')}</tbody>`
+      : '<tbody><tr><td class="empty">No open deadlines. Track opportunities from the Search tab.</td></tr></tbody>';
+
+    const pnlRows = won.slice().sort((a, b) => (num(b.revenue) - num(b.costs)) - (num(a.revenue) - num(a.costs)));
+    $('#pnlTable').innerHTML = pnlRows.length
+      ? `<thead><tr><th>Contract</th><th>Period</th><th class="num">Award value</th><th class="num">Revenue</th><th class="num">Costs</th><th class="num">Profit</th><th class="num">Margin</th></tr></thead>
+         <tbody>${pnlRows.map((c) => {
+           const p = num(c.revenue) - num(c.costs);
+           const m = num(c.revenue) ? ((p / num(c.revenue)) * 100).toFixed(1) + '%' : '—';
+           return `<tr data-id="${esc(c.id)}" style="cursor:pointer"><td>${esc(c.title)}<div class="sub">${esc(c.agency || '')}${c.contract_number ? ' · ' + esc(c.contract_number) : ''}</div></td>
+             <td>${fmtDate(c.period_start)} – ${fmtDate(c.period_end)}</td>
+             <td class="num">${money(c.award_amount)}</td><td class="num">${money(c.revenue)}</td><td class="num">${money(c.costs)}</td>
+             <td class="num ${p < 0 ? 'neg' : ''}">${money(p)}</td><td class="num ${p < 0 ? 'neg' : ''}">${m}</td></tr>`;
+         }).join('')}</tbody>
+         <tfoot><tr><th>Total</th><th></th><th class="num">${money(awarded)}</th><th class="num">${money(won.reduce((s, c) => s + num(c.revenue), 0))}</th><th class="num">${money(won.reduce((s, c) => s + num(c.costs), 0))}</th><th class="num">${money(won.reduce((s, c) => s + num(c.revenue) - num(c.costs), 0))}</th><th></th></tr></tfoot>`
+      : '<tbody><tr><td class="empty">No won contracts yet.</td></tr></tbody>';
+  }
+
+  function renderContracts() {
+    const q = $('#contractFilter').value.trim().toLowerCase();
+    const st = $('#contractStatusFilter').value;
+    const rows = contracts.filter((c) =>
+      (!st || c.status === st) &&
+      (!q || [c.title, c.agency, c.solicitation_number, c.contract_number, c.naics_code].some((v) => String(v || '').toLowerCase().includes(q))));
+    $('#contractsTable').innerHTML = rows.length
+      ? `<thead><tr><th>Title</th><th>Status</th><th>NAICS</th><th>Deadline / bid date</th><th class="num">Bid</th><th class="num">Award</th><th class="num">Profit</th></tr></thead>
+         <tbody>${rows.map((c) => {
+           const p = num(c.revenue) - num(c.costs);
+           const hasPnl = num(c.revenue) || num(c.costs);
+           return `<tr data-id="${esc(c.id)}" style="cursor:pointer">
+             <td>${esc(c.title)}<div class="sub">${esc(c.agency || '')}${c.solicitation_number ? ' · ' + esc(c.solicitation_number) : ''}</div></td>
+             <td>${pill(c.status)}</td>
+             <td>${esc(c.naics_code || '—')}</td>
+             <td>${c.status === 'pursuing' ? fmtDate(c.response_deadline) : fmtDate(c.bid_submitted_on)}</td>
+             <td class="num">${c.bid_amount ? money(c.bid_amount) : '—'}</td>
+             <td class="num">${c.award_amount ? money(c.award_amount) : '—'}</td>
+             <td class="num ${p < 0 ? 'neg' : ''}">${hasPnl ? money(p) : '—'}</td></tr>`;
+         }).join('')}</tbody>`
+      : `<tbody><tr><td class="empty">${contracts.length ? 'No contracts match.' : 'No contracts yet. Add one, or track an opportunity from the Search tab.'}</td></tr></tbody>`;
+  }
+
+  $('#contractStatusFilter').innerHTML += STATUSES.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join('');
+  $('#f_status').innerHTML = STATUSES.map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join('');
+  $('#contractFilter').addEventListener('input', renderContracts);
+  $('#contractStatusFilter').addEventListener('change', renderContracts);
+
+  // Clicking any contract row opens the editor.
+  document.addEventListener('click', (e) => {
+    const tr = e.target.closest('tr[data-id]');
+    if (tr) openContract(contracts.find((c) => String(c.id) === tr.dataset.id));
+    if (e.target.closest('[data-action="new-contract"]')) openContract(null);
+  });
+
+  // ---------- Contract editor ----------
+  const dialog = $('#contractDialog');
+  const form = $('#contractForm');
+  const NUMERIC = ['bid_amount', 'award_amount', 'revenue', 'costs'];
+  let editing = null;
+
+  function openContract(c, prefill) {
+    editing = c || null;
+    form.reset();
+    const data = c || prefill || { status: 'pursuing' };
+    for (const el of form.elements) {
+      if (!el.name) continue;
+      let v = data[el.name];
+      if (el.type === 'date' && v) v = String(v).slice(0, 10);
+      el.value = v ?? '';
+    }
+    $('#contractDialogTitle').textContent = c ? 'Edit contract' : 'Add contract';
+    $('#deleteContractBtn').hidden = !c;
+    dialog.showModal();
+  }
+
+  $$('[data-close]', dialog).forEach((b) => b.addEventListener('click', () => dialog.close()));
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const row = editing ? { id: editing.id } : {};
+    if (!editing && form._samNoticeId) row.sam_notice_id = form._samNoticeId;
+    for (const el of form.elements) {
+      if (!el.name) continue;
+      const v = el.value.trim();
+      if (NUMERIC.includes(el.name)) row[el.name] = v === '' ? (el.name === 'revenue' || el.name === 'costs' ? 0 : null) : Number(v);
+      else row[el.name] = v === '' ? null : v;
+    }
+    $('#saveContractBtn').disabled = true;
+    try {
+      await api.saveContract(row);
+      dialog.close();
+      form._samNoticeId = null;
+      toast(editing ? 'Contract updated' : 'Contract added');
+      await loadContracts();
+    } catch (err) {
+      toast('Save failed: ' + err.message);
+    } finally {
+      $('#saveContractBtn').disabled = false;
+    }
+  });
+
+  dialog.addEventListener('close', () => { form._samNoticeId = null; });
+
+  $('#deleteContractBtn').addEventListener('click', async () => {
+    if (!editing || !confirm(`Delete “${editing.title}”? This cannot be undone.`)) return;
+    try {
+      await api.deleteContract(editing.id);
+      dialog.close();
+      toast('Contract deleted');
+      await loadContracts();
+    } catch (err) {
+      toast('Delete failed: ' + err.message);
+    }
+  });
+
+  // ---------- SAM.gov search ----------
+  $('#sTypes').innerHTML = NOTICE_TYPES.map(([code, label, on]) =>
+    `<label><input type="checkbox" value="${code}" ${on ? 'checked' : ''}/> <span>${esc(label)}</span></label>`).join('');
+  $('#sNaics').innerHTML = NAICS.map(([code, name]) =>
+    `<label><input type="checkbox" value="${code}" checked/> <span><code>${code}</code> <span class="desc">${esc(name)}</span></span></label>`).join('');
+  $('#naicsAll').addEventListener('click', () => $$('#sNaics input').forEach((i) => { i.checked = true; }));
+  $('#naicsNone').addEventListener('click', () => $$('#sNaics input').forEach((i) => { i.checked = false; }));
+
+  $('#searchForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const naics = $$('#sNaics input:checked').map((i) => i.value);
+    const types = $$('#sTypes input:checked').map((i) => i.value);
+    if (!naics.length) { $('#resultsMeta').textContent = 'Select at least one NAICS code.'; return; }
+    if (!types.length) { $('#resultsMeta').textContent = 'Select at least one notice type.'; return; }
+    const btn = $('#searchBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Searching…';
+    $('#resultsMeta').textContent = `Searching ${naics.length} NAICS code${naics.length > 1 ? 's' : ''} on SAM.gov…`;
+    try {
+      const res = await api.samSearch({
+        keyword: $('#sKeyword').value.trim(),
+        postedDays: Number($('#sPosted').value),
+        setAside: $('#sSetAside').value,
+        state: $('#sState').value.trim(),
+        activeOnly: $('#sActive').checked,
+        naics,
+        types,
+      });
+      searchResults = res.opportunities || [];
+      const m = res.meta || {};
+      const notes = [];
+      if (m.fromCache) notes.push(`${m.fromCache} from cache`);
+      if (m.truncated?.length) notes.push(`more than 1,000 results for ${m.truncated.join(', ')}; narrow the date range`);
+      if (m.errors?.length) notes.push(`${m.errors.length} request(s) failed: ${m.errors[0]}`);
+      $('#resultsMeta').innerHTML = `<b>${searchResults.length}</b> opportunit${searchResults.length === 1 ? 'y' : 'ies'} across ${m.naicsSearched} NAICS codes${notes.length ? ' · ' + esc(notes.join(' · ')) : ''}.`;
+      $('#resultsToolbar').hidden = !searchResults.length;
+      renderResults();
+    } catch (err) {
+      $('#resultsMeta').innerHTML = `<span class="neg">Search failed: ${esc(err.message)}</span>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Search SAM.gov';
+    }
+  });
+
+  function renderResults() {
+    const box = $('#results');
+    if (!searchResults.length) { box.innerHTML = ''; return; }
+    const q = $('#resultsFilter').value.trim().toLowerCase();
+    const sort = $('#resultsSort').value;
+    const tracked = new Set(contracts.map((c) => c.sam_notice_id).filter(Boolean));
+    const list = searchResults
+      .filter((o) => !q || [o.title, o.agency, o.solicitationNumber, o.naicsCode, o.setAside].some((v) => String(v || '').toLowerCase().includes(q)))
+      .sort((a, b) => sort === 'deadline'
+        ? String(a.responseDeadline || '9999').localeCompare(String(b.responseDeadline || '9999'))
+        : String(b.postedDate || '').localeCompare(String(a.postedDate || '')));
+    box.innerHTML = list.map((o) => {
+      const d = daysUntil(o.responseDeadline);
+      const agency = String(o.agency || '').split('.').filter(Boolean);
+      const isTracked = tracked.has(o.noticeId);
+      return `<article class="opp" data-notice="${esc(o.noticeId)}">
+        <div class="opp-head">
+          <div>
+            <h4>${esc(o.title)}</h4>
+            <div class="agency">${esc(agency[0] || '')}${agency.length > 1 ? ' › ' + esc(agency[agency.length - 1]) : ''}</div>
+          </div>
+          <span class="pill">${esc(o.type || '')}</span>
+        </div>
+        <div class="opp-meta">
+          <span>Due <b class="${d !== null && d <= 7 ? 'due-soon' : ''}">${fmtDate(o.responseDeadline)}${d !== null && d >= 0 ? ` (${d}d)` : ''}</b></span>
+          <span>Posted <b>${fmtDate(o.postedDate)}</b></span>
+          <span>NAICS <b title="${esc(NAICS_NAME[o.naicsCode] || '')}">${esc(o.naicsCode || '—')}</b></span>
+          ${o.solicitationNumber ? `<span>Sol # <b>${esc(o.solicitationNumber)}</b></span>` : ''}
+          ${o.setAside ? `<span>Set-aside <b>${esc(o.setAside)}</b></span>` : ''}
+          ${o.state ? `<span>Place <b>${esc([o.city, o.state].filter(Boolean).join(', '))}</b></span>` : ''}
+          ${o.pocName ? `<span>POC <b>${esc(o.pocName)}</b>${o.pocEmail ? ` · <a href="mailto:${esc(o.pocEmail)}">${esc(o.pocEmail)}</a>` : ''}</span>` : ''}
+        </div>
+        <div class="opp-actions">
+          <a class="btn btn-sm" href="${esc(o.samUrl)}" target="_blank" rel="noopener">View on SAM.gov ↗</a>
+          ${o.hasDescription ? '<button class="btn btn-sm" data-desc>Show description</button>' : ''}
+          <button class="btn btn-sm ${isTracked ? '' : 'btn-dark'}" data-track ${isTracked ? 'disabled' : ''}>${isTracked ? '✓ Tracked' : '+ Track this bid'}</button>
+        </div>
+        <div class="opp-desc" hidden></div>
+      </article>`;
+    }).join('') || '<p class="empty">No results match that filter.</p>';
+  }
+
+  $('#resultsFilter').addEventListener('input', renderResults);
+  $('#resultsSort').addEventListener('change', renderResults);
+
+  $('#results').addEventListener('click', async (e) => {
+    const card = e.target.closest('.opp');
+    if (!card) return;
+    const opp = searchResults.find((o) => o.noticeId === card.dataset.notice);
+    if (!opp) return;
+
+    if (e.target.closest('[data-desc]')) {
+      const btn = e.target.closest('[data-desc]');
+      const box = $('.opp-desc', card);
+      if (!box.hidden) { box.hidden = true; btn.textContent = 'Show description'; return; }
+      box.hidden = false;
+      btn.textContent = 'Hide description';
+      if (box.dataset.loaded) return;
+      box.innerHTML = '<span class="spinner"></span> Loading…';
+      try {
+        const html = await api.samDescription(opp.noticeId);
+        box.innerHTML = sanitize(html) || 'No description provided.';
+        box.dataset.loaded = '1';
+      } catch (err) {
+        box.textContent = 'Could not load description: ' + err.message;
+      }
+    }
+
+    if (e.target.closest('[data-track]')) {
+      form._samNoticeId = opp.noticeId;
+      openContract(null, {
+        title: opp.title,
+        agency: String(opp.agency || '').split('.').filter(Boolean).join(' › '),
+        solicitation_number: opp.solicitationNumber,
+        naics_code: opp.naicsCode,
+        set_aside: opp.setAside,
+        response_deadline: opp.responseDeadline,
+        sam_url: opp.samUrl,
+        contact_name: opp.pocName,
+        contact_email: opp.pocEmail,
+        status: 'pursuing',
+      });
+      form._samNoticeId = opp.noticeId;
+    }
+  });
+
+  // SAM.gov descriptions are HTML; keep text formatting, drop everything active.
+  function sanitize(html) {
+    const doc = new DOMParser().parseFromString(String(html || ''), 'text/html');
+    const ALLOWED = new Set(['P', 'BR', 'UL', 'OL', 'LI', 'B', 'STRONG', 'I', 'EM', 'U', 'TABLE', 'THEAD', 'TBODY', 'TR', 'TD', 'TH', 'H1', 'H2', 'H3', 'H4', 'DIV', 'SPAN']);
+    const walk = (node) => {
+      for (const child of Array.from(node.childNodes)) {
+        if (child.nodeType === 1) {
+          if (!ALLOWED.has(child.tagName)) {
+            if (['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT'].includes(child.tagName)) { child.remove(); continue; }
+            walk(child);
+            child.replaceWith(...Array.from(child.childNodes));
+            continue;
+          }
+          for (const attr of Array.from(child.attributes)) child.removeAttribute(attr.name);
+          walk(child);
+        }
+      }
+    };
+    walk(doc.body);
+    return doc.body.innerHTML.trim();
+  }
+
+  // ---------- Opportunity analysis (CSV → Claude ranking) ----------
+  const DEFAULT_PROFILE = `Carrigon LLC: Service-Disabled Veteran-Owned Small Business (SDVOSB, certified). Founded by a West Point graduate and Army veteran with 10 years of military leadership and operational planning experience. Services firm; does not manufacture or resell hardware.
+
+Set-asides we qualify for: SDVOSB, VOSB, Total/Partial Small Business. We are NOT 8(a), HUBZone, WOSB or EDWOSB certified. No facility security clearance (FCL) on file; not registered for NATO procurement.
+
+Core capabilities:
+- IT services & development: custom federal IT systems, legacy migration, cloud-native architecture, application modernization, DevSecOps and CI/CD pipelines.
+- Cybersecurity & compliance: zero-trust frameworks, CMMC readiness, FedRAMP and ATO support.
+- Cloud & data infrastructure: GovCloud deployments, data hosting, software platforms.
+- Program & operations management: IT program management, PMO support, logistics process optimization.
+- Data analytics & AI: analytics, data science, quantitative risk modeling, AI/ML pipelines, knowledge graphs.
+- IT staffing & talent: staff augmentation with mission-ready IT professionals.
+- Training & workforce development: leadership development, technical upskilling, curriculum design.
+- Strategic communications & outreach: public awareness and recruitment campaigns, stakeholder engagement.
+- Market research & stakeholder insights: surveys, public opinion polling, customer experience research.
+
+NAICS: 541511, 541512, 541513, 541519, 541611, 541612, 541613, 541614, 541618, 541690, 541715, 541810, 541910, 541990, 518210, 513210, 517810, 561320, 561330, 561621, 611430, 611710.
+
+Best fits: services contracts a small business can prime or credibly sub on, especially SDVOSB/small-business set-asides and early-stage sources sought/RFIs where we can shape the requirement.`;
+
+  const BATCH_MAX_ITEMS = 12;
+  const BATCH_MAX_CHARS = 60000;
+  const BATCH_CONCURRENCY = 3;
+  const REC_ORDER = { Pursue: 0, Consider: 1, Pass: 2 };
+
+  let csvOpportunities = [];
+  let csvFileName = '';
+  let analysis = [];
+  let analysisRecFilter = '';
+
+  // RFC 4180 CSV parser: quoted fields, embedded commas/newlines, doubled quotes.
+  function parseCsv(text) {
+    const rows = [];
+    let row = [], field = '', inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (text[i + 1] === '"') { field += '"'; i++; } else inQuotes = false;
+        } else field += ch;
+      } else if (ch === '"') inQuotes = true;
+      else if (ch === ',') { row.push(field); field = ''; }
+      else if (ch === '\n' || ch === '\r') {
+        if (ch === '\r' && text[i + 1] === '\n') i++;
+        row.push(field); rows.push(row); row = []; field = '';
+      } else field += ch;
+    }
+    if (field !== '' || row.length) { row.push(field); rows.push(row); }
+    return rows.filter((r) => r.some((c) => c.trim() !== ''));
+  }
+
+  // SAM.gov exports are sometimes Windows-1252, not UTF-8.
+  async function readCsvFile(file) {
+    const buf = await file.arrayBuffer();
+    try { return new TextDecoder('utf-8', { fatal: true }).decode(buf); }
+    catch (_) { return new TextDecoder('windows-1252').decode(buf); }
+  }
+
+  const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+  function samDaysLeft(s) {
+    const m = /^([A-Za-z]{3})\w*\s+(\d{1,2}),\s*(\d{4})/.exec(String(s || '').trim());
+    if (!m || !(m[1].toLowerCase() in MONTHS)) return null;
+    const due = new Date(Number(m[3]), MONTHS[m[1].toLowerCase()], Number(m[2]), 23, 59, 59);
+    return Math.ceil((due - Date.now()) / 86400000) - 1;
+  }
+
+  function csvToOpportunities(text) {
+    const rows = parseCsv(text);
+    if (rows.length < 2) throw new Error('The file has no data rows.');
+    const header = rows[0].map((h) => h.replace(/^﻿/, '').trim().toLowerCase());
+    const col = (name) => header.indexOf(name);
+    const idx = {
+      id: col('notice id'), title: col('title'), description: col('description'),
+      deadline: col('current response date'), type: col('contract opportunity type'),
+      poc: col('poc information'), active: col('active/inactive'), naics: col('naics'),
+      psc: col('psc'), setAside: col('set aside'), published: col('last published date'),
+    };
+    if (idx.title < 0 || idx.id < 0) throw new Error('This doesn\'t look like a SAM.gov Contract Opportunities export (no "Notice ID"/"Title" columns).');
+    const val = (r, i) => {
+      const v = i >= 0 ? String(r[i] ?? '').trim() : '';
+      return v === 'N/A' ? '' : v;
+    };
+    return rows.slice(1).map((r) => ({
+      noticeId: val(r, idx.id),
+      title: val(r, idx.title),
+      description: val(r, idx.description),
+      deadline: val(r, idx.deadline),
+      daysLeft: samDaysLeft(val(r, idx.deadline)),
+      type: val(r, idx.type),
+      poc: val(r, idx.poc),
+      active: val(r, idx.active),
+      naics: val(r, idx.naics),
+      psc: val(r, idx.psc),
+      setAside: val(r, idx.setAside),
+      published: val(r, idx.published),
+    })).filter((o) => o.noticeId && o.title);
+  }
+
+  async function loadCsv(file) {
+    if (!file) return;
+    try {
+      csvOpportunities = csvToOpportunities(await readCsvFile(file));
+      csvFileName = file.name;
+      $('#csvName').textContent = `${file.name}: ${csvOpportunities.length} opportunities`;
+      $('#analyzeBtn').disabled = !csvOpportunities.length;
+      $('#analyzeStatus').textContent = '';
+    } catch (err) {
+      csvOpportunities = [];
+      $('#csvName').textContent = '';
+      $('#analyzeBtn').disabled = true;
+      $('#analyzeStatus').innerHTML = `<span class="neg">${esc(err.message)}</span>`;
+    }
+  }
+
+  $('#csvInput').addEventListener('change', (e) => loadCsv(e.target.files[0]));
+  const drop = $('#csvDrop');
+  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+  drop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    drop.classList.remove('over');
+    loadCsv(e.dataTransfer.files[0]);
+  });
+
+  function makeBatches(items) {
+    const batches = [];
+    let cur = [], size = 0;
+    for (const o of items) {
+      const len = (o.description || '').length + (o.title || '').length + 400;
+      if (cur.length && (cur.length >= BATCH_MAX_ITEMS || size + len > BATCH_MAX_CHARS)) {
+        batches.push(cur); cur = []; size = 0;
+      }
+      cur.push(o); size += len;
+    }
+    if (cur.length) batches.push(cur);
+    return batches;
+  }
+
+  $('#analyzeBtn').addEventListener('click', async () => {
+    const profile = $('#profileText').value.trim();
+    if (!profile) { $('#analyzeStatus').textContent = 'Add a company profile first.'; return; }
+    const skipClosed = $('#aSkipClosed').checked;
+    const skipped = [];
+    const todo = csvOpportunities.filter((o) => {
+      const closed = /inactive/i.test(o.active) || (typeof o.daysLeft === 'number' && o.daysLeft < 0);
+      if (skipClosed && closed) { skipped.push(o); return false; }
+      return true;
+    });
+    if (!todo.length) { $('#analyzeStatus').textContent = 'Every opportunity in this file is closed.'; return; }
+
+    const batches = makeBatches(todo);
+    const btn = $('#analyzeBtn');
+    const bar = $('#analyzeProgress');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Analyzing…';
+    bar.hidden = false;
+    bar.firstElementChild.style.width = '0';
+    let done = 0;
+    const errors = [];
+    const scored = new Map();
+    const tick = () => {
+      $('#analyzeStatus').textContent = `Analyzed ${done} of ${todo.length} opportunities…`;
+      bar.firstElementChild.style.width = `${(done / todo.length) * 100}%`;
+    };
+    tick();
+
+    const queue = batches.slice();
+    async function worker() {
+      while (queue.length) {
+        const batch = queue.shift();
+        try {
+          const results = await api.analyzeBatch(profile, batch);
+          for (const r of results) scored.set(r.notice_id, r);
+        } catch (err) {
+          errors.push(err.message);
+        }
+        done += batch.length;
+        tick();
+      }
+    }
+    await Promise.all(Array.from({ length: Math.min(BATCH_CONCURRENCY, batches.length) }, worker));
+
+    analysis = todo.map((o) => {
+      const { description, ...rest } = o;
+      return { ...rest, ...(scored.get(o.noticeId) || { fit_score: null, recommendation: 'Not scored', risks: ['Analysis failed for this batch'] }) };
+    });
+    sortAnalysis();
+    analysisRecFilter = '';
+    btn.disabled = false;
+    btn.textContent = 'Analyze opportunities';
+    bar.hidden = true;
+    const failed = analysis.filter((a) => a.fit_score === null).length;
+    $('#analyzeStatus').innerHTML = `Ranked ${analysis.length - failed} of ${todo.length}` +
+      (skipped.length ? `; skipped ${skipped.length} closed` : '') +
+      (failed ? `. <span class="neg">${failed} not scored: ${esc(errors[0] || 'missing from response')}</span>` : '.');
+    renderAnalysis(csvFileName);
+
+    if (analysis.length > failed) {
+      try {
+        await api.saveRun({ file_name: csvFileName, opportunity_count: analysis.length, results: analysis });
+        await loadRuns();
+      } catch (err) {
+        toast('Results shown but not saved: ' + err.message);
+      }
+    }
+  });
+
+  function sortAnalysis() {
+    analysis.sort((a, b) =>
+      (b.fit_score ?? -1) - (a.fit_score ?? -1) ||
+      (REC_ORDER[a.recommendation] ?? 3) - (REC_ORDER[b.recommendation] ?? 3) ||
+      (a.daysLeft ?? 999) - (b.daysLeft ?? 999));
+  }
+
+  const samSearchUrl = (id) => `https://sam.gov/search/?index=opp&page=1&sort=-relevance&keywords=${encodeURIComponent(id)}`;
+
+  function renderAnalysis(label) {
+    const tally = $('#analysisTally');
+    const meta = $('#analysisMeta');
+    const box = $('#analysisResults');
+    $('#analysisToolbar').hidden = !analysis.length;
+    tally.hidden = !analysis.length;
+    if (!analysis.length) { box.innerHTML = ''; meta.textContent = 'No analysis yet.'; return; }
+    if (label !== undefined) meta.dataset.label = label || '';
+
+    const counts = { Pursue: 0, Consider: 0, Pass: 0 };
+    analysis.forEach((a) => { if (a.recommendation in counts) counts[a.recommendation]++; });
+    tally.innerHTML = [['', `All ${analysis.length}`], ...Object.entries(counts).map(([k, n]) => [k, `${k} ${n}`])]
+      .map(([k, l]) => `<button type="button" data-rec="${k}" aria-pressed="${analysisRecFilter === k}">${esc(l)}</button>`).join('');
+
+    const q = $('#analysisFilter').value.trim().toLowerCase();
+    const tracked = new Set(contracts.map((c) => c.solicitation_number).filter(Boolean));
+    const list = analysis
+      .map((a, i) => ({ a, rank: i + 1 }))
+      .filter(({ a }) => (!analysisRecFilter || a.recommendation === analysisRecFilter) &&
+        (!q || [a.title, a.noticeId, a.summary, a.setAside, a.type, ...(a.matched_capabilities || [])].some((v) => String(v || '').toLowerCase().includes(q))));
+    meta.textContent = `${meta.dataset.label ? meta.dataset.label + ': ' : ''}ranked best to worst${q || analysisRecFilter ? ` · showing ${list.length}` : ''}.`;
+
+    box.innerHTML = list.map(({ a, rank }) => {
+      const rec = String(a.recommendation || '').toLowerCase();
+      const d = a.daysLeft;
+      const isTracked = tracked.has(a.noticeId);
+      const li = (arr) => (arr || []).map((s) => `<li>${esc(s)}</li>`).join('') || '<li>—</li>';
+      return `<article class="opp" data-notice="${esc(a.noticeId)}">
+        <div class="rank">
+          <div class="score ${esc(rec)}">${a.fit_score ?? '—'}<small>#${rank}</small></div>
+          <div>
+            <div class="opp-head">
+              <div>
+                <h4>${esc(a.title)}</h4>
+                <div class="agency">${esc(a.noticeId)} · ${esc(a.type || '')}</div>
+              </div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end">
+                <span class="pill ${esc(rec)}">${esc(a.recommendation || '')}</span>
+                ${a.eligibility ? `<span class="pill ${a.eligibility === 'Not eligible' ? 'inelig' : ''}">${esc(a.eligibility)}</span>` : ''}
+              </div>
+            </div>
+            <div class="opp-meta">
+              <span>Due <b class="${d !== null && d <= 7 ? 'due-soon' : ''}">${esc(a.deadline || '—')}${d !== null && d >= 0 ? ` (${d}d)` : ''}</b></span>
+              ${a.setAside ? `<span>Set-aside <b>${esc(a.setAside)}</b></span>` : '<span>Set-aside <b>None listed</b></span>'}
+              ${a.naics ? `<span>NAICS <b>${esc(a.naics)}</b></span>` : ''}
+              ${a.poc ? `<span>POC <b>${esc(a.poc)}</b></span>` : ''}
+            </div>
+            ${a.summary ? `<p style="margin-top:10px; font-size:0.85rem; line-height:1.5">${esc(a.summary)}</p>` : ''}
+            ${(a.matched_capabilities || []).length ? `<div class="caps">${a.matched_capabilities.map((c) => `<span class="pill">${esc(c)}</span>`).join('')}</div>` : ''}
+            <div class="why">
+              <div><h5>Strengths</h5><ul>${li(a.strengths)}</ul></div>
+              <div><h5>Risks</h5><ul>${li(a.risks)}</ul></div>
+            </div>
+            ${a.next_step ? `<div class="next"><b>Next step:</b> ${esc(a.next_step)}</div>` : ''}
+            <div class="opp-actions">
+              <a class="btn btn-sm" href="${esc(samSearchUrl(a.noticeId))}" target="_blank" rel="noopener">Find on SAM.gov ↗</a>
+              <button class="btn btn-sm ${isTracked ? '' : 'btn-dark'}" data-track-analysis ${isTracked ? 'disabled' : ''}>${isTracked ? '✓ Tracked' : '+ Track this bid'}</button>
+            </div>
+          </div>
+        </div>
+      </article>`;
+    }).join('') || '<p class="empty">No results match that filter.</p>';
+  }
+
+  $('#analysisTally').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-rec]');
+    if (!b) return;
+    analysisRecFilter = b.dataset.rec;
+    renderAnalysis();
+  });
+  $('#analysisFilter').addEventListener('input', () => renderAnalysis());
+
+  $('#analysisResults').addEventListener('click', (e) => {
+    if (!e.target.closest('[data-track-analysis]')) return;
+    const a = analysis.find((x) => x.noticeId === e.target.closest('.opp').dataset.notice);
+    if (!a) return;
+    const m = /^([A-Za-z]{3})\w*\s+(\d{1,2}),\s*(\d{4})/.exec(a.deadline || '');
+    const due = m && m[1].toLowerCase() in MONTHS
+      ? `${m[3]}-${String(MONTHS[m[1].toLowerCase()] + 1).padStart(2, '0')}-${m[2].padStart(2, '0')}` : null;
+    openContract(null, {
+      title: a.title,
+      solicitation_number: a.noticeId,
+      set_aside: a.setAside || null,
+      response_deadline: due,
+      sam_url: samSearchUrl(a.noticeId),
+      contact_name: a.poc || null,
+      status: 'pursuing',
+      notes: [`Fit score ${a.fit_score} (${a.recommendation})`, a.summary, a.next_step && 'Next step: ' + a.next_step].filter(Boolean).join('\n'),
+    });
+  });
+
+  $('#exportAnalysisBtn').addEventListener('click', () => {
+    const cols = [
+      ['Rank', (a, i) => i + 1], ['Fit score', (a) => a.fit_score], ['Recommendation', (a) => a.recommendation],
+      ['Eligibility', (a) => a.eligibility], ['Notice ID', (a) => a.noticeId], ['Title', (a) => a.title],
+      ['Type', (a) => a.type], ['Response date', (a) => a.deadline], ['Days left', (a) => a.daysLeft],
+      ['Set aside', (a) => a.setAside], ['NAICS', (a) => a.naics], ['POC', (a) => a.poc],
+      ['Matched capabilities', (a) => (a.matched_capabilities || []).join('; ')], ['Summary', (a) => a.summary],
+      ['Strengths', (a) => (a.strengths || []).join('; ')], ['Risks', (a) => (a.risks || []).join('; ')],
+      ['Next step', (a) => a.next_step],
+    ];
+    const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const csv = [cols.map(([h]) => cell(h)).join(','), ...analysis.map((a, i) => cols.map(([, f]) => cell(f(a, i))).join(','))].join('\r\n');
+    const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' }));
+    const link = document.createElement('a');
+    link.href = url;
+    const base = ($('#analysisMeta').dataset.label || 'opportunities').replace(/\.csv$/i, '');
+    link.download = `carrigon-ranked-${base}.csv`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  // Profile: shared across admins via admin_settings.
+  $('#saveProfileBtn').addEventListener('click', async () => {
+    try {
+      await api.saveSetting('company_profile', $('#profileText').value.trim());
+      toast('Profile saved');
+    } catch (err) {
+      toast('Could not save profile: ' + err.message);
+    }
+  });
+  $('#resetProfileBtn').addEventListener('click', () => { $('#profileText').value = DEFAULT_PROFILE; });
+
+  async function loadRuns() {
+    try {
+      const runs = await api.listRuns();
+      $('#runSelect').innerHTML = '<option value="">—</option>' + runs.map((r) =>
+        `<option value="${esc(r.id)}">${esc(new Date(r.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }))} · ${esc(r.file_name || 'CSV')} (${r.opportunity_count})</option>`).join('');
+    } catch (_) { /* table may not exist yet; leave the list empty */ }
+  }
+
+  $('#runSelect').addEventListener('change', async (e) => {
+    if (!e.target.value) return;
+    try {
+      const run = await api.getRun(e.target.value);
+      analysis = run.results || [];
+      sortAnalysis();
+      analysisRecFilter = '';
+      renderAnalysis(run.file_name);
+    } catch (err) {
+      toast('Could not load analysis: ' + err.message);
+    }
+  });
+
+  async function loadAnalysisSettings() {
+    let profile = null;
+    try { profile = await api.getSetting('company_profile'); } catch (_) { /* fall back to default */ }
+    $('#profileText').value = profile || DEFAULT_PROFILE;
+    await loadRuns();
+  }
+
+  // ---------- Start ----------
+  (async () => {
+    if (/type=recovery/.test(location.hash)) { show('reset'); return; }
+    const session = await api.session();
+    if (session) await enterApp(session);
+    else show('login');
+  })();
+})();
+</script>
+</body>
+</html>
