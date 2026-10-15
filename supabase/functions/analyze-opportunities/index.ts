@@ -44,7 +44,9 @@ const RESULT_SCHEMA = {
 
 const SYSTEM_PROMPT = `You are a federal capture manager for a small government contractor. You review SAM.gov contract opportunities and decide which ones the company should spend its limited bid-and-proposal time on.
 
-Score each opportunity from 0 to 100 for how good a pursuit it is for the company described in the profile, then recommend Pursue (roughly 70+), Consider (40-69) or Pass (below 40).
+The profile describes either a single company or a joint venture; when it is a joint venture, judge eligibility and capability for the JV as the profile describes it, using the combined capabilities of its partners.
+
+Score each opportunity from 0 to 100 for how good a pursuit it is for the company or joint venture described in the profile, then recommend Pursue (roughly 70+), Consider (40-69) or Pass (below 40).
 
 Weigh, in roughly this order:
 1. Eligibility. A set-aside the company does not hold (for example WOSB, 8(a) or HUBZone when the company is none of those) makes it "Not eligible" to prime; say so and score low, though note subcontracting potential if it is a strong match. A sole-source notice naming another vendor, a requirement for a facility clearance or certifications the profile does not mention, or a foreign-procurement process the company is not registered for are serious barriers.

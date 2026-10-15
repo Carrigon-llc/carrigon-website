@@ -289,6 +289,10 @@
     .why ul { padding-left: 16px; color: var(--ink-2); line-height: 1.45; }
     .next { margin-top: 10px; font-size: 0.8rem; padding: 8px 10px; border-left: 3px solid var(--gold-dark); background: var(--muted-bg); border-radius: 0 4px 4px 0; }
     .caps { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .seg button { border: none; background: var(--surface); padding: 8px 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: var(--ink-2); }
+    .seg button + button { border-left: 1px solid var(--line); }
+    .seg button[aria-selected="true"] { background: var(--green); color: #fff; }
 
     @media (max-width: 1100px) {
       .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -491,11 +495,19 @@
       <div class="page-head">
         <div>
           <h2>Opportunity Analysis</h2>
-          <p>Upload a Contract Opportunities CSV exported from SAM.gov. Claude scores each opportunity against Carrigon's profile and ranks them best to worst.</p>
+          <p>Upload a Contract Opportunities CSV exported from SAM.gov. Claude scores each opportunity against Carrigon alone or the CarriSys JV and ranks them best to worst.</p>
         </div>
       </div>
       <div class="search-layout">
         <div class="card filters">
+          <div class="field">
+            <span class="flabel">Score against</span>
+            <div class="seg" role="tablist" id="profileTabs">
+              <button type="button" role="tab" data-profile="carrigon" aria-selected="true">Carrigon</button>
+              <button type="button" role="tab" data-profile="carrisys" aria-selected="false">CarriSys JV</button>
+            </div>
+            <p class="sub" id="profileHint" style="font-size:0.75rem; color:var(--ink-3)"></p>
+          </div>
           <div class="field">
             <span class="flabel">1. SAM.gov export</span>
             <label class="drop" id="csvDrop" for="csvInput">
@@ -514,7 +526,7 @@
           <p class="results-meta" id="analyzeStatus" style="margin-top:10px"></p>
 
           <div class="field" style="margin-top:8px">
-            <label for="profileText">2. Carrigon profile (what we're scored against)</label>
+            <label for="profileText" id="profileLabel">2. Carrigon profile (what we're scored against)</label>
             <textarea id="profileText" class="profile-box"></textarea>
             <div style="display:flex; gap:8px">
               <button class="btn btn-sm" id="saveProfileBtn" type="button">Save profile</button>
@@ -723,7 +735,7 @@
       },
       async saveSetting(key, value) { unwrap(await sb.from('admin_settings').upsert({ key, value, updated_at: new Date().toISOString() })); },
       async listRuns() {
-        return unwrap(await sb.from('analysis_runs').select('id, file_name, opportunity_count, created_by, created_at').order('created_at', { ascending: false }).limit(25));
+        return unwrap(await sb.from('analysis_runs').select('id, file_name, profile, opportunity_count, created_by, created_at').order('created_at', { ascending: false }).limit(25));
       },
       async getRun(id) { return unwrap(await sb.from('analysis_runs').select('*').eq('id', id).single()); },
       async saveRun(run) { return unwrap(await sb.from('analysis_runs').insert(run).select('id').single()); },
@@ -1282,6 +1294,29 @@ NAICS: 541511, 541512, 541513, 541519, 541611, 541612, 541613, 541614, 541618, 5
 
 Best fits: services contracts a small business can prime or credibly sub on, especially SDVOSB/small-business set-asides and early-stage sources sought/RFIs where we can shape the requirement.`;
 
+  // Drafted from sstech.us plus SBA mentor-protégé basics. Items marked [CONFIRM]
+  // aren't public; edit them in the profile box and save.
+  const DEFAULT_CARRISYS_PROFILE = `CarriSys: joint venture between Carrigon LLC (protégé, managing venturer) and System Soft Technologies (mentor) under an SBA mentor-protégé agreement. [CONFIRM: SBA-approved mentor-protégé agreement; JV registered in SAM.gov with its own UEI/CAGE; JV agreement meets SBA SDVOSB joint venture requirements.]
+
+Eligibility: A JV between an SBA-approved protégé and its mentor is generally treated as small for any procurement for which the protégé individually qualifies as small. With Carrigon (certified SDVOSB) as managing venturer and a compliant JV agreement, CarriSys can pursue SDVOSB, VOSB and small-business set-asides. Not 8(a), HUBZone or WOSB eligible. [CONFIRM: no facility security clearance; no NATO procurement registration.] The JV's own past performance is new, but SBA lets agencies consider each venturer's past performance, so System Soft's enterprise record strengthens bids.
+
+Partner 1 - Carrigon LLC (SDVOSB): IT and management consulting, digital transformation, application modernization, cloud engineering and migration, DevSecOps/CI-CD, cybersecurity and compliance (zero trust, CMMC, FedRAMP/ATO), data science, AI/ML and quantitative risk modeling, program/PMO management, IT staffing, training and workforce development, strategic communications, market research. Founded by a West Point graduate and Army veteran.
+
+Partner 2 - System Soft Technologies (mentor): 20+ years supporting enterprise systems; nationally ranked IT staffing firm with a 1M+ profile talent network and 400+ clients across regulated industries (healthcare, financial services, government and public sector). Services: contract, contract-to-hire and direct-hire staffing (IT and non-IT); application services (build and maintain mission-critical software); data and AI; cybersecurity assessments and resilience; cloud and DevOps; managed IT services with 24x7 coverage. CMMI, ISO and SOC certified; minority-owned (MBE/NMSDC). [CONFIRM: CMMI level, ISO standards, federal/state clients, contract vehicles such as GSA MAS.]
+
+What the JV adds beyond Carrigon alone: capacity and bench strength for larger, staffing-heavy and multi-year efforts; application operations and maintenance; help desk and 24x7 managed services; enterprise past performance. Still a services JV: no hardware manufacturing or product reselling.
+
+NAICS: 541511, 541512, 541513, 541519, 541611, 541612, 541613, 541614, 541618, 541690, 541715, 541810, 541910, 541990, 518210, 513210, 517810, 561320, 561330, 561621, 611430, 611710.
+
+Best fits: SDVOSB or small-business set-aside IT services, staffing and O&M contracts too large for Carrigon alone, plus early-stage sources sought/RFIs where the JV can shape the requirement.`;
+
+  const PROFILES = {
+    carrigon: { name: 'Carrigon', settingKey: 'company_profile', fallback: DEFAULT_PROFILE, hint: 'Carrigon LLC on its own (SDVOSB prime).' },
+    carrisys: { name: 'CarriSys JV', settingKey: 'profile_carrisys', fallback: DEFAULT_CARRISYS_PROFILE, hint: 'Carrigon + System Soft mentor-protégé JV.' },
+  };
+  let activeProfile = 'carrigon';
+  const profileTexts = {};
+
   const BATCH_MAX_ITEMS = 12;
   const BATCH_MAX_CHARS = 60000;
   const BATCH_CONCURRENCY = 3;
@@ -1291,6 +1326,7 @@ Best fits: services contracts a small business can prime or credibly sub on, esp
   let csvFileName = '';
   let analysis = [];
   let analysisRecFilter = '';
+  let analysisProfile = '';
 
   // RFC 4180 CSV parser: quoted fields, embedded commas/newlines, doubled quotes.
   function parseCsv(text) {
@@ -1402,6 +1438,7 @@ Best fits: services contracts a small business can prime or credibly sub on, esp
 
   $('#analyzeBtn').addEventListener('click', async () => {
     const profile = $('#profileText').value.trim();
+    const profileName = PROFILES[activeProfile].name;
     if (!profile) { $('#analyzeStatus').textContent = 'Add a company profile first.'; return; }
     const skipClosed = $('#aSkipClosed').checked;
     const skipped = [];
@@ -1457,11 +1494,12 @@ Best fits: services contracts a small business can prime or credibly sub on, esp
     $('#analyzeStatus').innerHTML = `Ranked ${analysis.length - failed} of ${todo.length}` +
       (skipped.length ? `; skipped ${skipped.length} closed` : '') +
       (failed ? `. <span class="neg">${failed} not scored: ${esc(errors[0] || 'missing from response')}</span>` : '.');
+    analysisProfile = profileName;
     renderAnalysis(csvFileName);
 
     if (analysis.length > failed) {
       try {
-        await api.saveRun({ file_name: csvFileName, opportunity_count: analysis.length, results: analysis });
+        await api.saveRun({ file_name: csvFileName, profile: profileName, opportunity_count: analysis.length, results: analysis });
         await loadRuns();
       } catch (err) {
         toast('Results shown but not saved: ' + err.message);
@@ -1498,7 +1536,7 @@ Best fits: services contracts a small business can prime or credibly sub on, esp
       .map((a, i) => ({ a, rank: i + 1 }))
       .filter(({ a }) => (!analysisRecFilter || a.recommendation === analysisRecFilter) &&
         (!q || [a.title, a.noticeId, a.summary, a.setAside, a.type, ...(a.matched_capabilities || [])].some((v) => String(v || '').toLowerCase().includes(q))));
-    meta.textContent = `${meta.dataset.label ? meta.dataset.label + ': ' : ''}ranked best to worst${q || analysisRecFilter ? ` · showing ${list.length}` : ''}.`;
+    meta.textContent = `${meta.dataset.label ? meta.dataset.label + ': ' : ''}ranked best to worst${analysisProfile ? ` for ${analysisProfile}` : ''}${q || analysisRecFilter ? ` · showing ${list.length}` : ''}.`;
 
     box.innerHTML = list.map(({ a, rank }) => {
       const rec = String(a.recommendation || '').toLowerCase();
@@ -1565,7 +1603,7 @@ Best fits: services contracts a small business can prime or credibly sub on, esp
       sam_url: samSearchUrl(a.noticeId),
       contact_name: a.poc || null,
       status: 'pursuing',
-      notes: [`Fit score ${a.fit_score} (${a.recommendation})`, a.summary, a.next_step && 'Next step: ' + a.next_step].filter(Boolean).join('\n'),
+      notes: [`Fit score ${a.fit_score} (${a.recommendation})${analysisProfile ? ` as ${analysisProfile}` : ''}`, a.summary, a.next_step && 'Next step: ' + a.next_step].filter(Boolean).join('\n'),
     });
   });
 
@@ -1585,27 +1623,41 @@ Best fits: services contracts a small business can prime or credibly sub on, esp
     const link = document.createElement('a');
     link.href = url;
     const base = ($('#analysisMeta').dataset.label || 'opportunities').replace(/\.csv$/i, '');
-    link.download = `carrigon-ranked-${base}.csv`;
+    const who = (analysisProfile || 'carrigon').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    link.download = `${who}-ranked-${base}.csv`;
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 
-  // Profile: shared across admins via admin_settings.
+  // Profiles: shared across admins via admin_settings, one key per profile.
+  function selectProfile(key) {
+    profileTexts[activeProfile] = $('#profileText').value;
+    activeProfile = key;
+    const p = PROFILES[key];
+    $$('#profileTabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.profile === key)));
+    $('#profileText').value = profileTexts[key] ?? p.fallback;
+    $('#profileLabel').textContent = `2. ${p.name} profile (what we're scored against)`;
+    $('#profileHint').textContent = p.hint;
+  }
+  $$('#profileTabs button').forEach((b) => b.addEventListener('click', () => selectProfile(b.dataset.profile)));
+
   $('#saveProfileBtn').addEventListener('click', async () => {
+    const p = PROFILES[activeProfile];
     try {
-      await api.saveSetting('company_profile', $('#profileText').value.trim());
-      toast('Profile saved');
+      await api.saveSetting(p.settingKey, $('#profileText').value.trim());
+      profileTexts[activeProfile] = $('#profileText').value;
+      toast(`${p.name} profile saved`);
     } catch (err) {
       toast('Could not save profile: ' + err.message);
     }
   });
-  $('#resetProfileBtn').addEventListener('click', () => { $('#profileText').value = DEFAULT_PROFILE; });
+  $('#resetProfileBtn').addEventListener('click', () => { $('#profileText').value = PROFILES[activeProfile].fallback; });
 
   async function loadRuns() {
     try {
       const runs = await api.listRuns();
       $('#runSelect').innerHTML = '<option value="">—</option>' + runs.map((r) =>
-        `<option value="${esc(r.id)}">${esc(new Date(r.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }))} · ${esc(r.file_name || 'CSV')} (${r.opportunity_count})</option>`).join('');
+        `<option value="${esc(r.id)}">${esc(new Date(r.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }))} · ${esc(r.profile || 'Carrigon')} · ${esc(r.file_name || 'CSV')} (${r.opportunity_count})</option>`).join('');
     } catch (_) { /* table may not exist yet; leave the list empty */ }
   }
 
@@ -1616,6 +1668,7 @@ Best fits: services contracts a small business can prime or credibly sub on, esp
       analysis = run.results || [];
       sortAnalysis();
       analysisRecFilter = '';
+      analysisProfile = run.profile || 'Carrigon';
       renderAnalysis(run.file_name);
     } catch (err) {
       toast('Could not load analysis: ' + err.message);
@@ -1623,9 +1676,13 @@ Best fits: services contracts a small business can prime or credibly sub on, esp
   });
 
   async function loadAnalysisSettings() {
-    let profile = null;
-    try { profile = await api.getSetting('company_profile'); } catch (_) { /* fall back to default */ }
-    $('#profileText').value = profile || DEFAULT_PROFILE;
+    await Promise.all(Object.entries(PROFILES).map(async ([key, p]) => {
+      let saved = null;
+      try { saved = await api.getSetting(p.settingKey); } catch (_) { /* fall back to default */ }
+      profileTexts[key] = saved || p.fallback;
+    }));
+    $('#profileText').value = profileTexts[activeProfile];
+    selectProfile(activeProfile);
     await loadRuns();
   }
 
