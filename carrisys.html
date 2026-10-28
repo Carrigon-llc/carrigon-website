@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>CarriSys LLC — SDVOSB Joint Venture for VA</title>
+<meta name="description" content="CarriSys LLC is an SBA-approved Mentor-Protégé Joint Venture between Carrigon LLC and System Soft Technologies, eligible to compete as an SDVOSB under VA's Veterans First Contracting Program." />
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap">
+
+<style>
+/* ── Layout: full-bleed bands, content centered to 960px ── */
+:root {
+  --navy:      #182f5a;
+  --navy-deep: #0d1e3c;
+  --gold:      #c9a84c;
+  --bg:        #ffffff;
+  --fg:        #0d1e3c;
+  --surface:   #f2f5fb;
+  --border:    #dae0f0;
+  --muted:     #5b6d8c;
+
+  --display: 'Barlow Condensed', sans-serif;
+  --body:    'Barlow', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:      #0b1525;
+    --fg:      #dce6f5;
+    --surface: #111e35;
+    --border:  #1e3058;
+    --muted:   #7f93b4;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:      #0b1525;
+  --fg:      #dce6f5;
+  --surface: #111e35;
+  --border:  #1e3058;
+  --muted:   #7f93b4;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 56px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-weight: 400;
+  line-height: 1.65;
+  font-size: 16px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; }
+
+.inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-left:  max(24px, env(safe-area-inset-left,  0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+}
+
+/* ── CARRISYS NAV ── */
+.jv-nav {
+  background: var(--navy-deep);
+  padding-block: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.jv-nav .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.jv-nav-logo {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.jv-nav-logo span { color: var(--gold); }
+.nav-badge {
+  font-family: var(--display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 3px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+/* HERO */
+.hero {
+  background: var(--navy-deep);
+  padding-block: 84px 68px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -48deg,
+    transparent,
+    transparent 56px,
+    rgba(201,168,76,.04) 56px,
+    rgba(201,168,76,.04) 57px
+  );
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: var(--display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 30px;
+  height: 2px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(3.4rem, 8.5vw, 5.8rem);
+  line-height: .94;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: #fff;
+  text-wrap: balance;
+  margin-bottom: 28px;
+}
+h1 .accent { color: var(--gold); display: block; }
+.hero-sub {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: rgba(255,255,255,.7);
+  max-width: 540px;
+  line-height: 1.72;
+  margin-bottom: 40px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.chip {
+  font-family: var(--display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 2px;
+  padding: 5px 12px;
+}
+.chip.gold {
+  color: var(--navy-deep);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+/* GOLD RULE */
+.gold-rule {
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold) 0%, rgba(201,168,76,.15) 100%);
+}
+
+/* FACTS BAR */
+.facts-bar {
+  background: var(--navy);
+  padding-block: 38px;
+}
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 28px 40px;
+}
+.fact {
+  border-left: 3px solid var(--gold);
+  padding-left: 16px;
+}
+.fact-label {
+  font-family: var(--display);
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 4px;
+}
+.fact-value {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: .95rem;
+  color: #fff;
+  line-height: 1.3;
+}
+
+/* SECTIONS */
+.section { padding-block: 64px; }
+.section-alt { background: var(--surface); }
+.section-dark {
+  background: var(--navy);
+  color: #fff;
+}
+
+.section-label {
+  font-family: var(--display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 2.1rem;
+  line-height: 1.08;
+  text-wrap: balance;
+  margin-bottom: 20px;
+  color: var(--fg);
+}
+.section-dark h2 { color: #fff; }
+
+/* OVERVIEW */
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px 64px;
+  align-items: start;
+}
+.overview-body {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.78;
+}
+.overview-body p + p { margin-top: 16px; }
+
+.kv-list { display: flex; flex-direction: column; gap: 10px; }
+.kv {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+.kv-key {
+  font-family: var(--display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 2px;
+}
+.kv-val {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--fg);
+  line-height: 1.5;
+  min-width: 0;
+}
+
+/* COMPETENCIES */
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 36px;
+}
+.comp-card {
+  background: rgba(255,255,255,.06);
+  border-top: 3px solid var(--gold);
+  padding: 26px;
+}
+.comp-num {
+  font-family: var(--display);
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: var(--gold);
+  opacity: .3;
+  line-height: 1;
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.comp-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: .98rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 10px;
+  color: #fff;
+  line-height: 1.25;
+}
+.comp-body {
+  font-size: .86rem;
+  color: rgba(255,255,255,.58);
+  line-height: 1.68;
+}
+
+/* PARTNERS */
+.partners-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 36px;
+}
+.partner-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 30px;
+}
+.partner-role {
+  font-family: var(--display);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.partner-name {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  margin-bottom: 16px;
+  color: var(--fg);
+}
+.partner-body {
+  font-size: .87rem;
+  color: var(--muted);
+  line-height: 1.68;
+  margin-bottom: 18px;
+}
+.cert-list { display: flex; flex-direction: column; gap: 6px; }
+.cert-item {
+  font-size: .84rem;
+  color: var(--fg);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.cert-item::before {
+  content: '✓';
+  color: var(--gold);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* NAICS */
+.naics-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 28px;
+}
+.naics-table th {
+  font-family: var(--display);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+  text-align: left;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.naics-table td {
+  padding: 13px 16px;
+  color: rgba(255,255,255,.8);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  font-size: .9rem;
+  line-height: 1.45;
+}
+.naics-table td:first-child {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--gold);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* CONTACT */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 36px;
+}
+.contact-card {
+  padding: 28px;
+  border: 1px solid var(--border);
+}
+.contact-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 4px;
+  color: var(--fg);
+}
+.contact-role {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+.contact-detail {
+  font-size: .88rem;
+  color: var(--fg);
+  line-height: 1.9;
+}
+.contact-detail a,
+.kv-val a {
+  color: inherit;
+  text-decoration: none;
+}
+.contact-detail a:hover,
+.kv-val a:hover { color: var(--gold); }
+
+/* FOOTER */
+footer {
+  background: var(--navy-deep);
+  padding-block: 28px;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-logo {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: .95rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+.footer-logo span { color: var(--gold); }
+.jv-nav-logo, .footer-logo { text-decoration: none; }
+.footer-note {
+  font-size: .75rem;
+  color: rgba(255,255,255,.28);
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .overview-grid,
+  .partners-grid,
+  .contact-grid { grid-template-columns: 1fr; }
+  .kv { grid-template-columns: 1fr; gap: 2px; }
+  .hero { padding-block: 52px 44px; }
+  h1 { font-size: 3rem; }
+  .facts-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- CARRISYS NAV -->
+<nav class="jv-nav">
+  <div class="inner">
+    <a class="jv-nav-logo" href="https://carrigon.com">Carri<span>Sys</span> LLC</a>
+    <div class="nav-badge">SDVOSB · SBA MPA JV</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="inner">
+    <div class="hero-eyebrow">Veterans First · 38 U.S.C. 8127 · Department of Veterans Affairs</div>
+    <h1>
+      Federal IT<br>
+      <span class="accent">Built for VA</span>
+    </h1>
+    <p class="hero-sub">CarriSys LLC is an SBA-approved Mentor-Protégé Joint Venture — veteran-led, enterprise-grade, and eligible to compete as an SDVOSB under VA's Veterans First Contracting Program.</p>
+    <div class="chips">
+      <div class="chip gold">SDVOSB</div>
+      <div class="chip">SBA MPA JV</div>
+      <div class="chip">GSA MAS GS35F146DA</div>
+      <div class="chip">CMMC Level 3</div>
+      <div class="chip">VetCert Verified</div>
+      <div class="chip">NAICS 541519</div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- FACTS BAR -->
+<div class="facts-bar">
+  <div class="inner">
+    <div class="facts-grid">
+      <div class="fact">
+        <div class="fact-label">SDVOSB Status</div>
+        <div class="fact-value">VetCert Verified · SAM.gov Active</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">JV Structure</div>
+        <div class="fact-value">SBA Mentor-Protégé Agreement</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">GSA MAS</div>
+        <div class="fact-value">GS35F146DA · SIN 54151S</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Security</div>
+        <div class="fact-value">CMMC Level 3 · CUI Capable</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Work Share</div>
+        <div class="fact-value">Carrigon 65–75% · SST 25–35%</div>
+      </div>
+      <div class="fact">
+        <div class="fact-label">Carrigon UEI</div>
+        <div class="fact-value">YC36ZMSF7SY3 · CAGE 20XF0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section class="section">
+  <div class="inner">
+    <div class="section-label">About CarriSys</div>
+    <div class="overview-grid">
+      <div>
+        <h2>Veteran-led prime.<br>Enterprise-grade delivery.</h2>
+        <div class="overview-body">
+          <p>CarriSys LLC brings the VA mission alignment of a combat veteran managing partner together with the enterprise IT delivery infrastructure of a 27-year firm — giving VA program offices a credentialed SDVOSB prime with real execution capacity behind it.</p>
+          <p>We compete under the Veterans First Contracting Program (38 U.S.C. 8127) and bring SST's full certification stack, staffing depth, and contract vehicles to every engagement.</p>
+          <p>The JV combines Carrigon's veteran credentials and program leadership with System Soft Technologies' enterprise delivery capability across IT staffing, software engineering, cybersecurity, operations, and AI governance.</p>
+        </div>
+      </div>
+      <div class="kv-list">
+        <div class="kv">
+          <div class="kv-key">Entity Type</div>
+          <div class="kv-val">SBA-Approved Mentor-Protégé JV</div>
+        </div>
+        <div class="kv">
+          <div class="kv-key">Prime Focus</div>
+          <div class="kv-val">Department of Veterans Affairs · Federal IT</div>
+        </div>
+        <div class="kv">
+          <div class="kv-key">SDVOSB Prime</div>
+          <div class="kv-val">Carrigon LLC — VetCert Verified</div>
+        </div>
+        <div class="kv">
+          <div class="kv-key">Mentor</div>
+          <div class="kv-val">System Soft Technologies LLC</div>
+        </div>
+        <div class="kv">
+          <div class="kv-key">GSA MAS</div>
+          <div class="kv-val">GS35F146DA (SST) + PSC Federal MAS</div>
+        </div>
+        <div class="kv">
+          <div class="kv-key">NOAA NMITS</div>
+          <div class="kv-val">Available via PSC Federal teaming</div>
+        </div>
+        <div class="kv">
+          <div class="kv-key">Locations</div>
+          <div class="kv-val">Ashburn, VA (Carrigon) · Tampa, FL (SST)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETENCIES -->
+<section class="section section-dark">
+  <div class="inner">
+    <div class="section-label">What We Do</div>
+    <h2>Core Competencies</h2>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-num">01</div>
+        <div class="comp-title">IT Staffing &amp; Workforce Solutions</div>
+        <div class="comp-body">Contractor placement across VHA, VBA, and NCA program offices — software engineering, program support, data management, helpdesk, and technical specialist roles in regulated federal IT environments.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-num">02</div>
+        <div class="comp-title">Program Management &amp; Change Management</div>
+        <div class="comp-body">EHR implementation support (Oracle Health/Cerner rollout), clinician and benefits staff adoption programs, stakeholder alignment across VA facilities, and OKR-framed performance tracking.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-num">03</div>
+        <div class="comp-title">Software Engineering &amp; IT Modernization</div>
+        <div class="comp-body">Full-stack engineering, web application and portal development, API design, DevOps and CI/CD, containerization, and cloud services (Azure, AWS) for federal modernization programs.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-num">04</div>
+        <div class="comp-title">IT Operations &amp; Service Delivery</div>
+        <div class="comp-body">Service desk (Tier 1–3), configuration management, endpoint deployment, identity and entitlement administration, and release management for VA program offices requiring sustained IT support.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-num">05</div>
+        <div class="comp-title">Cybersecurity, RMF &amp; Compliance</div>
+        <div class="comp-body">CMMC Level 3 and CUI-environment capability. Cloud security assessments, RMF/ATO support, zero-trust advisory, and compliance documentation. ISO/IEC 27001:2022 certified.</div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-num">06</div>
+        <div class="comp-title">AI Governance &amp; Oversight</div>
+        <div class="comp-body">Governance programs aligned to OMB M-25-21 and NIST AI RMF 1.0 — AI use case inventories, risk records, human oversight workflows, AI bill of materials, and CAIO-reportable documentation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section class="section section-alt">
+  <div class="inner">
+    <div class="section-label">Joint Venture Partners</div>
+    <h2>The team behind CarriSys</h2>
+    <div class="partners-grid">
+      <div class="partner-card">
+        <div class="partner-role">Managing Partner · SDVOSB</div>
+        <div class="partner-name">Carrigon LLC</div>
+        <div class="partner-body">Led by Michael Carrion — West Point graduate, combat-deployed U.S. Army Commander, and former ROTC Military History Instructor. Mr. Carrion has facilitated planning events for 700+ participants and coached teams to 25%+ OKR improvement. His background maps directly to VA's most complex delivery challenges: multi-stakeholder program management and workforce adoption at scale.</div>
+        <div class="kv-list">
+          <div class="kv">
+            <div class="kv-key">UEI</div>
+            <div class="kv-val">YC36ZMSF7SY3</div>
+          </div>
+          <div class="kv">
+            <div class="kv-key">CAGE</div>
+            <div class="kv-val">20XF0</div>
+          </div>
+          <div class="kv">
+            <div class="kv-key">Address</div>
+            <div class="kv-val">22477 Foundation Dr, Ashburn, VA 20148</div>
+          </div>
+          <div class="kv">
+            <div class="kv-key">Website</div>
+            <div class="kv-val"><a href="index.html">carrigon.com</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-role">Mentor Partner</div>
+        <div class="partner-name">System Soft Technologies LLC</div>
+        <div class="partner-body">A 27-year-old enterprise IT services and staffing firm (founded 1999), headquartered in Tampa, FL. 250+ employees, $50M+ in annual revenue, NMSDC MBE certified. SST has placed hundreds of IT professionals in regulated healthcare and compliance environments and holds GSA MAS GS35F146DA directly.</div>
+        <div class="cert-list">
+          <div class="cert-item">CMMC Level 3</div>
+          <div class="cert-item">CMMI Maturity Level 3 (CMMI ML3)</div>
+          <div class="cert-item">ISO/IEC 20000-1:2018</div>
+          <div class="cert-item">ISO/IEC 27001:2022</div>
+          <div class="cert-item">ISO 9001:2015</div>
+          <div class="cert-item">GSA MAS GS35F146DA (SIN 54151S)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NAICS -->
+<section class="section section-dark">
+  <div class="inner">
+    <div class="section-label">Contracting Categories</div>
+    <h2>NAICS Codes</h2>
+    <div style="overflow-x:auto;">
+      <table class="naics-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>541519</td><td>Other Computer Related Services <span style="color:rgba(255,255,255,.35);font-size:.82em">(primary)</span></td></tr>
+          <tr><td>541512</td><td>Computer Systems Design Services</td></tr>
+          <tr><td>541611</td><td>Administrative Management &amp; General Management Consulting</td></tr>
+          <tr><td>541614</td><td>Process, Physical Distribution &amp; Logistics Consulting</td></tr>
+          <tr><td>611430</td><td>Professional &amp; Management Development Training</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="inner">
+    <div class="section-label">Get in Touch</div>
+    <h2>Contact</h2>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-name">Michael Carrion</div>
+        <div class="contact-role">Owner &amp; Managing Partner — Carrigon LLC</div>
+        <div class="contact-detail">
+          <a href="tel:+17874318929">+1 (787) 431-8929</a><br>
+          <a href="mailto:m.carrion@carrigon.com">m.carrion@carrigon.com</a><br>
+          <a href="index.html">carrigon.com</a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-name">Nandan Setlur</div>
+        <div class="contact-role">Executive Advisor — System Soft Technologies LLC</div>
+        <div class="contact-detail"><a href="tel:+12029307287">+1 (202) 930-7287</a></div>
+        <div class="contact-detail"><a href="mailto:nandan.s@sstech.us">nandan.s@sstech.us</a></div>
+        <div class="contact-detail"><a href="https://sstech.us/" target="_blank" rel="noopener noreferrer">sstech.us</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="inner footer-inner">
+    <a class="footer-logo" href="https://carrigon.com">Carri<span>Sys</span> LLC</a>
+    <div class="footer-note">SBA-Approved Mentor-Protégé JV · SDVOSB · Veterans First Eligible · 38 U.S.C. 8127</div>
+  </div>
+</footer>
+
+
+</body>
+</html>
