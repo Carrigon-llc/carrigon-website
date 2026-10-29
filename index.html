@@ -722,7 +722,7 @@
     .hero-cta-row {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 16px;
       margin-top: 16px;
     }
@@ -844,6 +844,8 @@
     }
 
     .hero-jv-btn:hover .btn-sys { color: #0d1e3c; }
+    /* Matches the 1px border on Explore Services so both hero buttons are the same height */
+    .hero-jv-btn { border: 1px solid #182f5a; }
 
     /* Gray button with a black border */
     .cta-ghost-btn {
@@ -933,6 +935,8 @@
         gap: 40px;
       }
       .about-badge { flex: 0 0 auto; max-width: 240px; justify-content: flex-start; }
+      /* System Soft logo only shows beside the text, never stacked under it */
+      .partners-logo { display: none; }
     }
 
     .cta-section .section-label {
@@ -1118,8 +1122,8 @@
       align-items: center;
       gap: 10px;
       padding: 12px 32px;
-      background: #fff;
-      color: #0A3161;
+      background: #182f5a;
+      color: #fff;
       font-family: 'Inter', sans-serif;
       font-size: 0.85rem;
       font-weight: 600;
@@ -1151,6 +1155,8 @@
     }
 
     .naics-toggle-btn:hover::before { transform: translateX(0); }
+    .naics-toggle-btn svg { color: #B31942; transition: color 0.2s ease; }
+    .naics-toggle-btn:hover svg { color: inherit; }
 
     .naics-table {
       width: 100%;
@@ -1393,7 +1399,7 @@
         text-align: left;
         align-items: flex-start;
       }
-      .hero-cta-row { justify-content: flex-start; flex-wrap: wrap; margin: 16px 0 0; }
+      .hero-cta-row { justify-content: flex-start; flex-wrap: nowrap; margin: 16px 0 0; }
 
       /* Everything left-aligned on smaller screens */
       .section-header { text-align: left; margin: 0 0 2rem; }
@@ -1429,7 +1435,17 @@
       .hero-content { text-align: left; align-items: flex-start; flex: none; }
       .hero-headline { font-size: clamp(2.4rem, 9.6vw, 3.6rem); }
       .hero-subline { margin: 0 0 36px; }
-      .hero-cta-row { justify-content: flex-start; flex-wrap: wrap; margin: 16px 0 0; }
+      .hero-cta-row { justify-content: flex-start; flex-wrap: nowrap; margin: 16px 0 0; }
+      /* Hero buttons share the row equally so they stay side by side */
+      .hero-cta-row { gap: 12px; width: 100%; max-width: 400px; }
+      .hero-cta-row .cta-services-btn {
+        flex: 1 1 0;
+        width: auto;
+        min-width: 0;
+        padding: 12px 8px;
+        font-size: 0.7rem;
+        white-space: nowrap;
+      }
       .mobile-menu ul,
       .mobile-menu ul li a { text-align: left; }
       .mobile-menu ul li a { padding-left: 20px; padding-right: 20px; }
@@ -1666,7 +1682,7 @@
           <a class="cta-services-btn cta-jv-btn" href="cs" target="_blank" rel="noopener">Learn More</a>
         </div>
       </div>
-      <div class="about-badge">
+      <div class="about-badge partners-logo">
         <a class="partner-logo-card" href="https://sstech.us/" target="_blank" rel="noopener noreferrer">
           <img src="assets/sstech_logo.png" alt="SystemSoft Technologies logo">
         </a>
