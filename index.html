@@ -37,7 +37,7 @@
     }
 
     .nav-inner {
-      max-width: 1320px;
+      max-width: 1196px; /* 1100px content + 48px side padding, matches sections below */
       margin: 0 auto;
       height: 100%;
       display: flex;
@@ -197,6 +197,48 @@
       z-index: 1;
     }
 
+    /* Dark gray hero with a 50-star field.
+       Tune the background and --hero-star to adjust the look. */
+    .hero-wrapper {
+      background: #1c1c1c;
+      --hero-star: #272727;
+      --hero-line: #272727;
+    }
+
+    .hero-flag {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      display: block;
+    }
+
+    .hero-flag-stars use { fill: var(--hero-star); }
+
+    /* Faint dashed connections that blink, staggered so they twinkle rather than flash together */
+    .hero-flag-lines line {
+      stroke: var(--hero-line);
+      stroke-width: 1.5;
+      stroke-dasharray: 5 7;
+      vector-effect: non-scaling-stroke;
+      animation: lineBlink 4s ease-in-out infinite;
+    }
+
+    .hero-flag-lines line:nth-child(3n+1) { animation-delay: -1.3s; }
+    .hero-flag-lines line:nth-child(3n+2) { animation-delay: -2.6s; }
+    .hero-flag-lines line:nth-child(7n)   { animation-duration: 5.5s; }
+    .hero-flag-lines line:nth-child(5n)   { animation-duration: 3.2s; }
+
+    @keyframes lineBlink {
+      0%, 100% { opacity: 0.15; }
+      50%      { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-flag-lines line { animation: none; }
+    }
+
     .hero {
       position: relative;
       z-index: 2;
@@ -204,11 +246,11 @@
       min-height: 100vh;
       background: transparent;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       gap: 24px;
-      padding: 300px 48px 100px;
-      max-width: 1320px;
+      padding: 128px 48px 40px; /* 88px header + 40px, so content is centered below the header */
+      max-width: 1196px;
       margin: 0 auto;
       box-sizing: border-box;
     }
@@ -239,34 +281,11 @@
       background: rgba(255,255,255,0.6);
     }
 
-    @keyframes highlightReveal {
-      0%   { background-size: 0% 100%; }
-      100% { background-size: 100% 100%; }
-    }
-
-    @keyframes highlightReverse {
-      0%   { background-size: 100% 100%; background-position: left center; }
-      100% { background-size: 0% 100%; background-position: left center; }
-    }
-
-    .underline-scroll {
+    .hero-highlight {
       border-radius: 4px;
       padding: 0 6px;
       background-image: linear-gradient(to right, #d4bf91, #f1e4c7);
-      background-repeat: no-repeat;
-      background-position: left center;
-      background-size: 0% 100%;
-      transition: color 0.3s ease;
-    }
-
-    .underline-scroll.active {
-      animation: highlightReveal 2.5s ease forwards;
-      color: #1a1a1a !important;
-    }
-
-    .underline-scroll.reversing {
-      animation: highlightReverse 2.5s ease forwards;
-      color: #000000;
+      color: #2f372f;
     }
 
     .hero-label {
@@ -292,7 +311,7 @@
       font-size: clamp(0.95rem, 3vw, 1.1rem);
       font-weight: 400;
       line-height: 1.6;
-      color: #333;
+      color: rgba(255,255,255,0.85);
       max-width: 480px;
       margin: 0 0 36px;
     }
@@ -561,7 +580,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      max-width: 1060px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
@@ -817,6 +836,42 @@
 
     .partners-learn-more { margin-top: 28px; }
 
+    /* Hero CarriSys JV button: red star, CarriSys-logo gold on hover */
+    /* "SYS" in the CarriSys logo gold; darkens on the gold hover so it stays readable */
+    .btn-sys {
+      color: #c9a84c;
+      transition: color 0.2s ease;
+    }
+
+    .hero-jv-btn:hover .btn-sys { color: #0d1e3c; }
+
+    /* Gray button with a black border */
+    .cta-ghost-btn {
+      background: #3a3a3a;
+      border: 1px solid #000;
+      box-shadow: none;
+    }
+
+    /* SDVOSB accent above the hero headline (SVG, so one shimmer sweeps the whole thing) */
+    .hero-accent {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      margin-bottom: 22px;
+      overflow: visible;
+    }
+
+    .hero-accent text {
+      font-family: 'Inter', sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-accent-shine { display: none; }
+    }
+
     .cta-inner {
       max-width: 640px;
       margin: 0 auto;
@@ -824,6 +879,16 @@
 
     .about-inner {
       max-width: 1100px;
+    }
+
+    /* Gold line between sections, same gradient as the IT Consulting highlight */
+    #services,
+    #coming-soon,
+    #partners,
+    #contact-cta,
+    footer {
+      border-top: 3px solid transparent;
+      border-image: linear-gradient(to right, #d4bf91, #f1e4c7) 1;
     }
 
     .section-divider {
@@ -863,10 +928,11 @@
     @media (max-width: 900px) {
       .about-grid {
         flex-direction: column;
-        text-align: center;
+        align-items: flex-start;
+        text-align: left;
         gap: 40px;
       }
-      .about-badge { flex: 0 0 auto; max-width: 240px; }
+      .about-badge { flex: 0 0 auto; max-width: 240px; justify-content: flex-start; }
     }
 
     .cta-section .section-label {
@@ -902,7 +968,6 @@
     /* FOOTER */
     footer {
       background: #080808;
-      border-top: 1px solid rgba(255,255,255,0.1);
       padding: 48px 48px 24px;
       display: flex;
       flex-direction: column;
@@ -1041,6 +1106,11 @@
 
     .modal-body {
       padding: 28px;
+    }
+
+    .naics-toggle-wrap {
+      text-align: center;
+      margin-top: 40px;
     }
 
     .naics-toggle-btn {
@@ -1314,15 +1384,21 @@
     @media (max-width: 900px) {
       .hero {
         flex-direction: column;
-        align-items: center;
-        padding: 140px 24px 40px;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 128px 48px 40px;
         gap: 32px;
       }
       .hero-content {
-        text-align: center;
-        align-items: center;
+        text-align: left;
+        align-items: flex-start;
       }
-      .hero-cta-row { justify-content: center; flex-wrap: wrap; margin: 16px auto 0; }
+      .hero-cta-row { justify-content: flex-start; flex-wrap: wrap; margin: 16px 0 0; }
+
+      /* Everything left-aligned on smaller screens */
+      .section-header { text-align: left; margin: 0 0 2rem; }
+      .naics-toggle-wrap { text-align: left; }
+      #contact-cta { align-items: flex-start; text-align: left; }
       .hero-cta-row .cta-services-btn,
       .hero-cta-row .hero-cert-badge {
         box-sizing: border-box;
@@ -1349,14 +1425,18 @@
       .nav-logo { font-size: 1.2rem; }
       nav.scrolled .nav-logo { font-size: 1.4rem; }
       .hero-wrapper { min-height: auto; }
-      .hero { padding: 110px 20px 40px; gap: 50px; min-height: auto; }
-      .hero-content { text-align: center; align-items: center; flex: none; }
+      .hero { padding: 128px 20px 40px; gap: 50px; min-height: auto; }
+      .hero-content { text-align: left; align-items: flex-start; flex: none; }
       .hero-headline { font-size: clamp(2.4rem, 9.6vw, 3.6rem); }
-      .hero-subline { margin: 0 auto 36px; }
-      .hero-cta-row { justify-content: center; flex-wrap: wrap; margin: 16px auto 0; }
+      .hero-subline { margin: 0 0 36px; }
+      .hero-cta-row { justify-content: flex-start; flex-wrap: wrap; margin: 16px 0 0; }
+      .mobile-menu ul,
+      .mobile-menu ul li a { text-align: left; }
+      .mobile-menu ul li a { padding-left: 20px; padding-right: 20px; }
       .services, .cta-section { padding: 60px 20px; }
       .cta-section { padding: 80px 20px; }
       #contact-cta { padding-bottom: 100px; }
+      .contact-cta-panel { padding: 32px 24px; }
       footer { padding: 32px 20px 20px; gap: 24px; }
       .footer-top { flex-direction: column; align-items: flex-start; gap: 40px; }
       .footer-columns { gap: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; }
@@ -1401,25 +1481,58 @@
 
 <!-- Hero -->
 <div class="hero-wrapper">
+  <!-- Previous hero background (capitol + flag video):
   <video class="hero-bg-video" autoplay muted loop playsinline>
     <source src="assets/capital_flag.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
+  -->
+  <svg class="hero-flag" viewBox="0 0 1235 650" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <polygon id="hf-star" points="0.0,-24.0 5.4,-7.4 22.8,-7.4 8.7,2.8 14.1,19.4 0.0,9.2 -14.1,19.4 -8.7,2.8 -22.8,-7.4 -5.4,-7.4"/>
+    </defs>
+    <g class="hero-flag-lines">
+      <line x1="102.9" y1="65.0" x2="205.8" y2="130.0"/><line x1="308.8" y1="65.0" x2="205.8" y2="130.0"/><line x1="308.8" y1="65.0" x2="411.7" y2="130.0"/><line x1="514.6" y1="65.0" x2="411.7" y2="130.0"/><line x1="514.6" y1="65.0" x2="617.5" y2="130.0"/><line x1="720.4" y1="65.0" x2="617.5" y2="130.0"/><line x1="720.4" y1="65.0" x2="823.3" y2="130.0"/><line x1="926.2" y1="65.0" x2="823.3" y2="130.0"/><line x1="926.2" y1="65.0" x2="1029.2" y2="130.0"/><line x1="1132.1" y1="65.0" x2="1029.2" y2="130.0"/><line x1="205.8" y1="130.0" x2="102.9" y2="195.0"/><line x1="205.8" y1="130.0" x2="308.8" y2="195.0"/><line x1="411.7" y1="130.0" x2="308.8" y2="195.0"/><line x1="411.7" y1="130.0" x2="514.6" y2="195.0"/><line x1="617.5" y1="130.0" x2="514.6" y2="195.0"/><line x1="617.5" y1="130.0" x2="720.4" y2="195.0"/><line x1="823.3" y1="130.0" x2="720.4" y2="195.0"/><line x1="823.3" y1="130.0" x2="926.2" y2="195.0"/><line x1="1029.2" y1="130.0" x2="926.2" y2="195.0"/><line x1="1029.2" y1="130.0" x2="1132.1" y2="195.0"/><line x1="102.9" y1="195.0" x2="205.8" y2="260.0"/><line x1="308.8" y1="195.0" x2="205.8" y2="260.0"/><line x1="308.8" y1="195.0" x2="411.7" y2="260.0"/><line x1="514.6" y1="195.0" x2="411.7" y2="260.0"/><line x1="514.6" y1="195.0" x2="617.5" y2="260.0"/><line x1="720.4" y1="195.0" x2="617.5" y2="260.0"/><line x1="720.4" y1="195.0" x2="823.3" y2="260.0"/><line x1="926.2" y1="195.0" x2="823.3" y2="260.0"/><line x1="926.2" y1="195.0" x2="1029.2" y2="260.0"/><line x1="1132.1" y1="195.0" x2="1029.2" y2="260.0"/><line x1="205.8" y1="260.0" x2="102.9" y2="325.0"/><line x1="205.8" y1="260.0" x2="308.8" y2="325.0"/><line x1="411.7" y1="260.0" x2="308.8" y2="325.0"/><line x1="411.7" y1="260.0" x2="514.6" y2="325.0"/><line x1="617.5" y1="260.0" x2="514.6" y2="325.0"/><line x1="617.5" y1="260.0" x2="720.4" y2="325.0"/><line x1="823.3" y1="260.0" x2="720.4" y2="325.0"/><line x1="823.3" y1="260.0" x2="926.2" y2="325.0"/><line x1="1029.2" y1="260.0" x2="926.2" y2="325.0"/><line x1="1029.2" y1="260.0" x2="1132.1" y2="325.0"/><line x1="102.9" y1="325.0" x2="205.8" y2="390.0"/><line x1="308.8" y1="325.0" x2="205.8" y2="390.0"/><line x1="308.8" y1="325.0" x2="411.7" y2="390.0"/><line x1="514.6" y1="325.0" x2="411.7" y2="390.0"/><line x1="514.6" y1="325.0" x2="617.5" y2="390.0"/><line x1="720.4" y1="325.0" x2="617.5" y2="390.0"/><line x1="720.4" y1="325.0" x2="823.3" y2="390.0"/><line x1="926.2" y1="325.0" x2="823.3" y2="390.0"/><line x1="926.2" y1="325.0" x2="1029.2" y2="390.0"/><line x1="1132.1" y1="325.0" x2="1029.2" y2="390.0"/><line x1="205.8" y1="390.0" x2="102.9" y2="455.0"/><line x1="205.8" y1="390.0" x2="308.8" y2="455.0"/><line x1="411.7" y1="390.0" x2="308.8" y2="455.0"/><line x1="411.7" y1="390.0" x2="514.6" y2="455.0"/><line x1="617.5" y1="390.0" x2="514.6" y2="455.0"/><line x1="617.5" y1="390.0" x2="720.4" y2="455.0"/><line x1="823.3" y1="390.0" x2="720.4" y2="455.0"/><line x1="823.3" y1="390.0" x2="926.2" y2="455.0"/><line x1="1029.2" y1="390.0" x2="926.2" y2="455.0"/><line x1="1029.2" y1="390.0" x2="1132.1" y2="455.0"/><line x1="102.9" y1="455.0" x2="205.8" y2="520.0"/><line x1="308.8" y1="455.0" x2="205.8" y2="520.0"/><line x1="308.8" y1="455.0" x2="411.7" y2="520.0"/><line x1="514.6" y1="455.0" x2="411.7" y2="520.0"/><line x1="514.6" y1="455.0" x2="617.5" y2="520.0"/><line x1="720.4" y1="455.0" x2="617.5" y2="520.0"/><line x1="720.4" y1="455.0" x2="823.3" y2="520.0"/><line x1="926.2" y1="455.0" x2="823.3" y2="520.0"/><line x1="926.2" y1="455.0" x2="1029.2" y2="520.0"/><line x1="1132.1" y1="455.0" x2="1029.2" y2="520.0"/><line x1="205.8" y1="520.0" x2="102.9" y2="585.0"/><line x1="205.8" y1="520.0" x2="308.8" y2="585.0"/><line x1="411.7" y1="520.0" x2="308.8" y2="585.0"/><line x1="411.7" y1="520.0" x2="514.6" y2="585.0"/><line x1="617.5" y1="520.0" x2="514.6" y2="585.0"/><line x1="617.5" y1="520.0" x2="720.4" y2="585.0"/><line x1="823.3" y1="520.0" x2="720.4" y2="585.0"/><line x1="823.3" y1="520.0" x2="926.2" y2="585.0"/><line x1="1029.2" y1="520.0" x2="926.2" y2="585.0"/><line x1="1029.2" y1="520.0" x2="1132.1" y2="585.0"/>
+    </g>
+    <g class="hero-flag-stars">
+      <use href="#hf-star" x="102.9" y="65.0"/><use href="#hf-star" x="308.8" y="65.0"/><use href="#hf-star" x="514.6" y="65.0"/><use href="#hf-star" x="720.4" y="65.0"/><use href="#hf-star" x="926.2" y="65.0"/><use href="#hf-star" x="1132.1" y="65.0"/><use href="#hf-star" x="205.8" y="130.0"/><use href="#hf-star" x="411.7" y="130.0"/><use href="#hf-star" x="617.5" y="130.0"/><use href="#hf-star" x="823.3" y="130.0"/><use href="#hf-star" x="1029.2" y="130.0"/><use href="#hf-star" x="102.9" y="195.0"/><use href="#hf-star" x="308.8" y="195.0"/><use href="#hf-star" x="514.6" y="195.0"/><use href="#hf-star" x="720.4" y="195.0"/><use href="#hf-star" x="926.2" y="195.0"/><use href="#hf-star" x="1132.1" y="195.0"/><use href="#hf-star" x="205.8" y="260.0"/><use href="#hf-star" x="411.7" y="260.0"/><use href="#hf-star" x="617.5" y="260.0"/><use href="#hf-star" x="823.3" y="260.0"/><use href="#hf-star" x="1029.2" y="260.0"/><use href="#hf-star" x="102.9" y="325.0"/><use href="#hf-star" x="308.8" y="325.0"/><use href="#hf-star" x="514.6" y="325.0"/><use href="#hf-star" x="720.4" y="325.0"/><use href="#hf-star" x="926.2" y="325.0"/><use href="#hf-star" x="1132.1" y="325.0"/><use href="#hf-star" x="205.8" y="390.0"/><use href="#hf-star" x="411.7" y="390.0"/><use href="#hf-star" x="617.5" y="390.0"/><use href="#hf-star" x="823.3" y="390.0"/><use href="#hf-star" x="1029.2" y="390.0"/><use href="#hf-star" x="102.9" y="455.0"/><use href="#hf-star" x="308.8" y="455.0"/><use href="#hf-star" x="514.6" y="455.0"/><use href="#hf-star" x="720.4" y="455.0"/><use href="#hf-star" x="926.2" y="455.0"/><use href="#hf-star" x="1132.1" y="455.0"/><use href="#hf-star" x="205.8" y="520.0"/><use href="#hf-star" x="411.7" y="520.0"/><use href="#hf-star" x="617.5" y="520.0"/><use href="#hf-star" x="823.3" y="520.0"/><use href="#hf-star" x="1029.2" y="520.0"/><use href="#hf-star" x="102.9" y="585.0"/><use href="#hf-star" x="308.8" y="585.0"/><use href="#hf-star" x="514.6" y="585.0"/><use href="#hf-star" x="720.4" y="585.0"/><use href="#hf-star" x="926.2" y="585.0"/><use href="#hf-star" x="1132.1" y="585.0"/>
+    </g>
+  </svg>
 <section class="hero" id="hero">
   <div class="hero-content">
-    <h1 class="hero-headline"><span style="color:#2f372f">Veteran-Owned.</span><br><span style="color:#2f372f">Mission-Driven</span><br><span style="color:#2f372f"><span class="underline-scroll" id="itConsulting">IT Consulting.</span></span></h1>
+    <svg class="hero-accent" viewBox="0 0 340 20" role="img" aria-label="SDVOSB Certified">
+      <defs>
+        <linearGradient id="accentGold" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="340" y2="0">
+          <stop offset="0" stop-color="#d4bf91"/>
+          <stop offset="0.5" stop-color="#f1e4c7"/>
+          <stop offset="1" stop-color="#d4bf91"/>
+        </linearGradient>
+        <linearGradient id="accentShine" gradientUnits="userSpaceOnUse" x1="-140" y1="0" x2="0" y2="0">
+          <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+          <stop offset="0.5" stop-color="#fff" stop-opacity="0.85"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+          <animate attributeName="x1" values="-140;340;340" keyTimes="0;0.55;1" dur="4s" repeatCount="indefinite"/>
+          <animate attributeName="x2" values="0;480;480" keyTimes="0;0.55;1" dur="4s" repeatCount="indefinite"/>
+        </linearGradient>
+        <g id="accentShape">
+          <rect x="0" y="8.5" width="46" height="3"/>
+          <polygon points="59.00,4.00 60.46,8.49 65.18,8.49 61.36,11.27 62.82,15.76 59.00,12.98 55.18,15.76 56.64,11.27 52.82,8.49 57.54,8.49"/>
+          <text x="170" y="15" text-anchor="middle" textLength="186" lengthAdjust="spacing">SDVOSB CERTIFIED</text>
+          <polygon points="281.00,4.00 282.46,8.49 287.18,8.49 283.36,11.27 284.82,15.76 281.00,12.98 277.18,15.76 278.64,11.27 274.82,8.49 279.54,8.49"/>
+          <rect x="294" y="8.5" width="46" height="3"/>
+        </g>
+      </defs>
+      <use href="#accentShape" fill="url(#accentGold)"/>
+      <use class="hero-accent-shine" href="#accentShape" fill="url(#accentShine)"/>
+    </svg>
+    <h1 class="hero-headline"><span style="color:#fff">Veteran-Owned.</span><br><span style="color:#fff">Mission-Driven</span><br><span class="hero-highlight">IT Consulting.</span></h1>
     <p class="hero-subline">Carrigon delivers reliable technology solutions with<br>the precision and discipline federal agencies demand.</p>
     <div class="hero-cta-row">
-      <a class="cta-services-btn cta-jv-btn" href="cs" target="_blank" rel="noopener">CarriSys JV</a>
-      <a class="cta-services-btn" href="#services">Explore Services</a>
-      <a class="hero-cert-badge" href="#coming-soon">
-        <span class="hero-cert-badge-star">★</span>
-        <span class="hero-cert-badge-text">SDVOSB Certified</span>
-      </a>
+      <a class="cta-services-btn cta-jv-btn hero-jv-btn" href="cs" target="_blank" rel="noopener">Carri<span class="btn-sys">Sys</span>&nbsp;JV</a>
+      <a class="cta-services-btn cta-ghost-btn" href="#services">Explore Services</a>
     </div>
   </div>
 
-  <div class="hero-media"></div>
 </section>
 
 </div>
@@ -1516,7 +1629,7 @@
 
   </div>
 
-  <div style="text-align:center; margin-top:40px;">
+  <div class="naics-toggle-wrap">
     <button class="naics-toggle-btn" onclick="openNaicsModal()">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
       View All NAICS Codes
@@ -1540,7 +1653,6 @@
   </div>
 </section>
 
-<div class="section-divider"></div>
 
 <!-- Partners -->
 <section class="cta-section" id="partners">
@@ -1782,24 +1894,6 @@
   if (window.emailjs) {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
   }
-
-  // Highlight on scroll
-  const itConsulting = document.getElementById('itConsulting');
-  let highlightActive = false;
-  window.addEventListener('scroll', () => {
-    if (!itConsulting) return;
-    const shouldBeActive = window.scrollY > 60;
-    if (shouldBeActive && !highlightActive) {
-      highlightActive = true;
-      itConsulting.classList.remove('reversing');
-      itConsulting.classList.add('active');
-    } else if (!shouldBeActive && highlightActive) {
-      highlightActive = false;
-      itConsulting.classList.remove('active');
-      itConsulting.classList.add('reversing');
-      setTimeout(() => itConsulting.classList.remove('reversing'), 2500);
-    }
-  }, { passive: true });
 
   // Hamburger menu
   function toggleMenu() {
