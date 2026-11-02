@@ -417,9 +417,6 @@
 
     @media (max-width: 768px) { .side-nav { display: none; } }
 
-    @media (max-width: 768px) {
-      .hero-wrapper { min-height: auto; }
-    }
 
     .sdvosb-badge {
       position: absolute;
@@ -1430,8 +1427,10 @@
       .mobile-menu { display: flex; }
       .nav-logo { font-size: 1.2rem; }
       nav.scrolled .nav-logo { font-size: 1.4rem; }
-      .hero-wrapper { min-height: auto; }
-      .hero { padding: 128px 20px 40px; gap: 50px; min-height: auto; }
+      /* Full-screen hero on phones; svh keeps it from jumping as the browser bar hides */
+      .hero-wrapper,
+      .hero { min-height: 100vh; min-height: 100svh; }
+      .hero { padding: 128px 20px 40px; gap: 50px; }
       .hero-content { text-align: left; align-items: flex-start; flex: none; }
       .hero-headline { font-size: clamp(2.4rem, 9.6vw, 3.6rem); }
       .hero-subline { margin: 0 0 36px; }
